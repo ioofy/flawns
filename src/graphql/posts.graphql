@@ -1,0 +1,27 @@
+query Post($offset: Int!, $limit: Int!) {
+  posts: posts(offset: $offset, limit: $limit) {
+    id
+    content
+    createdAt
+    user {
+      avatarUrl
+      username
+      id
+      name
+    }
+    likes {
+      user {
+        avatarUrl
+        name
+      }
+      id
+    }
+    comments {
+      user {
+        avatarUrl
+        name
+        username
+      }
+    }
+  }
+}

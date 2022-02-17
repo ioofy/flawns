@@ -1,0 +1,15 @@
+overwrite: true
+#schema will change after we deploy it into server
+schema: "http://localhost:3000/api/graphql"
+documents: "src/graphql/**/*.graphql"
+generates:
+  generated/graphql.tsx:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"
+    config:
+      withHooks: true
+      withComponent: false
+      withHOC: false
+      reactApolloVersion: 3

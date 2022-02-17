@@ -1,0 +1,18 @@
+mutation signup(
+  $secretToken: String!
+  $name: String!
+  $username: String!
+  $credentials: CredentialsInput!
+) {
+  signup(
+    secretToken: $secretToken
+    name: $name
+    username: $username
+    credentials: $credentials
+  ) {
+    userErrors {
+      message
+    }
+    token
+  }
+}

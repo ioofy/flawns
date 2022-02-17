@@ -1,0 +1,7 @@
+mutation activateAccount($emailAccount: String!, $tokenAccount: String!) {
+  activationAccount(emailAccount: $emailAccount, tokenAccount: $tokenAccount) {
+    userErrors {
+      message
+    }
+  }
+}

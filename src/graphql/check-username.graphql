@@ -1,0 +1,7 @@
+mutation checkUsername($username: String!) {
+  checkUsername(username: $username) {
+    userErrors {
+      message
+    }
+  }
+}

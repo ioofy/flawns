@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "pages/api/verification.ts": {
+      "includeFiles": "views/verification.hbs"
+    }
+  }
+}
