@@ -19,12 +19,12 @@
     "codegen": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
-    "@apollo/client": "^3.5.7",
+    "@apollo/client": "3.5.7",
     "@prisma/client": "^3.8.1",
     "@sentry/nextjs": "^6.17.5",
     "apollo-link-sentry": "^3.0.2",
-    "apollo-server-core": "^3.6.2",
-    "apollo-server-micro": "^3.6.1",
+    "apollo-server-core": "3.6.2",
+    "apollo-server-micro": "3.6.1",
     "axios": "^0.25.0",
     "base64-string": "^1.1.2",
     "bcryptjs": "^2.4.3",
