@@ -14,9 +14,9 @@ npm run check-format ||
 # Check ESLint Standards
 npm run check-lint ||
 (
-        echo '😤🏀👋😤 Get that weak shit out of here! 😤🏀👋😤
+    echo '😤🏀👋😤 Get that weak shit out of here! 😤🏀👋😤
                 ESLint Check Failed. Make the required changes listed above, add changes and try to commit again.'
-        false;
+    false;
 )
 
 # Check tsconfig standards
