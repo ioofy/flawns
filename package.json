@@ -55,7 +55,7 @@
     "@types/bcryptjs": "^2.4.2",
     "@types/jsonwebtoken": "8.5.8",
     "@types/micro-cors": "^0.1.2",
-    "@types/node": "16.11.11",
+    "@types/node": "16.11.26",
     "@types/nodemailer": "^6.4.4",
     "@types/react": "17.0.37",
     "@types/styled-components": "^5.1.20",
