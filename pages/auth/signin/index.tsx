@@ -119,7 +119,14 @@ const SignIn = () => {
                 <TitleForm>
                   Welcome Back👋 <p>Lets start with one click✨</p>
                   <Link href={`${process.env.NEXT_PUBLIC_API_URL}/auth/google`}>
-                    <button style={{ margin: "10px", padding: "8px" }}>
+                    <button
+                      style={{
+                        margin: "10px",
+                        padding: "8px",
+                        color: "white",
+                        backgroundColor: "#e16259",
+                      }}
+                    >
                       Login with Google
                     </button>
                   </Link>
