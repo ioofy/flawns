@@ -1,0 +1,16 @@
+mutation signin($credentials: CredentialsInput!) {
+  signin(credentials: $credentials) {
+    userErrors {
+      message
+    }
+    user {
+      name
+      username
+      avatarUrl
+      isCreator
+      profession {
+        role
+      }
+    }
+  }
+}

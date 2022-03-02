@@ -1,8 +1,9 @@
 import { colors } from "@styles/variables.styles";
 import styled from "styled-components";
 
-type NotifProps = {
-  background: string;
+type ButtonProps = {
+  background?: string;
+  cursor?: boolean;
 };
 
 export const Wrapper = styled.div`
@@ -256,7 +257,7 @@ export const Input = styled.input`
   }
 `;
 
-export const ButtonRegister = styled.button`
+export const ButtonRegister = styled.button<ButtonProps>`
   padding: 8px;
   border: none;
   outline: none;
@@ -268,7 +269,7 @@ export const ButtonRegister = styled.button`
   background: ${colors.green};
   color: ${colors.white};
   font-size: 16px;
-  cursor: pointer;
+  cursor: ${(props) => (props.cursor ? "not-allowed" : "pointer")};
 `;
 
 export const Attributes = styled.p`
@@ -292,7 +293,7 @@ export const ErrorContent = styled.p`
   color: ${colors.pink};
 `;
 
-export const NotifGlobal = styled.div<NotifProps>`
+export const NotifGlobal = styled.div<ButtonProps>`
   position: absolute;
   padding: 10px;
   color: ${colors.white};

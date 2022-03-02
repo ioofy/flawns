@@ -6,6 +6,8 @@ import type { NextPage } from "next";
 import { colors } from "@styles/variables.styles";
 import { useCheckUsernameMutation } from "generated/graphql";
 import SEO from "@components/Metadata/SEO";
+import Header from "@layout/components/Header/Header";
+import Footer from "@layout/components/Footer/Footer";
 
 const Form = styled.form`
   margin-bottom: 15px;
@@ -147,6 +149,7 @@ const Home: NextPage = () => {
 
   return (
     <>
+      <Header />
       <SEO />
       <ArtBoard
         altText="image-icons"
@@ -156,6 +159,7 @@ const Home: NextPage = () => {
         learnContent={learnContent}
         customizeAttributes={<Attributes />}
       />
+      <Footer />
     </>
   );
 };

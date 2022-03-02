@@ -18,6 +18,13 @@ const ContentWrapper = styled.div`
   margin: auto;
 `;
 
+const WrappAll = styled.div`
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const SuccesHeading = styled.h1`
   font-family: "AllianceM";
   margin-left: 28px;
@@ -35,10 +42,12 @@ const SuccesHeading = styled.h1`
 const ContentSucces = (props: ContentProps) => {
   const { content } = props;
   return (
-    <ContentWrapper>
-      <SuccessImage />
-      <SuccesHeading>{content}</SuccesHeading>
-    </ContentWrapper>
+    <WrappAll>
+      <ContentWrapper>
+        <SuccessImage />
+        <SuccesHeading>{content}</SuccesHeading>
+      </ContentWrapper>
+    </WrappAll>
   );
 };
 
@@ -84,19 +93,21 @@ const VerificationEmail = () => {
         title="Thanks for confirming the account~"
         description="Thanks for confirming the account~"
       />
-      {loading ? (
-        <Loading justifycontent="center" />
-      ) : errors ? (
-        <ContentError
-          content={errors}
-          imgUrl="/image/_error.png"
-          margin="0px auto"
-        />
-      ) : (
-        success && (
-          <ContentSucces content="🙌 Yaay. Your account has been verified. Let’s Login" />
-        )
-      )}
+      <WrappAll>
+        {loading ? (
+          <Loading justifycontent="center" />
+        ) : errors ? (
+          <ContentError
+            content={errors}
+            imgUrl="/image/_error.png"
+            margin="0px auto"
+          />
+        ) : (
+          success && (
+            <ContentSucces content="🙌 Yaay. Your account has been verified. Let’s Login" />
+          )
+        )}
+      </WrappAll>
     </Container>
   );
 };

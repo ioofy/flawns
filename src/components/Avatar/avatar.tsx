@@ -7,7 +7,7 @@ type AvatarComponentProps = {
   altText: string;
   height: number;
   width: number;
-  marginleft: string;
+  marginleft?: string;
 };
 
 type ImageProps = {
@@ -19,7 +19,7 @@ const AvatarSize = styled.div`
 `;
 
 const AvatarImage = styled(Image)<ImageProps>`
-  border-radius: 30px;
+  border-radius: 999px;
   margin-left: ${(props) => props.marginleft} !important;
 `;
 
@@ -31,7 +31,8 @@ const Avatar: React.FC<AvatarComponentProps> = (props) => {
         alt={props.altText}
         height={props.height}
         width={props.width}
-        objectFit="contain"
+        objectFit="cover"
+        quality={100}
         loading="lazy"
         // custom props styling
         marginleft={props.marginleft}

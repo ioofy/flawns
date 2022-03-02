@@ -19,15 +19,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  Date: any;
-};
-
-export type Account = {
-  __typename?: "Account";
-  id: Scalars["ID"];
-  providerId: Scalars["String"];
-  providerType: Scalars["String"];
-  user: User;
+  DateTime: any;
 };
 
 export type ActivationAccountPayload = {
@@ -38,8 +30,7 @@ export type ActivationAccountPayload = {
 
 export type AuthPayload = {
   __typename?: "AuthPayload";
-  account?: Maybe<Account>;
-  token?: Maybe<Scalars["String"]>;
+  user?: Maybe<User>;
   userErrors: Array<UserError>;
 };
 
@@ -50,8 +41,9 @@ export type CheckPayload = {
 
 export type Comment = {
   __typename?: "Comment";
-  createdAt?: Maybe<Scalars["Date"]>;
-  id: Scalars["Int"];
+  date?: Maybe<Scalars["DateTime"]>;
+  id: Scalars["ID"];
+  post: Post;
   text: Scalars["String"];
   user: User;
 };
@@ -67,6 +59,14 @@ export type CommentPayload = {
   userErrors: Array<UserError>;
 };
 
+export type CommentsConnection = {
+  __typename?: "CommentsConnection";
+  comments: Array<Maybe<Comment>>;
+  count?: Maybe<Scalars["Int"]>;
+  cursor?: Maybe<Scalars["String"]>;
+  hasMore: Scalars["Boolean"];
+};
+
 export type CredentialsInput = {
   email: Scalars["String"];
   password: Scalars["String"];
@@ -74,8 +74,7 @@ export type CredentialsInput = {
 
 export type FollowUserResult = {
   __typename?: "FollowUserResult";
-  message: Scalars["String"];
-  ok: Scalars["Boolean"];
+  userErrors: Array<UserError>;
 };
 
 export type LikePostPayload = {
@@ -86,8 +85,8 @@ export type LikePostPayload = {
 
 export type LikedPost = {
   __typename?: "LikedPost";
+  date?: Maybe<Scalars["DateTime"]>;
   id: Scalars["ID"];
-  likedAt: Scalars["String"];
   user: User;
 };
 
@@ -106,8 +105,10 @@ export type Mutation = {
   professionCreate: ProfessionPayload;
   professionDelete: ProfessionPayload;
   signin: AuthPayload;
+  signout: ResponseMessage;
   signup: AuthPayload;
   unfollowUser: UnfollowUserResult;
+  updateUser: UserUpdatePayload;
 };
 
 export type MutationActivationAccountArgs = {
@@ -165,6 +166,7 @@ export type MutationSigninArgs = {
 };
 
 export type MutationSignupArgs = {
+  avatarUrl: Scalars["String"];
   credentials: CredentialsInput;
   name: Scalars["String"];
   secretToken: Scalars["String"];
@@ -175,11 +177,16 @@ export type MutationUnfollowUserArgs = {
   username: Scalars["String"];
 };
 
+export type MutationUpdateUserArgs = {
+  password: Scalars["String"];
+  username: Scalars["String"];
+};
+
 export type Post = {
   __typename?: "Post";
   comments: Array<Maybe<Comment>>;
   content: Scalars["String"];
-  createdAt?: Maybe<Scalars["Date"]>;
+  createdAt?: Maybe<Scalars["DateTime"]>;
   id: Scalars["ID"];
   likes: Array<Maybe<LikedPost>>;
   published: Scalars["Boolean"];
@@ -213,24 +220,20 @@ export type ProfessionPayload = {
   userErrors: Array<UserError>;
 };
 
-export type Profile = {
-  __typename?: "Profile";
-  user: User;
-};
-
 export type Query = {
   __typename?: "Query";
-  comments: Array<Maybe<Comment>>;
+  getComments: CommentsConnection;
   getPost?: Maybe<Post>;
   getProfile?: Maybe<User>;
+  getProfilePost?: Maybe<Array<Maybe<Post>>>;
   me?: Maybe<User>;
   posts: Array<Maybe<Post>>;
   status: Scalars["String"];
 };
 
-export type QueryCommentsArgs = {
-  limit: Scalars["Int"];
-  offset: Scalars["Int"];
+export type QueryGetCommentsArgs = {
+  after?: InputMaybe<Scalars["String"]>;
+  pageSize?: InputMaybe<Scalars["Int"]>;
   postId: Scalars["ID"];
 };
 
@@ -242,36 +245,61 @@ export type QueryGetProfileArgs = {
   username: Scalars["String"];
 };
 
+export type QueryGetProfilePostArgs = {
+  authorId: Scalars["ID"];
+  limit: Scalars["Int"];
+  offset: Scalars["Int"];
+};
+
 export type QueryPostsArgs = {
   limit: Scalars["Int"];
   offset: Scalars["Int"];
 };
 
+export type ResponseMessage = {
+  __typename?: "ResponseMessage";
+  message: Scalars["String"];
+  userErrors: Array<UserError>;
+};
+
+export type Subscription = {
+  __typename?: "Subscription";
+  commentCreated?: Maybe<Comment>;
+};
+
+export type SubscriptionCommentCreatedArgs = {
+  postId: Scalars["ID"];
+};
+
 export type UnfollowUserResult = {
   __typename?: "UnfollowUserResult";
-  message: Scalars["String"];
-  ok: Scalars["Boolean"];
+  userErrors: Array<UserError>;
 };
 
 export type User = {
   __typename?: "User";
   avatarUrl?: Maybe<Scalars["String"]>;
-  bio: Scalars["String"];
+  bio?: Maybe<Scalars["String"]>;
   email?: Maybe<Scalars["String"]>;
   id: Scalars["ID"];
+  isCreator: Scalars["Boolean"];
   isMyProfile: Scalars["Boolean"];
-  isVerified: Scalars["Boolean"];
   name: Scalars["String"];
   posts: Array<Maybe<Post>>;
-  profession: Array<Profession>;
-  slug: Scalars["String"];
-  token: Scalars["String"];
-  username: Scalars["String"];
+  profession?: Maybe<Array<Maybe<Profession>>>;
+  slug?: Maybe<Scalars["String"]>;
+  username?: Maybe<Scalars["String"]>;
 };
 
 export type UserError = {
   __typename?: "UserError";
   message: Scalars["String"];
+};
+
+export type UserUpdatePayload = {
+  __typename?: "UserUpdatePayload";
+  user?: Maybe<User>;
+  userErrors: Array<UserError>;
 };
 
 export type ActivateAccountMutationVariables = Exact<{
@@ -299,66 +327,131 @@ export type CheckUsernameMutation = {
   };
 };
 
-export type CommentsQueryVariables = Exact<{
-  offset: Scalars["Int"];
-  limit: Scalars["Int"];
-  postId: Scalars["ID"];
+export type CommentCreateMutationVariables = Exact<{
+  comment: CommentInput;
 }>;
 
-export type CommentsQuery = {
-  __typename?: "Query";
-  comments: Array<
-    | {
-        __typename: "Comment";
-        id: number;
-        text: string;
-        createdAt?: any | null | undefined;
-        user: {
-          __typename?: "User";
-          avatarUrl?: string | null | undefined;
-          name: string;
-          username: string;
-        };
-      }
-    | null
-    | undefined
-  >;
+export type CommentCreateMutation = {
+  __typename?: "Mutation";
+  commentCreate: {
+    __typename?: "CommentPayload";
+    userErrors: Array<{ __typename?: "UserError"; message: string }>;
+  };
 };
 
-export type GetPostQueryVariables = Exact<{
+export type SigninMutationVariables = Exact<{
+  credentials: CredentialsInput;
+}>;
+
+export type SigninMutation = {
+  __typename?: "Mutation";
+  signin: {
+    __typename?: "AuthPayload";
+    userErrors: Array<{ __typename?: "UserError"; message: string }>;
+    user?:
+      | {
+          __typename?: "User";
+          name: string;
+          username?: string | null | undefined;
+          avatarUrl?: string | null | undefined;
+          isCreator: boolean;
+          profession?:
+            | Array<
+                { __typename?: "Profession"; role: string } | null | undefined
+              >
+            | null
+            | undefined;
+        }
+      | null
+      | undefined;
+  };
+};
+
+export type SignupMutationVariables = Exact<{
+  secretToken: Scalars["String"];
+  name: Scalars["String"];
+  username: Scalars["String"];
+  avatarUrl: Scalars["String"];
+  credentials: CredentialsInput;
+}>;
+
+export type SignupMutation = {
+  __typename?: "Mutation";
+  signup: {
+    __typename?: "AuthPayload";
+    userErrors: Array<{ __typename?: "UserError"; message: string }>;
+  };
+};
+
+export type UpdateUserMutationVariables = Exact<{
+  password: Scalars["String"];
+  username: Scalars["String"];
+}>;
+
+export type UpdateUserMutation = {
+  __typename?: "Mutation";
+  updateUser: {
+    __typename?: "UserUpdatePayload";
+    userErrors: Array<{ __typename?: "UserError"; message: string }>;
+    user?:
+      | { __typename?: "User"; username?: string | null | undefined }
+      | null
+      | undefined;
+  };
+};
+
+export type GetCommentsQueryVariables = Exact<{
+  postId: Scalars["ID"];
+  after?: InputMaybe<Scalars["String"]>;
+  pageSize?: InputMaybe<Scalars["Int"]>;
+}>;
+
+export type GetCommentsQuery = {
+  __typename?: "Query";
+  getComments: {
+    __typename?: "CommentsConnection";
+    count?: number | null | undefined;
+    cursor?: string | null | undefined;
+    hasMore: boolean;
+    comments: Array<
+      | {
+          __typename?: "Comment";
+          id: string;
+          text: string;
+          date?: any | null | undefined;
+          user: {
+            __typename?: "User";
+            name: string;
+            username?: string | null | undefined;
+          };
+        }
+      | null
+      | undefined
+    >;
+  };
+};
+
+export type GetPostsQueryVariables = Exact<{
   postId: Scalars["ID"];
 }>;
 
-export type GetPostQuery = {
+export type GetPostsQuery = {
   __typename?: "Query";
   getPost?:
     | {
         __typename?: "Post";
         content: string;
-        createdAt?: any | null | undefined;
+        user: {
+          __typename?: "User";
+          name: string;
+          username?: string | null | undefined;
+        };
+        comments: Array<
+          { __typename?: "Comment"; id: string } | null | undefined
+        >;
         likes: Array<
           { __typename?: "LikedPost"; id: string } | null | undefined
         >;
-        comments: Array<
-          | {
-              __typename?: "Comment";
-              id: number;
-              user: {
-                __typename?: "User";
-                avatarUrl?: string | null | undefined;
-                name: string;
-                username: string;
-              };
-            }
-          | null
-          | undefined
-        >;
-        user: {
-          __typename?: "User";
-          avatarUrl?: string | null | undefined;
-          name: string;
-          username: string;
-        };
       }
     | null
     | undefined;
@@ -373,32 +466,8 @@ export type GetProfileQuery = {
   getProfile?:
     | {
         __typename?: "User";
-        username: string;
+        username?: string | null | undefined;
         name: string;
-        isMyProfile: boolean;
-        posts: Array<
-          | {
-              __typename?: "Post";
-              id: string;
-              content: string;
-              comments: Array<
-                | {
-                    __typename?: "Comment";
-                    id: number;
-                    user: {
-                      __typename?: "User";
-                      avatarUrl?: string | null | undefined;
-                      name: string;
-                      username: string;
-                    };
-                  }
-                | null
-                | undefined
-              >;
-            }
-          | null
-          | undefined
-        >;
       }
     | null
     | undefined;
@@ -408,7 +477,22 @@ export type MeQueryVariables = Exact<{ [key: string]: never }>;
 
 export type MeQuery = {
   __typename?: "Query";
-  me?: { __typename?: "User"; name: string; token: string } | null | undefined;
+  me?:
+    | {
+        __typename?: "User";
+        name: string;
+        username?: string | null | undefined;
+        avatarUrl?: string | null | undefined;
+        isCreator: boolean;
+        profession?:
+          | Array<
+              { __typename?: "Profession"; role: string } | null | undefined
+            >
+          | null
+          | undefined;
+      }
+    | null
+    | undefined;
 };
 
 export type PostQueryVariables = Exact<{
@@ -427,69 +511,20 @@ export type PostQuery = {
         user: {
           __typename?: "User";
           avatarUrl?: string | null | undefined;
-          username: string;
+          username?: string | null | undefined;
           id: string;
           name: string;
         };
         likes: Array<
-          | {
-              __typename?: "LikedPost";
-              id: string;
-              user: {
-                __typename?: "User";
-                avatarUrl?: string | null | undefined;
-                name: string;
-              };
-            }
-          | null
-          | undefined
+          { __typename?: "LikedPost"; id: string } | null | undefined
         >;
         comments: Array<
-          | {
-              __typename?: "Comment";
-              user: {
-                __typename?: "User";
-                avatarUrl?: string | null | undefined;
-                name: string;
-                username: string;
-              };
-            }
-          | null
-          | undefined
+          { __typename?: "Comment"; id: string } | null | undefined
         >;
       }
     | null
     | undefined
   >;
-};
-
-export type SigninMutationVariables = Exact<{
-  credentials: CredentialsInput;
-}>;
-
-export type SigninMutation = {
-  __typename?: "Mutation";
-  signin: {
-    __typename?: "AuthPayload";
-    token?: string | null | undefined;
-    userErrors: Array<{ __typename?: "UserError"; message: string }>;
-  };
-};
-
-export type SignupMutationVariables = Exact<{
-  secretToken: Scalars["String"];
-  name: Scalars["String"];
-  username: Scalars["String"];
-  credentials: CredentialsInput;
-}>;
-
-export type SignupMutation = {
-  __typename?: "Mutation";
-  signup: {
-    __typename?: "AuthPayload";
-    token?: string | null | undefined;
-    userErrors: Array<{ __typename?: "UserError"; message: string }>;
-  };
 };
 
 export const ActivateAccountDocument = gql`
@@ -600,152 +635,374 @@ export type CheckUsernameMutationOptions = Apollo.BaseMutationOptions<
   CheckUsernameMutation,
   CheckUsernameMutationVariables
 >;
-export const CommentsDocument = gql`
-  query comments($offset: Int!, $limit: Int!, $postId: ID!) {
-    comments(limit: $limit, offset: $offset, postId: $postId) {
-      id
-      __typename
-      text
-      createdAt
+export const CommentCreateDocument = gql`
+  mutation commentCreate($comment: CommentInput!) {
+    commentCreate(comment: $comment) {
+      userErrors {
+        message
+      }
+    }
+  }
+`;
+export type CommentCreateMutationFn = Apollo.MutationFunction<
+  CommentCreateMutation,
+  CommentCreateMutationVariables
+>;
+
+/**
+ * __useCommentCreateMutation__
+ *
+ * To run a mutation, you first call `useCommentCreateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCommentCreateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [commentCreateMutation, { data, loading, error }] = useCommentCreateMutation({
+ *   variables: {
+ *      comment: // value for 'comment'
+ *   },
+ * });
+ */
+export function useCommentCreateMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CommentCreateMutation,
+    CommentCreateMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    CommentCreateMutation,
+    CommentCreateMutationVariables
+  >(CommentCreateDocument, options);
+}
+export type CommentCreateMutationHookResult = ReturnType<
+  typeof useCommentCreateMutation
+>;
+export type CommentCreateMutationResult =
+  Apollo.MutationResult<CommentCreateMutation>;
+export type CommentCreateMutationOptions = Apollo.BaseMutationOptions<
+  CommentCreateMutation,
+  CommentCreateMutationVariables
+>;
+export const SigninDocument = gql`
+  mutation signin($credentials: CredentialsInput!) {
+    signin(credentials: $credentials) {
+      userErrors {
+        message
+      }
       user {
-        avatarUrl
         name
+        username
+        avatarUrl
+        isCreator
+        profession {
+          role
+        }
+      }
+    }
+  }
+`;
+export type SigninMutationFn = Apollo.MutationFunction<
+  SigninMutation,
+  SigninMutationVariables
+>;
+
+/**
+ * __useSigninMutation__
+ *
+ * To run a mutation, you first call `useSigninMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSigninMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [signinMutation, { data, loading, error }] = useSigninMutation({
+ *   variables: {
+ *      credentials: // value for 'credentials'
+ *   },
+ * });
+ */
+export function useSigninMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    SigninMutation,
+    SigninMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<SigninMutation, SigninMutationVariables>(
+    SigninDocument,
+    options
+  );
+}
+export type SigninMutationHookResult = ReturnType<typeof useSigninMutation>;
+export type SigninMutationResult = Apollo.MutationResult<SigninMutation>;
+export type SigninMutationOptions = Apollo.BaseMutationOptions<
+  SigninMutation,
+  SigninMutationVariables
+>;
+export const SignupDocument = gql`
+  mutation signup(
+    $secretToken: String!
+    $name: String!
+    $username: String!
+    $avatarUrl: String!
+    $credentials: CredentialsInput!
+  ) {
+    signup(
+      secretToken: $secretToken
+      name: $name
+      username: $username
+      avatarUrl: $avatarUrl
+      credentials: $credentials
+    ) {
+      userErrors {
+        message
+      }
+    }
+  }
+`;
+export type SignupMutationFn = Apollo.MutationFunction<
+  SignupMutation,
+  SignupMutationVariables
+>;
+
+/**
+ * __useSignupMutation__
+ *
+ * To run a mutation, you first call `useSignupMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSignupMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [signupMutation, { data, loading, error }] = useSignupMutation({
+ *   variables: {
+ *      secretToken: // value for 'secretToken'
+ *      name: // value for 'name'
+ *      username: // value for 'username'
+ *      avatarUrl: // value for 'avatarUrl'
+ *      credentials: // value for 'credentials'
+ *   },
+ * });
+ */
+export function useSignupMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    SignupMutation,
+    SignupMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<SignupMutation, SignupMutationVariables>(
+    SignupDocument,
+    options
+  );
+}
+export type SignupMutationHookResult = ReturnType<typeof useSignupMutation>;
+export type SignupMutationResult = Apollo.MutationResult<SignupMutation>;
+export type SignupMutationOptions = Apollo.BaseMutationOptions<
+  SignupMutation,
+  SignupMutationVariables
+>;
+export const UpdateUserDocument = gql`
+  mutation updateUser($password: String!, $username: String!) {
+    updateUser(password: $password, username: $username) {
+      userErrors {
+        message
+      }
+      user {
         username
       }
     }
   }
 `;
+export type UpdateUserMutationFn = Apollo.MutationFunction<
+  UpdateUserMutation,
+  UpdateUserMutationVariables
+>;
 
 /**
- * __useCommentsQuery__
+ * __useUpdateUserMutation__
  *
- * To run a query within a React component, call `useCommentsQuery` and pass it any options that fit your needs.
- * When your component renders, `useCommentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
+ * To run a mutation, you first call `useUpdateUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
  *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const { data, loading, error } = useCommentsQuery({
+ * const [updateUserMutation, { data, loading, error }] = useUpdateUserMutation({
  *   variables: {
- *      offset: // value for 'offset'
- *      limit: // value for 'limit'
- *      postId: // value for 'postId'
+ *      password: // value for 'password'
+ *      username: // value for 'username'
  *   },
  * });
  */
-export function useCommentsQuery(
-  baseOptions: Apollo.QueryHookOptions<CommentsQuery, CommentsQueryVariables>
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<CommentsQuery, CommentsQueryVariables>(
-    CommentsDocument,
-    options
-  );
-}
-export function useCommentsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    CommentsQuery,
-    CommentsQueryVariables
+export function useUpdateUserMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateUserMutation,
+    UpdateUserMutationVariables
   >
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<CommentsQuery, CommentsQueryVariables>(
-    CommentsDocument,
+  return Apollo.useMutation<UpdateUserMutation, UpdateUserMutationVariables>(
+    UpdateUserDocument,
     options
   );
 }
-export type CommentsQueryHookResult = ReturnType<typeof useCommentsQuery>;
-export type CommentsLazyQueryHookResult = ReturnType<
-  typeof useCommentsLazyQuery
+export type UpdateUserMutationHookResult = ReturnType<
+  typeof useUpdateUserMutation
 >;
-export type CommentsQueryResult = Apollo.QueryResult<
-  CommentsQuery,
-  CommentsQueryVariables
+export type UpdateUserMutationResult =
+  Apollo.MutationResult<UpdateUserMutation>;
+export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<
+  UpdateUserMutation,
+  UpdateUserMutationVariables
 >;
-export const GetPostDocument = gql`
-  query getPost($postId: ID!) {
-    getPost(postId: $postId) {
-      content
-      createdAt
-      likes {
-        id
-      }
+export const GetCommentsDocument = gql`
+  query getComments($postId: ID!, $after: String, $pageSize: Int) {
+    getComments(postId: $postId, after: $after, pageSize: $pageSize) {
+      count
+      cursor
+      hasMore
       comments {
         id
+        text
+        date
         user {
-          avatarUrl
           name
           username
         }
       }
+    }
+  }
+`;
+
+/**
+ * __useGetCommentsQuery__
+ *
+ * To run a query within a React component, call `useGetCommentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCommentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCommentsQuery({
+ *   variables: {
+ *      postId: // value for 'postId'
+ *      after: // value for 'after'
+ *      pageSize: // value for 'pageSize'
+ *   },
+ * });
+ */
+export function useGetCommentsQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetCommentsQuery,
+    GetCommentsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetCommentsQuery, GetCommentsQueryVariables>(
+    GetCommentsDocument,
+    options
+  );
+}
+export function useGetCommentsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetCommentsQuery,
+    GetCommentsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetCommentsQuery, GetCommentsQueryVariables>(
+    GetCommentsDocument,
+    options
+  );
+}
+export type GetCommentsQueryHookResult = ReturnType<typeof useGetCommentsQuery>;
+export type GetCommentsLazyQueryHookResult = ReturnType<
+  typeof useGetCommentsLazyQuery
+>;
+export type GetCommentsQueryResult = Apollo.QueryResult<
+  GetCommentsQuery,
+  GetCommentsQueryVariables
+>;
+export const GetPostsDocument = gql`
+  query getPosts($postId: ID!) {
+    getPost(postId: $postId) {
+      content
       user {
-        avatarUrl
         name
         username
+      }
+      comments {
+        id
+      }
+      likes {
+        id
       }
     }
   }
 `;
 
 /**
- * __useGetPostQuery__
+ * __useGetPostsQuery__
  *
- * To run a query within a React component, call `useGetPostQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetPostQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetPostsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetPostQuery({
+ * const { data, loading, error } = useGetPostsQuery({
  *   variables: {
  *      postId: // value for 'postId'
  *   },
  * });
  */
-export function useGetPostQuery(
-  baseOptions: Apollo.QueryHookOptions<GetPostQuery, GetPostQueryVariables>
+export function useGetPostsQuery(
+  baseOptions: Apollo.QueryHookOptions<GetPostsQuery, GetPostsQueryVariables>
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetPostQuery, GetPostQueryVariables>(
-    GetPostDocument,
+  return Apollo.useQuery<GetPostsQuery, GetPostsQueryVariables>(
+    GetPostsDocument,
     options
   );
 }
-export function useGetPostLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<GetPostQuery, GetPostQueryVariables>
+export function useGetPostsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetPostsQuery,
+    GetPostsQueryVariables
+  >
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetPostQuery, GetPostQueryVariables>(
-    GetPostDocument,
+  return Apollo.useLazyQuery<GetPostsQuery, GetPostsQueryVariables>(
+    GetPostsDocument,
     options
   );
 }
-export type GetPostQueryHookResult = ReturnType<typeof useGetPostQuery>;
-export type GetPostLazyQueryHookResult = ReturnType<typeof useGetPostLazyQuery>;
-export type GetPostQueryResult = Apollo.QueryResult<
-  GetPostQuery,
-  GetPostQueryVariables
+export type GetPostsQueryHookResult = ReturnType<typeof useGetPostsQuery>;
+export type GetPostsLazyQueryHookResult = ReturnType<
+  typeof useGetPostsLazyQuery
+>;
+export type GetPostsQueryResult = Apollo.QueryResult<
+  GetPostsQuery,
+  GetPostsQueryVariables
 >;
 export const GetProfileDocument = gql`
   query getProfile($username: String!) {
     getProfile(username: $username) {
       username
       name
-      isMyProfile
-      posts {
-        id
-        content
-        comments {
-          id
-          user {
-            avatarUrl
-            name
-            username
-          }
-        }
-      }
     }
   }
 `;
@@ -799,10 +1056,15 @@ export type GetProfileQueryResult = Apollo.QueryResult<
   GetProfileQueryVariables
 >;
 export const MeDocument = gql`
-  query me {
+  query Me {
     me {
       name
-      token
+      username
+      avatarUrl
+      isCreator
+      profession {
+        role
+      }
     }
   }
 `;
@@ -850,18 +1112,10 @@ export const PostDocument = gql`
         name
       }
       likes {
-        user {
-          avatarUrl
-          name
-        }
         id
       }
       comments {
-        user {
-          avatarUrl
-          name
-          username
-        }
+        id
       }
     }
   }
@@ -902,116 +1156,3 @@ export function usePostLazyQuery(
 export type PostQueryHookResult = ReturnType<typeof usePostQuery>;
 export type PostLazyQueryHookResult = ReturnType<typeof usePostLazyQuery>;
 export type PostQueryResult = Apollo.QueryResult<PostQuery, PostQueryVariables>;
-export const SigninDocument = gql`
-  mutation signin($credentials: CredentialsInput!) {
-    signin(credentials: $credentials) {
-      userErrors {
-        message
-      }
-      token
-    }
-  }
-`;
-export type SigninMutationFn = Apollo.MutationFunction<
-  SigninMutation,
-  SigninMutationVariables
->;
-
-/**
- * __useSigninMutation__
- *
- * To run a mutation, you first call `useSigninMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useSigninMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [signinMutation, { data, loading, error }] = useSigninMutation({
- *   variables: {
- *      credentials: // value for 'credentials'
- *   },
- * });
- */
-export function useSigninMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    SigninMutation,
-    SigninMutationVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<SigninMutation, SigninMutationVariables>(
-    SigninDocument,
-    options
-  );
-}
-export type SigninMutationHookResult = ReturnType<typeof useSigninMutation>;
-export type SigninMutationResult = Apollo.MutationResult<SigninMutation>;
-export type SigninMutationOptions = Apollo.BaseMutationOptions<
-  SigninMutation,
-  SigninMutationVariables
->;
-export const SignupDocument = gql`
-  mutation signup(
-    $secretToken: String!
-    $name: String!
-    $username: String!
-    $credentials: CredentialsInput!
-  ) {
-    signup(
-      secretToken: $secretToken
-      name: $name
-      username: $username
-      credentials: $credentials
-    ) {
-      userErrors {
-        message
-      }
-      token
-    }
-  }
-`;
-export type SignupMutationFn = Apollo.MutationFunction<
-  SignupMutation,
-  SignupMutationVariables
->;
-
-/**
- * __useSignupMutation__
- *
- * To run a mutation, you first call `useSignupMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useSignupMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [signupMutation, { data, loading, error }] = useSignupMutation({
- *   variables: {
- *      secretToken: // value for 'secretToken'
- *      name: // value for 'name'
- *      username: // value for 'username'
- *      credentials: // value for 'credentials'
- *   },
- * });
- */
-export function useSignupMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    SignupMutation,
-    SignupMutationVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<SignupMutation, SignupMutationVariables>(
-    SignupDocument,
-    options
-  );
-}
-export type SignupMutationHookResult = ReturnType<typeof useSignupMutation>;
-export type SignupMutationResult = Apollo.MutationResult<SignupMutation>;
-export type SignupMutationOptions = Apollo.BaseMutationOptions<
-  SignupMutation,
-  SignupMutationVariables
->;

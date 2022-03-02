@@ -1,0 +1,10 @@
+mutation updateUser($password: String!, $username: String!) {
+  updateUser(password: $password, username: $username) {
+    userErrors {
+      message
+    }
+    user {
+      username
+    }
+  }
+}

@@ -20,7 +20,7 @@ const server = async (req: NextApiRequest, res: NextApiResponse) => {
   const templates = handlebars.compile(files);
   const replacement = {
     email: username,
-    actions: `${process.env.NEXT_PUBLIC_API_URL}/auth/signup/flow/show?email=${email}&t=${generateToken}`,
+    actions: `${process.env.NEXT_PUBLIC_URL}/auth/signup/flow/show?email=${email}&t=${generateToken}`,
   };
   const htmlToSend = templates(replacement);
 

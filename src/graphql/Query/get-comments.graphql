@@ -1,0 +1,16 @@
+query getComments($postId: ID!, $after: String, $pageSize: Int) {
+  getComments(postId: $postId, after: $after, pageSize: $pageSize) {
+    count
+    cursor
+    hasMore
+    comments {
+      id
+      text
+      date
+      user {
+        name
+        username
+      }
+    }
+  }
+}

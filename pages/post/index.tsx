@@ -1,16 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { NetworkStatus } from "@apollo/client";
 import { Container } from "@styles/global.styles";
 import { usePostQuery } from "generated/graphql";
 import { ContentError } from "@components/404/error";
 import { InView } from "react-intersection-observer";
+import { AuthContext } from "@context/AuthContextProvider";
 import styled from "styled-components";
+import Avatar from "@components/Avatar/avatar";
 import Link from "next/link";
 import Loading from "@components/Loading/loading";
-import Avatar from "@components/Avatar/avatar";
 import IntoNow from "@components/Moment/intoNow";
-import * as Sentry from "@sentry/nextjs";
 import SEO from "@components/Metadata/SEO";
+import * as Sentry from "@sentry/nextjs";
 
 const PostCard = styled.div`
   padding: 10px;
@@ -21,12 +22,15 @@ const PostCard = styled.div`
 `;
 
 const Post = () => {
+  const { loggedInUser } = useContext(AuthContext);
   const [fullyLoaded, setFullyLoaded] = useState<any>(false);
+
   const { data, networkStatus, error, fetchMore, variables } = usePostQuery({
     variables: {
       limit: 5,
       offset: 0,
     },
+    fetchPolicy: "network-only",
     notifyOnNetworkStatusChange: true,
   });
 
@@ -40,10 +44,9 @@ const Post = () => {
       />
     );
   }
-
-  const posts = data?.posts;
   const isRefetching = networkStatus === 3;
   const isLoading = networkStatus === 1;
+  const posts = data?.posts;
 
   return (
     <Container>
@@ -52,25 +55,24 @@ const Post = () => {
         description="Lets create something interest now."
       />
       {isLoading && <Loading justifycontent="center" />}
+      {loggedInUser && <button>Create Post</button>}
       {posts?.map((post) => {
         return (
           <Link
-            key={post.id}
-            href={`/post/${post.id}/status?username=${post.user.username}`}
+            key={post?.id}
+            href={`/${post?.user.username}/status/${post?.id}`}
           >
             <PostCard>
               <Avatar
-                marginleft="-10px"
                 imgUrl={post?.user.avatarUrl}
                 altText={post?.user.name}
-                height={65}
-                width={65}
+                height={50}
+                width={50}
               />
-              <p>{post?.id}</p>
               <p>
                 {post?.user.name}
                 <span>
-                  <Link key={post.id} href={`/${post.user.username}`}>
+                  <Link key={post?.id} href={`/${post?.user.username}`}>
                     <a> @{post?.user.username}</a>
                   </Link>
                   · <IntoNow actualDate={post?.createdAt} interval={1000} />
@@ -83,7 +85,11 @@ const Post = () => {
           </Link>
         );
       })}
-      {isRefetching && "Loading sayang.."}
+
+      {isRefetching && (
+        <Loading justifycontent="flex-start" style={{ marginBottom: "10px" }} />
+      )}
+
       {networkStatus !== NetworkStatus.fetchMore &&
         posts?.length % variables.limit === 0 &&
         !fullyLoaded && (
@@ -92,7 +98,7 @@ const Post = () => {
               if (inView) {
                 const result = await fetchMore({
                   variables: {
-                    offset: posts.length,
+                    offset: data?.posts.length,
                   },
                 });
                 setFullyLoaded(!result.data.posts.length);

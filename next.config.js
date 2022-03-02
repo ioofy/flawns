@@ -5,6 +5,9 @@ const { withSentryConfig } = require("@sentry/nextjs");
 const moduleExports = {
   reactStrictMode: true,
   optimizeFonts: false,
+  images: {
+    domains: ["lh3.googleusercontent.com"],
+  },
 
   // find a public folder for nextjs app with starting project_root
   // @reference

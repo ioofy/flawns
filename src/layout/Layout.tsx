@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import React, { ReactNode } from "react";
-import Footer from "./components/Footer/Footer";
-import Header from "./components/Header/Header";
+import NewFooter from "./components/Footer/NewFooter";
+import NewHeader from "./components/Header/NewHeader";
 
 interface LayoutProps {
   children: ReactNode;
@@ -16,13 +16,19 @@ const Layout = (props: LayoutProps) => {
   // @reference
   // https://github.com/vercel/next.js/discussions/16865
 
-  const noLayouts = ["/auth/signin", "/auth/signup"];
+  const noLayouts = [
+    "/",
+    "/auth/signin",
+    "/auth/signup",
+    "/auth/signup/flow/[id]",
+    "/auth/signup/flow/thankyou/[id]",
+  ];
 
   return (
     <>
-      {noLayouts.includes(pathname) ? null : <Header />}
+      {noLayouts.includes(pathname) ? null : <NewHeader />}
       <main className="main-container __wxZSmv">{children}</main>
-      {noLayouts.includes(pathname) ? null : <Footer />}
+      {noLayouts.includes(pathname) ? null : <NewFooter />}
     </>
   );
 };

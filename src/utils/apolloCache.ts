@@ -6,10 +6,20 @@ export const cache = new InMemoryCache({
     Query: {
       fields: {
         posts: offsetLimitPagination(),
-        comments: {
-          keyArgs: false,
-          merge(existing: [], incoming) {
-            return incoming;
+        getComments: {
+          keyArgs: ["postId"],
+          merge(existing, incoming, { args }) {
+            if (existing === undefined) {
+              return incoming;
+            }
+
+            if (args.after && existing.comments) {
+              return Object.assign({}, incoming, {
+                comments: [...existing.comments, ...incoming.comments],
+              });
+            } else {
+              return incoming;
+            }
           },
         },
       },

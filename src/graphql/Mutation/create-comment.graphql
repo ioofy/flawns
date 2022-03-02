@@ -1,0 +1,7 @@
+mutation commentCreate($comment: CommentInput!) {
+  commentCreate(comment: $comment) {
+    userErrors {
+      message
+    }
+  }
+}

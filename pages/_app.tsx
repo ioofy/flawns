@@ -6,9 +6,9 @@ import { GlobalStyles } from "@styles/global.styles";
 import { ApolloProvider } from "@apollo/client";
 import { client } from "@lib/apollo";
 import { AppProps } from "next/app";
-
 // tailwind
 import "@styles/css/globals.css";
+import AuthContextProvider from "@context/AuthContextProvider";
 // import ProvidersTheme from "@config/providersTheme";
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -23,12 +23,14 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Layout>
       <ApolloProvider client={client}>
-        <GlobalStyles />
-        {/* default title */}
-        <Head>
-          <title>Flawn - Flawnn 👩‍🎤👨‍🎤</title>
-        </Head>
-        <Component {...pageProps} />
+        <AuthContextProvider>
+          <GlobalStyles />
+          {/* default title */}
+          <Head>
+            <title>Flawn - Flawnn 👩‍🎤👨‍🎤</title>
+          </Head>
+          <Component {...pageProps} />
+        </AuthContextProvider>
       </ApolloProvider>
     </Layout>
   );

@@ -7,7 +7,7 @@ import SEO from "@components/Metadata/SEO";
 
 const WrapperContent = styled.div`
   max-width: 850px;
-  margin: 100px auto;
+  margin: auto;
   text-align: center;
 `;
 
@@ -20,6 +20,13 @@ const Image = styled.img`
   @media screen and (max-width: 991px) {
     width: 100%;
   }
+`;
+
+const WrappAll = styled.div`
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const Heading = styled.h1`
@@ -46,10 +53,12 @@ const ThankyouNotification = () => {
         title="Confirm your email"
         description="Thanks for signup into our apps. Lets confirm your email"
       />
-      <WrapperContent>
-        <Image src="/image/_wait.png" alt="avatar_wait" />
-        <Heading>👌Great {username}! Now please confirm your email.</Heading>
-      </WrapperContent>
+      <WrappAll>
+        <WrapperContent>
+          <Image src="/image/_wait.png" alt="avatar_wait" />
+          <Heading>👌Great {username}! Now please confirm your email.</Heading>
+        </WrapperContent>
+      </WrappAll>
     </Container>
   );
 };

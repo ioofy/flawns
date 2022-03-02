@@ -34,13 +34,10 @@
       "@styles/*": ["src/styles/*"],
       "@layout/*": ["src/layout/*"],
       "@utils/*": ["src/utils/*"],
-      "@interface/*": ["src/interface/*"],
       "@config/*": ["src/config/*"],
-      // "@hooks/*": ["src/hooks/*"],
+      "@context/*": ["src/context/*"],
       //Graphql utility
-      "@schema/*": ["src/schema/*"],
       "@graphql/*": ["src/graphql/*"],
-      "@services/*": ["src/services/*"],
       "@lib/*": ["src/lib/*"]
     }
   },

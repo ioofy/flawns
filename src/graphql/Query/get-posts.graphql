@@ -1,0 +1,15 @@
+query getPosts($postId: ID!) {
+  getPost(postId: $postId) {
+    content
+    user {
+      name
+      username
+    }
+    comments {
+      id
+    }
+    likes {
+      id
+    }
+  }
+}

@@ -5,8 +5,10 @@ import settings from "./settings/settings";
 
 const SEO = (props: any) => {
   const { title, description, image } = props;
+
   return (
     <Head>
+      <link rel="icon" href="/logo.png" />
       <title>{title} - Flawnn 👩‍🎤👨‍🎤</title>
       <meta
         name="description"

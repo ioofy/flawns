@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Attributes,
   Back,
@@ -29,6 +29,8 @@ import { useForm } from "react-hook-form";
 import { colors } from "@styles/variables.styles";
 import { useSigninMutation } from "generated/graphql";
 import { patterns } from "@utils/pattern";
+import { useRouter } from "next/router";
+import { AuthContext } from "@context/AuthContextProvider";
 import Loading from "@components/Loading/loading";
 import SEO from "@components/Metadata/SEO";
 
@@ -44,8 +46,23 @@ const SignIn = () => {
     formState: { errors },
   } = useForm<FormDataProps>();
 
-  const [signIn, { data, loading }] = useSigninMutation();
+  const router = useRouter();
   const [error, setError] = useState("");
+  const { handleAuthAction } = useContext(AuthContext);
+
+  const [signIn, { data, loading }] = useSigninMutation({
+    onCompleted: (data) => {
+      // if have error
+      if (data.signin.userErrors.length) {
+        console.log("flawns auth null");
+      }
+      // if success
+      if (data.signin.userErrors.length === 0) {
+        // push
+        router.push("/post");
+      }
+    },
+  });
 
   const onSubmitForm = (values: FormDataProps) => {
     const { email, password } = values;
@@ -68,6 +85,11 @@ const SignIn = () => {
         setError(signin.userErrors[0].message);
       }
     }
+
+    //  clean up next using animation
+    setTimeout(function () {
+      setError("");
+    }, 800);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
@@ -96,6 +118,12 @@ const SignIn = () => {
               <SignInForm>
                 <TitleForm>
                   Welcome Back👋 <p>Lets start with one click✨</p>
+                  <Link href={`${process.env.NEXT_PUBLIC_API_URL}/auth/google`}>
+                    <button style={{ margin: "10px", padding: "8px" }}>
+                      Login with Google
+                    </button>
+                  </Link>
+                  <p style={{ textAlign: "center" }}>Or</p>
                 </TitleForm>
 
                 <NotifGlobal background={error && colors.error}>
@@ -157,7 +185,9 @@ const SignIn = () => {
                     <Attributes>
                       New to Flawn? {""}
                       <Link href="/auth/signup">
-                        <a>Register now</a>
+                        <a onClick={() => handleAuthAction("signup")}>
+                          Register now
+                        </a>
                       </Link>
                     </Attributes>
                   </InputBoxes>

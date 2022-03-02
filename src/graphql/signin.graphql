@@ -1,8 +1,0 @@
-mutation signin($credentials: CredentialsInput!) {
-  signin(credentials: $credentials) {
-    userErrors {
-      message
-    }
-    token
-  }
-}

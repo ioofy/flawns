@@ -1,5 +1,5 @@
+import React, { useCallback, useState, useContext } from "react";
 import { Base64 } from "base64-string";
-import React, { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSignupMutation } from "generated/graphql";
 import { useRouter } from "next/router";
@@ -33,6 +33,8 @@ import {
 import Link from "next/link";
 import { colors } from "@styles/variables.styles";
 import { patterns } from "@utils/pattern";
+import { randomInt } from "@utils/getRandomImage";
+import { AuthContext } from "@context/AuthContextProvider";
 import SEO from "@components/Metadata/SEO";
 
 type FormDataProps = {
@@ -52,6 +54,7 @@ const SignUp = () => {
     password: "",
   };
 
+  const { handleAuthAction } = useContext(AuthContext);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [{ email, password, name, username }, setState] =
@@ -64,6 +67,9 @@ const SignUp = () => {
   } = useForm<FormDataProps>();
 
   const [signUp, { loading }] = useSignupMutation();
+
+  // get random string to get image
+  const getUrlImage = `/avatar/__static${randomInt}.png`;
 
   // encrypt secret token
   const generateToken = enc.encode(email);
@@ -78,20 +84,21 @@ const SignUp = () => {
       variables: {
         name,
         username,
+        avatarUrl: getUrlImage,
+        secretToken: generateToken,
         credentials: {
           email,
           password,
         },
-        secretToken: generateToken,
       },
     });
-  }, [name, email, password, generateToken, signUp, username]);
+  }, [name, email, password, generateToken, signUp, username, getUrlImage]);
 
   const onSubmitForm = (values: Object) => {
     // axios data
     const config: Object = {
       method: "post",
-      url: `${process.env.NEXT_PUBLIC_API_URL}/api/verification`,
+      url: `${process.env.NEXT_PUBLIC_URL}/api/verification`,
       headers: {
         "Content-Type": "application/json",
       },
@@ -107,6 +114,8 @@ const SignUp = () => {
         setError(signup.userErrors[0].message);
       } else {
         setError("");
+        // close forrm
+        handleAuthAction("close");
         setSuccess("Successfully created account");
 
         try {
@@ -120,6 +129,7 @@ const SignUp = () => {
           console.log(err);
         }
 
+        // if not loading and not error
         if (!loading && signup.userErrors.length === 0) {
           router.push(`/auth/signup/flow/thankyou/show?username=${username}`);
         }
@@ -225,7 +235,7 @@ const SignUp = () => {
                     <Label htmlFor="password">Password</Label>
                   </InputBox>
                   <InputBox>
-                    <ButtonRegister>
+                    <ButtonRegister disabled={loading}>
                       {loading && error === "" ? (
                         <Loading justifycontent="center" />
                       ) : (
@@ -236,7 +246,9 @@ const SignUp = () => {
                   <Attributes>
                     Already member? {""}
                     <Link href="/auth/signin">
-                      <a>Signin now</a>
+                      <a onClick={() => handleAuthAction("signin")}>
+                        Signin now
+                      </a>
                     </Link>
                   </Attributes>
                 </InputBoxes>
