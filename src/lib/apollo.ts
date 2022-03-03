@@ -37,5 +37,7 @@ const splitLink = process.browser
 
 export const client = new ApolloClient({
   link: ApolloLink.from([new SentryLink(), splitLink]),
+  ssrMode: !process.browser,
+  credentials: "include",
   cache,
 });
