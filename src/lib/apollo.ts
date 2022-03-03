@@ -7,6 +7,9 @@ import { cache } from "@utils/apolloCache";
 const httpLink = new HttpLink({
   uri: `${process.env.NEXT_PUBLIC_API_URL}/graphql`,
   credentials: "include",
+  fetchOptions: {
+    credentials: "include",
+  },
 });
 
 const wsLink = process.browser
@@ -34,6 +37,10 @@ const splitLink = process.browser
       httpLink
     )
   : httpLink;
+
+if (!process.browser) {
+  global.fetch = fetch;
+}
 
 export const client = new ApolloClient({
   link: ApolloLink.from([new SentryLink(), splitLink]),
