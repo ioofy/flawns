@@ -55,7 +55,7 @@ const Post = () => {
         description="Lets create something interest now."
       />
       {isLoading && <Loading justifycontent="center" />}
-      {loggedInUser && <button>Create Post</button>}
+      {loggedInUser && !isLoading && <button>Create Post</button>}
       {posts?.map((post) => {
         return (
           <Link

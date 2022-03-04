@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useContext } from "react";
+import React, { useCallback, useState, useContext, useEffect } from "react";
 import { Base64 } from "base64-string";
 import { useForm } from "react-hook-form";
 import { useSignupMutation } from "generated/graphql";
@@ -93,6 +93,13 @@ const SignUp = () => {
       },
     });
   }, [name, email, password, generateToken, signUp, username, getUrlImage]);
+
+  useEffect(() => {
+    //  clean up next using animation
+    setTimeout(function () {
+      setError("");
+    }, 800);
+  });
 
   const onSubmitForm = (values: Object) => {
     // axios data

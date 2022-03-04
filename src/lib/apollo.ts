@@ -7,9 +7,6 @@ import { cache } from "@utils/apolloCache";
 const httpLink = new HttpLink({
   uri: `${process.env.NEXT_PUBLIC_API_URL}/graphql`,
   credentials: "include",
-  fetchOptions: {
-    credentials: "include",
-  },
 });
 
 const wsLink = process.browser

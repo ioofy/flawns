@@ -48,16 +48,20 @@ const SignIn = () => {
 
   const router = useRouter();
   const [error, setError] = useState("");
-  const { handleAuthAction } = useContext(AuthContext);
+  const { handleAuthAction, setAuthUser } = useContext(AuthContext);
 
   const [signIn, { data, loading }] = useSigninMutation({
-    onCompleted: (data) => {
+    onCompleted: async (data) => {
+      const { signin } = data;
+
       // if have error
-      if (data.signin.userErrors.length) {
+      if (signin.userErrors.length) {
         console.log("flawns auth null");
       }
       // if success
-      if (data.signin.userErrors.length === 0) {
+      if (!signin.userErrors.length) {
+        // set Auth
+        setAuthUser(signin.user);
         // push
         router.push("/post");
       }
@@ -85,13 +89,10 @@ const SignIn = () => {
         setError(signin.userErrors[0].message);
       }
     }
-
     //  clean up next using animation
     setTimeout(function () {
       setError("");
     }, 800);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   return (
