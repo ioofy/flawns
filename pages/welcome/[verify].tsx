@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { Container } from "@styles/global.styles";
 import { useForm } from "react-hook-form";
 import { useUpdateUserMutation } from "generated/graphql";
+import SEO from "@components/Metadata/SEO";
 
 type FormDataProps = {
   username: string;
@@ -12,7 +13,7 @@ type FormDataProps = {
 
 const Welcome = () => {
   const router = useRouter();
-  const { loggedInUser } = useContext(AuthContext);
+  const { loggedInUser, setAuthUser } = useContext(AuthContext);
   const [error, setError] = useState("");
   const { email } = router.query;
 
@@ -25,6 +26,9 @@ const Welcome = () => {
   const [updatingUser, { data, loading }] = useUpdateUserMutation({
     onCompleted: (data) => {
       if (!data.updateUser.userErrors.length) {
+        // updating the data
+        setAuthUser(data.updateUser.user);
+        // then push
         router.push("/post");
       }
     },
@@ -32,7 +36,7 @@ const Welcome = () => {
 
   useEffect(() => {
     // if not null
-    if (!loggedInUser?.username === null) {
+    if (loggedInUser?.username) {
       router.push("/post");
     }
   }, [loggedInUser, router]);
@@ -64,6 +68,10 @@ const Welcome = () => {
 
   return (
     <Container>
+      <SEO
+        title="Welcome ~ Let's setup your account"
+        description="Lets create something interest now."
+      />
       <p>Welcome, {email}</p>
       <p>update your name and password</p>
 

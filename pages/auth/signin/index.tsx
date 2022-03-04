@@ -48,7 +48,8 @@ const SignIn = () => {
 
   const router = useRouter();
   const [error, setError] = useState("");
-  const { handleAuthAction, setAuthUser } = useContext(AuthContext);
+  const { handleAuthAction, setAuthUser, loggedInUser } =
+    useContext(AuthContext);
 
   const [signIn, { data, loading }] = useSigninMutation({
     onCompleted: async (data) => {
@@ -93,7 +94,7 @@ const SignIn = () => {
     setTimeout(function () {
       setError("");
     }, 800);
-  }, [data]);
+  }, [data, loggedInUser, router]);
 
   return (
     <Wrapper>

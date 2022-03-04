@@ -4,6 +4,7 @@ mutation signin($credentials: CredentialsInput!) {
       message
     }
     user {
+      __typename
       name
       username
       avatarUrl
