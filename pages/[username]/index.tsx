@@ -6,6 +6,15 @@ import { useRouter } from "next/router";
 import { AuthContext } from "@context/AuthContextProvider";
 import Loading from "@components/Loading/loading";
 import SEO from "@components/Metadata/SEO";
+import styled from "styled-components";
+
+const PostCard = styled.div`
+  padding: 10px;
+  height: 370px;
+  background-color: pink;
+  width: 320px;
+  margin: 20px 0px;
+`;
 
 const UserProfile = () => {
   const router = useRouter();
@@ -85,9 +94,9 @@ const UserProfile = () => {
       {isMyProfile && <button>Edit Profile</button>}
       {userPosts?.map((post) => {
         return (
-          <div key={post.id}>
+          <PostCard key={post.id}>
             <p>{post.content}</p>
-          </div>
+          </PostCard>
         );
       })}
     </Container>
