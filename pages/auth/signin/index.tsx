@@ -32,6 +32,7 @@ import { AuthContext } from "@context/AuthContextProvider";
 import { toast, Toaster } from "react-hot-toast";
 import Loading from "@components/Loading/loading";
 import SEO from "@components/Metadata/SEO";
+import * as FCIcons from "react-icons/fc";
 
 type FormDataProps = {
   email: string;
@@ -115,10 +116,18 @@ const SignIn = () => {
                       style={{
                         margin: "10px",
                         padding: "8px",
-                        color: "white",
-                        backgroundColor: "#e16259",
+                        color: "black",
+                        display: "flex",
+                        fontSize: "15px",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        backgroundColor: "#fff",
                       }}
                     >
+                      <FCIcons.FcGoogle
+                        size={20}
+                        style={{ marginRight: "5px" }}
+                      />
                       Login with Google
                     </button>
                   </Link>
