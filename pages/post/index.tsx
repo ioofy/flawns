@@ -44,6 +44,7 @@ const Post = () => {
       />
     );
   }
+
   const isRefetching = networkStatus === 3;
   const isLoading = networkStatus === 1;
   const posts = data?.posts;

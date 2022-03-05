@@ -1,10 +1,8 @@
-import React, { useCallback, useState, useContext, useEffect } from "react";
+import React, { useCallback, useState, useContext } from "react";
 import { Base64 } from "base64-string";
 import { useForm } from "react-hook-form";
 import { useSignupMutation } from "generated/graphql";
 import { useRouter } from "next/router";
-import axios from "axios";
-import Loading from "@components/Loading/loading";
 import {
   Wrapper,
   Container,
@@ -28,18 +26,20 @@ import {
   ButtonRegister,
   Attributes,
   ErrorContent,
-  NotifGlobal,
 } from "@components/Pages/AuthPages/Signup/signup.styles";
 import Link from "next/link";
-import { colors } from "@styles/variables.styles";
 import { patterns } from "@utils/pattern";
 import { randomInt } from "@utils/getRandomImage";
 import { AuthContext } from "@context/AuthContextProvider";
+import { toast, Toaster } from "react-hot-toast";
 import SEO from "@components/Metadata/SEO";
+import axios from "axios";
+import Loading from "@components/Loading/loading";
 
 type FormDataProps = {
   email: string;
   username: string;
+  name: string;
 };
 
 const SignUp = () => {
@@ -55,8 +55,6 @@ const SignUp = () => {
   };
 
   const { handleAuthAction } = useContext(AuthContext);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
   const [{ email, password, name, username }, setState] =
     useState(initialState);
 
@@ -94,13 +92,6 @@ const SignUp = () => {
     });
   }, [name, email, password, generateToken, signUp, username, getUrlImage]);
 
-  useEffect(() => {
-    //  clean up next using animation
-    setTimeout(function () {
-      setError("");
-    }, 800);
-  });
-
   const onSubmitForm = (values: Object) => {
     // axios data
     const config: Object = {
@@ -118,12 +109,11 @@ const SignUp = () => {
       } = res;
 
       if (signup.userErrors.length) {
-        setError(signup.userErrors[0].message);
+        toast.error(signup.userErrors[0].message);
       } else {
-        setError("");
         // close forrm
         handleAuthAction("close");
-        setSuccess("Successfully created account");
+        toast.success("Successfully created account");
 
         try {
           if (setState) {
@@ -137,7 +127,7 @@ const SignUp = () => {
         }
 
         // if not loading and not error
-        if (!loading && signup.userErrors.length === 0) {
+        if (!loading && !signup.userErrors.length) {
           router.push(`/auth/signup/flow/thankyou/show?username=${username}`);
         }
       }
@@ -149,6 +139,11 @@ const SignUp = () => {
       <SEO
         title="Welcome!"
         description="Lets signup and start create something interest now!"
+      />
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+        containerClassName="toaster-error"
       />
       <Container>
         <Cover>
@@ -172,13 +167,6 @@ const SignUp = () => {
                 Welcome to <span>Flawn.</span>
               </TitleForm>
               <ContentForm>Flawn is a free comunity platforms. ✨</ContentForm>
-              <NotifGlobal
-                background={
-                  (error && colors.error) || (success && colors.success)
-                }
-              >
-                <p>*{(error && error) || (success && success)}</p>
-              </NotifGlobal>
               <Form onSubmit={handleSubmit(onSubmitForm)}>
                 <InputBoxes>
                   {errors.username && (
@@ -199,12 +187,19 @@ const SignUp = () => {
                     />
                     <Label htmlFor="username">Username</Label>
                   </InputBox>
+                  {errors.name && (
+                    <ErrorContent>*Oops enter your name</ErrorContent>
+                  )}
                   <InputBox>
                     <Input
                       type="text"
                       name="name"
                       autoComplete="off"
                       placeholder="Provide your name"
+                      {...register("name", {
+                        required: true,
+                        minLength: 1,
+                      })}
                       value={name}
                       onChange={onChange}
                     />
@@ -243,7 +238,7 @@ const SignUp = () => {
                   </InputBox>
                   <InputBox>
                     <ButtonRegister disabled={loading}>
-                      {loading && error === "" ? (
+                      {loading ? (
                         <Loading justifycontent="center" />
                       ) : (
                         `Register now`

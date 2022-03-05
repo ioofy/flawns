@@ -1,9 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { AuthContext } from "@context/AuthContextProvider";
 import { useRouter } from "next/router";
 import { Container } from "@styles/global.styles";
 import { useForm } from "react-hook-form";
 import { useUpdateUserMutation } from "generated/graphql";
+import { toast, Toaster } from "react-hot-toast";
 import SEO from "@components/Metadata/SEO";
 
 type FormDataProps = {
@@ -14,7 +15,6 @@ type FormDataProps = {
 const Welcome = () => {
   const router = useRouter();
   const { loggedInUser, setAuthUser } = useContext(AuthContext);
-  const [error, setError] = useState("");
   const { email } = router.query;
 
   const {
@@ -23,11 +23,19 @@ const Welcome = () => {
     formState: { errors },
   } = useForm<FormDataProps>();
 
-  const [updatingUser, { data, loading }] = useUpdateUserMutation({
+  const [updatingUser, { loading }] = useUpdateUserMutation({
     onCompleted: (data) => {
-      if (!data.updateUser.userErrors.length) {
+      const { updateUser } = data;
+
+      if (updateUser.userErrors.length) {
+        toast.error(updateUser.userErrors[0].message);
+      }
+
+      if (!updateUser.userErrors.length) {
+        // Toast succes
+        toast.success("Your account has been verified!");
         // updating the data
-        setAuthUser(data.updateUser.user);
+        setAuthUser(updateUser.user);
         // then push
         router.push("/post");
       }
@@ -40,20 +48,6 @@ const Welcome = () => {
       router.push("/post");
     }
   }, [loggedInUser, router]);
-
-  useEffect(() => {
-    if (data) {
-      const { updateUser } = data;
-
-      if (updateUser.userErrors.length) {
-        setError(updateUser.userErrors[0].message);
-      }
-    }
-    //  clean up next using animation
-    // setTimeout(function () {
-    //   setError("");
-    // }, 800);
-  }, [data]);
 
   const onSubmitForm = (values: FormDataProps) => {
     const { username, password } = values;
@@ -74,9 +68,11 @@ const Welcome = () => {
       />
       <p>Welcome, {email}</p>
       <p>update your name and password</p>
-
-      {error && <p>{error}</p>}
-
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+        containerClassName="toaster-error"
+      />
       <form
         style={{ margin: "20px 0px" }}
         onSubmit={handleSubmit(onSubmitForm)}

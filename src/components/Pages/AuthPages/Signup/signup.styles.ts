@@ -12,6 +12,11 @@ export const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   padding: 20px;
+
+  .toaster-error {
+    font-family: "AllianceEB", sans-serif;
+    font-size: 15px;
+  }
 `;
 
 export const Container = styled.div`
@@ -291,16 +296,4 @@ export const ErrorContent = styled.p`
   margin-bottom: -8px;
   margin-top: -12px;
   color: ${colors.pink};
-`;
-
-export const NotifGlobal = styled.div<ButtonProps>`
-  position: absolute;
-  padding: 10px;
-  color: ${colors.white};
-  z-index: 13;
-  font-family: "AllianceM", sans-serif;
-  font-size: 13px;
-  border-radius: 30px 30px 30px 0px;
-  top: 10px;
-  background: ${(props) => props.background};
 `;

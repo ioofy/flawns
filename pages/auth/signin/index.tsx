@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import {
   Attributes,
   Back,
@@ -18,7 +18,6 @@ import {
   InputBox,
   InputBoxes,
   Label,
-  NotifGlobal,
   SignInForm,
   TextWrapper,
   Title,
@@ -26,11 +25,11 @@ import {
   Wrapper,
 } from "@components/Pages/AuthPages/Signin/signin.styles";
 import { useForm } from "react-hook-form";
-import { colors } from "@styles/variables.styles";
 import { useSigninMutation } from "generated/graphql";
 import { patterns } from "@utils/pattern";
 import { useRouter } from "next/router";
 import { AuthContext } from "@context/AuthContextProvider";
+import { toast, Toaster } from "react-hot-toast";
 import Loading from "@components/Loading/loading";
 import SEO from "@components/Metadata/SEO";
 
@@ -47,17 +46,17 @@ const SignIn = () => {
   } = useForm<FormDataProps>();
 
   const router = useRouter();
-  const [error, setError] = useState("");
-  const { handleAuthAction, setAuthUser, loggedInUser } =
-    useContext(AuthContext);
+  const { handleAuthAction, setAuthUser } = useContext(AuthContext);
 
-  const [signIn, { data, loading }] = useSigninMutation({
+  const [signIn, { loading }] = useSigninMutation({
     onCompleted: async (data) => {
       const { signin } = data;
 
       // if have error
       if (signin.userErrors.length) {
         console.log("flawns auth null");
+        // set toast error
+        toast.error(signin.userErrors[0].message);
       }
       // if success
       if (!signin.userErrors.length) {
@@ -82,23 +81,14 @@ const SignIn = () => {
     });
   };
 
-  useEffect(() => {
-    if (data) {
-      const { signin } = data;
-
-      if (signin.userErrors.length) {
-        setError(signin.userErrors[0].message);
-      }
-    }
-    //  clean up next using animation
-    setTimeout(function () {
-      setError("");
-    }, 800);
-  }, [data, loggedInUser, router]);
-
   return (
     <Wrapper>
       <SEO title="Hello!" description="Lets signin and share your idea!" />
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+        containerClassName="toaster-error"
+      />
       <Container>
         <Cover>
           <Back>
@@ -134,10 +124,6 @@ const SignIn = () => {
                   </Link>
                   <p style={{ textAlign: "center" }}>Or</p>
                 </TitleForm>
-
-                <NotifGlobal background={error && colors.error}>
-                  <p>*{error}</p>
-                </NotifGlobal>
 
                 <Form onSubmit={handleSubmit(onSubmitForm)}>
                   <InputBoxes>
