@@ -1,6 +1,17 @@
 query getProfile($username: String!) {
   getProfile(username: $username) {
+    __typename
+    id
     username
     name
+    email
+    bio
+    slug
+    avatarUrl
+    isCreator
+    profession {
+      id
+      role
+    }
   }
 }

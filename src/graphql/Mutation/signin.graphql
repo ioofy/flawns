@@ -4,12 +4,17 @@ mutation signin($credentials: CredentialsInput!) {
       message
     }
     user {
+      id
       __typename
-      name
       username
+      name
+      email
+      bio
+      slug
       avatarUrl
       isCreator
       profession {
+        id
         role
       }
     }

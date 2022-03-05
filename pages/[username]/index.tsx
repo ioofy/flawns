@@ -1,35 +1,56 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ContentError } from "@components/404/error";
 import { Container } from "@styles/global.styles";
-import { useGetProfileQuery } from "generated/graphql";
+import { useGetProfilePostQuery, useGetProfileQuery } from "generated/graphql";
 import { useRouter } from "next/router";
 import { AuthContext } from "@context/AuthContextProvider";
 import Loading from "@components/Loading/loading";
+import SEO from "@components/Metadata/SEO";
 
 const UserProfile = () => {
   const router = useRouter();
-  const { loggedInUser } = useContext(AuthContext);
   const [isMyProfile, setIsMyProfile] = useState(false);
+  const { loggedInUser } = useContext(AuthContext);
   const { username } = router.query;
 
-  const { data, error, loading } = useGetProfileQuery({
+  const {
+    data: ProfileData,
+    error: ProfileError,
+    loading: ProfileLoading,
+  } = useGetProfileQuery({
     variables: {
       username: String(username),
     },
   });
 
+  const {
+    data: ProfilePostData,
+    loading: ProfilePostLoading,
+    error: ProfilePostError,
+  } = useGetProfilePostQuery({
+    variables: {
+      authorId: String(ProfileData?.getProfile.id),
+      limit: 5,
+      offset: 0,
+    },
+  });
+
   useEffect(() => {
-    if (data) {
-      if (data.getProfile?.username === loggedInUser?.username) {
+    if (ProfileData) {
+      const { getProfile } = ProfileData;
+
+      if (getProfile?.username === loggedInUser?.username) {
         setIsMyProfile(true);
       } else {
         setIsMyProfile(false);
       }
     }
-  }, [data, loggedInUser]);
+  }, [ProfileData, loggedInUser]);
 
-  if (loading) return <Loading justifycontent="center" />;
-  if (data.getProfile === null) {
+  if (ProfileLoading || ProfilePostLoading)
+    return <Loading justifycontent="center" />;
+
+  if (ProfileData.getProfile === null) {
     return (
       <ContentError
         margin="0px auto"
@@ -38,24 +59,37 @@ const UserProfile = () => {
       />
     );
   }
-  if (error) {
+  if (ProfileError || ProfilePostError) {
     return (
       <ContentError
         margin="0px auto"
-        content="Oops.. Error"
+        content="Oops.. Something went wrong"
         imgUrl="/image/_error.png"
       />
     );
   }
 
+  // assign it into constant
+  const userProfile = ProfileData?.getProfile;
+  const userPosts = ProfilePostData?.getProfilePost;
+
   return (
     <Container>
+      <SEO
+        title={`${userProfile.name} (@${userProfile.username})`}
+        // og description from biodata
+        description={`${username}"`}
+      />
       UserProfile
-      {data.getProfile.username}
-      {/* {getUsername.getProfile.posts.map((post) => {
-        return <div key={post.id}>{post.content}</div>;
-      })} */}
+      {userProfile.username}
       {isMyProfile && <button>Edit Profile</button>}
+      {userPosts?.map((post) => {
+        return (
+          <div key={post.id}>
+            <p>{post.content}</p>
+          </div>
+        );
+      })}
     </Container>
   );
 };

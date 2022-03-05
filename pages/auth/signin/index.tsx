@@ -84,7 +84,10 @@ const SignIn = () => {
 
   return (
     <Wrapper>
-      <SEO title="Hello!" description="Lets signin and share your idea!" />
+      <SEO
+        title="Hello, Welcome Back 👋"
+        description="Lets signin and share your idea!"
+      />
       <Toaster
         position="top-center"
         reverseOrder={false}

@@ -3,12 +3,11 @@ import CommentDisplay from "@components/Comments/CommentDisplay";
 import Loading from "@components/Loading/loading";
 import SEO from "@components/Metadata/SEO";
 import styled from "styled-components";
+import CommentForm from "@components/Comments/CommentForm";
 import * as Sentry from "@sentry/nextjs";
 import { Container } from "@styles/global.styles";
-
 import { useGetPostsQuery } from "generated/graphql";
 import { ContentError } from "@components/404/error";
-import CommentForm from "@components/Comments/CommentForm";
 import { useRouter } from "next/router";
 
 const PostCard = styled.div`

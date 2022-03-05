@@ -1,11 +1,16 @@
 query Me {
   me {
+    id
     __typename
-    name
     username
+    name
+    email
+    bio
+    slug
     avatarUrl
     isCreator
     profession {
+      id
       role
     }
   }

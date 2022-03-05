@@ -1,0 +1,20 @@
+query getProfilePost($authorId: ID!, $limit: Int!, $offset: Int!) {
+  getProfilePost(authorId: $authorId, limit: $limit, offset: $offset) {
+    id
+    content
+    likes {
+      id
+      user {
+        username
+      }
+    }
+    comments {
+      id
+      text
+      user {
+        name
+        username
+      }
+    }
+  }
+}

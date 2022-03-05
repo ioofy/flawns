@@ -8,7 +8,6 @@ interface UserContext {
   username?: string;
   avatarUrl?: string;
   isCreator: boolean;
-
   profession?: {
     __typename?: "Profession";
     role: string;
