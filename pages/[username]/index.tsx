@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { AuthContext } from "@context/AuthContextProvider";
 import Loading from "@components/Loading/loading";
 import SEO from "@components/Metadata/SEO";
+import Image from "next/image";
 import styled from "styled-components";
 
 const PostCard = styled.div`
@@ -15,6 +16,8 @@ const PostCard = styled.div`
   width: 320px;
   margin: 20px 0px;
 `;
+
+const AvatarImage = styled(Image)``;
 
 const UserProfile = () => {
   const router = useRouter();
@@ -38,7 +41,7 @@ const UserProfile = () => {
     error: ProfilePostError,
   } = useGetProfilePostQuery({
     variables: {
-      authorId: String(ProfileData?.getProfile.id),
+      authorId: String(ProfileData?.getProfile?.id),
       limit: 5,
       offset: 0,
     },
@@ -91,6 +94,14 @@ const UserProfile = () => {
       />
       UserProfile
       {userProfile.username}
+      <div>
+        <AvatarImage
+          src={userProfile.avatarUrl}
+          width={90}
+          height={90}
+          alt="avatar"
+        />
+      </div>
       {isMyProfile && <button>Edit Profile</button>}
       {userPosts?.map((post) => {
         return (
