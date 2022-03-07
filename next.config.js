@@ -6,7 +6,7 @@ const moduleExports = {
   reactStrictMode: true,
   optimizeFonts: false,
   images: {
-    domains: ["lh3.googleusercontent.com"],
+    domains: ["lh3.googleusercontent.com", "gravatar.com"],
   },
 
   // find a public folder for nextjs app with starting project_root

@@ -29,12 +29,12 @@ import {
 } from "@components/Pages/AuthPages/Signup/signup.styles";
 import Link from "next/link";
 import { patterns } from "@utils/pattern";
-import { randomInt } from "@utils/getRandomImage";
 import { AuthContext } from "@context/AuthContextProvider";
 import { toast, Toaster } from "react-hot-toast";
 import SEO from "@components/Metadata/SEO";
 import axios from "axios";
 import Loading from "@components/Loading/loading";
+import gravatarUrl from "gravatar-url";
 
 type FormDataProps = {
   email: string;
@@ -66,9 +66,6 @@ const SignUp = () => {
 
   const [signUp, { loading }] = useSignupMutation();
 
-  // get random string to get image
-  const getUrlImage = `/avatar/__static${randomInt}.png`;
-
   // encrypt secret token
   const generateToken = enc.encode(email);
 
@@ -78,11 +75,16 @@ const SignUp = () => {
   };
 
   const onSignUpAction = useCallback(() => {
+    const gravatar = gravatarUrl(email, {
+      default: "identicon",
+      size: 200,
+    });
+
     return signUp({
       variables: {
         name,
         username,
-        avatarUrl: getUrlImage,
+        avatarUrl: gravatar,
         secretToken: generateToken,
         credentials: {
           email,
@@ -90,7 +92,7 @@ const SignUp = () => {
         },
       },
     });
-  }, [name, email, password, generateToken, signUp, username, getUrlImage]);
+  }, [name, email, password, generateToken, signUp, username]);
 
   const onSubmitForm = (values: Object) => {
     // axios data

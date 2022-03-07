@@ -67,8 +67,8 @@ const Post = () => {
               <Avatar
                 imgUrl={post?.user.avatarUrl}
                 altText={post?.user.name}
-                height={50}
-                width={50}
+                height={45}
+                width={45}
               />
               <p>
                 {post?.user.name}

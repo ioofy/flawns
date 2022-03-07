@@ -8,6 +8,11 @@ import Loading from "@components/Loading/loading";
 import SEO from "@components/Metadata/SEO";
 import Image from "next/image";
 import styled from "styled-components";
+import dynamic from "next/dynamic";
+
+const AvatarUpload = dynamic(() => import("@components/Image/imageUpload"), {
+  ssr: false,
+});
 
 const PostCard = styled.div`
   padding: 10px;
@@ -17,7 +22,11 @@ const PostCard = styled.div`
   margin: 20px 0px;
 `;
 
-const AvatarImage = styled(Image)``;
+const AvatarImage = styled(Image)`
+  border-radius: 99px;
+  height: 100%;
+  width: 100%;
+`;
 
 const UserProfile = () => {
   const router = useRouter();
@@ -93,15 +102,24 @@ const UserProfile = () => {
         description={`${username}"`}
       />
       UserProfile
-      {userProfile.username}
+      <p>
+        {userProfile.username} - {userProfile.name}
+      </p>
+      {isMyProfile && <AvatarUpload />}
       <div>
         <AvatarImage
           src={userProfile.avatarUrl}
-          width={90}
-          height={90}
+          width={100}
+          height={100}
+          loading="lazy"
           alt="avatar"
         />
       </div>
+      {userProfile.bio ? (
+        <p>{userProfile.bio}</p>
+      ) : (
+        <p>This user didnt create a bio yet</p>
+      )}
       {isMyProfile && <button>Edit Profile</button>}
       {userPosts?.map((post) => {
         return (
