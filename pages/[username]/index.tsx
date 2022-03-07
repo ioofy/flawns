@@ -29,7 +29,7 @@ const UserProfile = () => {
     error: ProfilePostError,
   } = useGetProfilePostQuery({
     variables: {
-      authorId: String(ProfileData?.getProfile.id),
+      authorId: String(ProfileData?.getProfile?.id),
       limit: 5,
       offset: 0,
     },

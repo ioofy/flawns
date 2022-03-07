@@ -4,17 +4,9 @@ query getProfilePost($authorId: ID!, $limit: Int!, $offset: Int!) {
     content
     likes {
       id
-      user {
-        username
-      }
     }
     comments {
       id
-      text
-      user {
-        name
-        username
-      }
     }
   }
 }
