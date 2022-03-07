@@ -6,6 +6,18 @@ import { useRouter } from "next/router";
 import { AuthContext } from "@context/AuthContextProvider";
 import Loading from "@components/Loading/loading";
 import SEO from "@components/Metadata/SEO";
+import Image from "next/image";
+import styled from "styled-components";
+
+const PostCard = styled.div`
+  padding: 10px;
+  height: 370px;
+  background-color: pink;
+  width: 320px;
+  margin: 20px 0px;
+`;
+
+const AvatarImage = styled(Image)``;
 
 const UserProfile = () => {
   const router = useRouter();
@@ -82,12 +94,20 @@ const UserProfile = () => {
       />
       UserProfile
       {userProfile.username}
+      <div>
+        <AvatarImage
+          src={userProfile.avatarUrl}
+          width={90}
+          height={90}
+          alt="avatar"
+        />
+      </div>
       {isMyProfile && <button>Edit Profile</button>}
       {userPosts?.map((post) => {
         return (
-          <div key={post.id}>
+          <PostCard key={post.id}>
             <p>{post.content}</p>
-          </div>
+          </PostCard>
         );
       })}
     </Container>
