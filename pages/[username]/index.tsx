@@ -5,7 +5,7 @@ import { useGetProfilePostQuery, useGetProfileQuery } from "generated/graphql";
 import { useRouter } from "next/router";
 import { AuthContext } from "@context/AuthContextProvider";
 import { BiEdit } from "react-icons/bi";
-import Loading from "@components/Loading/Loading";
+import Loading from "@components/Loadings/Loading";
 import SEO from "@components/Metadata/SEO";
 import Image from "next/image";
 import styled from "styled-components";

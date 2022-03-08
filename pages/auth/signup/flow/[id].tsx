@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { ContentErrors } from "@components/CustomError/Error";
 import { SuccessImage } from "@components/Image/Image";
 import { colors } from "@styles/variables.styles";
-import Loading from "@components/Loading/Loading";
+import Loading from "@components/Loadings/Loading";
 import styled from "styled-components";
 import SEO from "@components/Metadata/SEO";
 

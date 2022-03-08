@@ -8,7 +8,7 @@ import { AuthContext } from "@context/AuthContextProvider";
 import styled from "styled-components";
 import Avatar from "@components/Avatar/Avatar";
 import Link from "next/link";
-import Loading from "@components/Loading/Loading";
+import Loading from "@components/Loadings/Loading";
 import IntoNow from "@components/Moment/IntoNow";
 import SEO from "@components/Metadata/SEO";
 import * as Sentry from "@sentry/nextjs";

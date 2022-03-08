@@ -1,6 +1,6 @@
 import React from "react";
 import CommentDisplay from "@components/Comments/CommentDisplay";
-import Loading from "@components/Loading/Loading";
+import Loading from "@components/Loadings/Loading";
 import SEO from "@components/Metadata/SEO";
 import styled from "styled-components";
 import CommentForm from "@components/Comments/CommentForm";
