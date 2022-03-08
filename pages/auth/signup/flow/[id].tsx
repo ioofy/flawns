@@ -3,7 +3,7 @@ import { Container } from "@styles/global.styles";
 import { useActivateAccountMutation } from "generated/graphql";
 import { useRouter } from "next/router";
 import { ContentErrors } from "@components/CustomError/Error";
-import { SuccessImage } from "@components/Image/Image";
+import { SuccessImage } from "@components/Images/Image";
 import { colors } from "@styles/variables.styles";
 import Loading from "@components/Loadings/Loading";
 import styled from "styled-components";
