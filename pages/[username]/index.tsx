@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { ContentError } from "@components/404/Error";
+import { ContentErrors } from "@components/404/Error";
 import { Container } from "@styles/global.styles";
 import { useGetProfilePostQuery, useGetProfileQuery } from "generated/graphql";
 import { useRouter } from "next/router";
@@ -77,7 +77,7 @@ const UserProfile = () => {
 
   if (ProfileData.getProfile === null) {
     return (
-      <ContentError
+      <ContentErrors
         margin="0px auto"
         content="Oops.. Username not found"
         imgUrl="/image/_error.png"
@@ -86,7 +86,7 @@ const UserProfile = () => {
   }
   if (ProfileError || ProfilePostError) {
     return (
-      <ContentError
+      <ContentErrors
         margin="0px auto"
         content="Oops.. Something went wrong"
         imgUrl="/image/_error.png"

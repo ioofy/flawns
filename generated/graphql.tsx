@@ -433,7 +433,9 @@ export type UpdateUserMutation = {
           isCreator: boolean;
           profession?:
             | Array<
-                { __typename?: "Profession"; role: string } | null | undefined
+                | { __typename?: "Profession"; id: string; role: string }
+                | null
+                | undefined
               >
             | null
             | undefined;
@@ -974,6 +976,7 @@ export const UpdateUserDocument = gql`
         avatarUrl
         isCreator
         profession {
+          id
           role
         }
       }

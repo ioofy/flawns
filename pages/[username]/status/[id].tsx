@@ -7,7 +7,7 @@ import CommentForm from "@components/Comments/CommentForm";
 import * as Sentry from "@sentry/nextjs";
 import { Container } from "@styles/global.styles";
 import { useGetPostsQuery } from "generated/graphql";
-import { ContentError } from "@components/404/Error";
+import { ContentErrors } from "@components/404/Error";
 import { useRouter } from "next/router";
 
 const PostCard = styled.div`
@@ -42,7 +42,7 @@ const PostDetail = () => {
   if (postError) {
     Sentry.captureException(postError);
     return (
-      <ContentError
+      <ContentErrors
         margin="0px auto"
         content="Theres an error this caused in our server or something."
         imgUrl="/image/_error.png"
