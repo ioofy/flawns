@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import ArtBoard from "@components/Artboard/Artboard";
-import Loading from "@components/Loading/Loading";
 import type { NextPage } from "next";
 import { colors } from "@styles/variables.styles";
 import { useCheckUsernameMutation } from "generated/graphql";
+import styled from "styled-components";
+import ArtBoard from "@components/Artboard/Artboard";
+import Loading from "@components/Loading/Loading";
 import SEO from "@components/Metadata/SEO";
 import Header from "@layout/components/Header/Header";
 import Footer from "@layout/components/Footer/Footer";

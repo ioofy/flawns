@@ -1,4 +1,4 @@
-import { ContentErrors } from "@components/404/Error";
+import { ContentErrors } from "@components/CustomError/Error";
 import SEO from "@components/Metadata/SEO";
 import React from "react";
 

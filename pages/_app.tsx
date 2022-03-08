@@ -1,5 +1,5 @@
 import React from "react";
-import Maintenance from "@components/404/Maintenance";
+import Maintenance from "@components/CustomError/Maintenance";
 import Head from "next/head";
 import Layout from "@layout/Layout";
 import { GlobalStyles } from "@styles/global.styles";

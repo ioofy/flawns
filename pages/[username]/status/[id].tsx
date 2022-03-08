@@ -7,7 +7,7 @@ import CommentForm from "@components/Comments/CommentForm";
 import * as Sentry from "@sentry/nextjs";
 import { Container } from "@styles/global.styles";
 import { useGetPostsQuery } from "generated/graphql";
-import { ContentErrors } from "@components/404/Error";
+import { ContentErrors } from "@components/CustomError/Error";
 import { useRouter } from "next/router";
 
 const PostCard = styled.div`

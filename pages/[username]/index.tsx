@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { ContentErrors } from "@components/404/Error";
+import { ContentErrors } from "@components/CustomError/Error";
 import { Container } from "@styles/global.styles";
 import { useGetProfilePostQuery, useGetProfileQuery } from "generated/graphql";
 import { useRouter } from "next/router";

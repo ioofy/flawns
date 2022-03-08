@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { NetworkStatus } from "@apollo/client";
 import { Container } from "@styles/global.styles";
 import { usePostQuery } from "generated/graphql";
-import { ContentErrors } from "@components/404/Error";
+import { ContentErrors } from "@components/CustomError/Error";
 import { InView } from "react-intersection-observer";
 import { AuthContext } from "@context/AuthContextProvider";
 import styled from "styled-components";
