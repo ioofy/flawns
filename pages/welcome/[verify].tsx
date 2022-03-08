@@ -37,7 +37,10 @@ const Welcome = () => {
         // updating the data
         setAuthUser(updateUser.user);
         // then push
-        router.push("/post");
+        // reload
+        setInterval(function () {
+          router.push("/post");
+        }, 1000);
       }
     },
   });

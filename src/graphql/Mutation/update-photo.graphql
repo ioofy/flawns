@@ -4,5 +4,9 @@ mutation UpdatePhotoProfile($photo: String!) {
       message
     }
     message
+    user {
+      id
+      avatarUrl
+    }
   }
 }

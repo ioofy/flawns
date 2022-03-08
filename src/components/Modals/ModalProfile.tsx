@@ -61,17 +61,10 @@ const ModalProfile = ({
 }: ModalProfileProps) => {
   const modalRef = useRef(null);
 
-  // const animation = useSpring({
-  //   config: { duration: 300 },
-  //   opacity: isShowing ? "1" : "0",
-  //   transform: isShowing ? `translateY(0%)` : `translateY(-100%)`,
-  // }) as any;
-
   return (
     <Container>
       {isShowing ? (
         <Background ref={modalRef}>
-          {/* <animated.div style={animation}> */}
           <ModalWrapper>
             <CloseModalIcon
               size={25}
@@ -81,7 +74,6 @@ const ModalProfile = ({
               <Editor>{children}</Editor>
             </Content>
           </ModalWrapper>
-          {/* </animated.div> */}
         </Background>
       ) : null}
     </Container>

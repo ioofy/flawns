@@ -7,7 +7,6 @@ import { AuthContext } from "@context/AuthContextProvider";
 import { BiEdit } from "react-icons/bi";
 import Loading from "@components/Loadings/Loading";
 import SEO from "@components/Metadata/SEO";
-import Image from "next/image";
 import styled from "styled-components";
 import dynamic from "next/dynamic";
 import ModalProfile from "@components/Modals/ModalProfile";
@@ -25,10 +24,16 @@ const PostCard = styled.div`
   margin: 20px 0px;
 `;
 
-const AvatarImage = styled(Image)`
-  border-radius: 99px;
-  height: 100%;
+const AvatarContainer = styled.div`
   width: 100%;
+  height: 100%;
+`;
+
+const AvatarImage = styled.img`
+  border-radius: 99px;
+  object-fit: contain;
+  height: 110px;
+  width: 110px;
 `;
 
 const UserProfile = () => {
@@ -72,8 +77,7 @@ const UserProfile = () => {
     }
   }, [ProfileData, loggedInUser]);
 
-  if (ProfileLoading || ProfilePostLoading)
-    return <Loading justifycontent="center" />;
+  if (ProfileLoading) return <Loading justifycontent="center" />;
 
   if (ProfileData.getProfile === null) {
     return (
@@ -117,16 +121,9 @@ const UserProfile = () => {
         <AvatarUpload />
       </ModalProfile>
       <div>
-        <AvatarImage
-          src={userProfile.avatarUrl}
-          width={100}
-          height={100}
-          objectFit="contain"
-          quality={100}
-          blurDataURL="1"
-          placeholder="blur"
-          priority
-        />
+        <AvatarContainer>
+          <AvatarImage src={userProfile.avatarUrl} />
+        </AvatarContainer>
         {isMyProfile && (
           <BiEdit size={22} className="icon" onClick={openModal} />
         )}
@@ -136,13 +133,17 @@ const UserProfile = () => {
       ) : (
         <p>This user didnt create a bio yet</p>
       )}
-      {userPosts?.map((post) => {
-        return (
-          <PostCard key={post.id}>
-            <p>{post.content}</p>
-          </PostCard>
-        );
-      })}
+      {ProfilePostLoading ? (
+        <Loading justifycontent="start" />
+      ) : (
+        userPosts?.map((post) => {
+          return (
+            <PostCard key={post.id}>
+              <p>{post.content}</p>
+            </PostCard>
+          );
+        })
+      )}
     </Container>
   );
 };

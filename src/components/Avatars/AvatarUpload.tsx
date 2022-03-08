@@ -21,7 +21,6 @@ export default function AvatarUpload() {
         if (data.updatePhotoProfile.message) {
           toast.success(data.updatePhotoProfile.message);
           // reload
-
           setInterval(function () {
             window.location.reload();
           }, 800);
@@ -42,8 +41,8 @@ export default function AvatarUpload() {
   };
 
   const onBeforeFileLoad = (elem: React.ChangeEvent<HTMLInputElement>) => {
-    if (elem.target.files[0].size > 1100000) {
-      toast.error("File is too big!");
+    if (elem.target.files[0].size > 650000) {
+      toast.error("File is too big! Please upload maximum size < 1mb");
       elem.target.value = "";
     } else {
       console.log(elem.target.files[0]);
