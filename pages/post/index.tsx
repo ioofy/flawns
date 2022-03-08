@@ -6,7 +6,7 @@ import { ContentErrors } from "@components/CustomError/Error";
 import { InView } from "react-intersection-observer";
 import { AuthContext } from "@context/AuthContextProvider";
 import styled from "styled-components";
-import Avatar from "@components/Avatar/Avatar";
+import Avatar from "@components/Avatars/Avatar";
 import Link from "next/link";
 import Loading from "@components/Loadings/Loading";
 import IntoNow from "@components/Moment/IntoNow";

@@ -13,7 +13,7 @@ import dynamic from "next/dynamic";
 import ModalProfile from "@components/Modals/ModalProfile";
 
 // ssr false
-const AvatarUpload = dynamic(() => import("@components/Avatar/AvatarUpload"), {
+const AvatarUpload = dynamic(() => import("@components/Avatars/AvatarUpload"), {
   ssr: false,
 });
 
