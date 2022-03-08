@@ -1,10 +1,13 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import Avatar from "react-avatar-edit";
 
-export default function ImageUpload() {
+type ImageUploadProps = {
+  urlAvatar: string;
+};
+
+export default function ImageUpload(props: ImageUploadProps) {
   const [preview, setPreview] = useState(null);
-  const [src] = useState("https://i.imgur.com/5fh5cPN.jpg");
+  const [src] = useState(props.urlAvatar);
 
   const onClose = () => {
     setPreview(null);
@@ -14,26 +17,31 @@ export default function ImageUpload() {
     setPreview(preview);
   };
 
-  const onBeforeFileLoad = (elem: any) => {
-    if (elem.target.files[0].size > 71680) {
+  const onBeforeFileLoad = (elem: React.ChangeEvent<HTMLInputElement>) => {
+    if (elem.target.files[0].size > 700000) {
       alert("File is too big!");
       elem.target.value = "";
     } else {
       console.log(elem.target.files[0]);
-      // get the normale photo
     }
   };
+
+  const handleClick = () => {
+    console.log(preview);
+  };
+
   return (
     <div>
       <Avatar
-        width={250}
-        height={250}
+        width={200}
+        height={200}
         onCrop={onCrop}
         onClose={onClose}
         onBeforeFileLoad={onBeforeFileLoad}
         src={src}
       />
-      <img src={preview} alt="Preview" />
+
+      <button onClick={handleClick}>Submit</button>
     </div>
   );
 }

@@ -105,7 +105,7 @@ const UserProfile = () => {
       <p>
         {userProfile.username} - {userProfile.name}
       </p>
-      {isMyProfile && <AvatarUpload />}
+      {isMyProfile && <AvatarUpload urlAvatar={userProfile.avatarUrl} />}
       <div>
         <AvatarImage
           src={userProfile.avatarUrl}
