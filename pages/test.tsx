@@ -15,7 +15,11 @@ const Test = () => {
 
   console.log(data);
 
-  return <div>info: {data.status}</div>;
+  return (
+    <div>
+      <p>info: {data.status}</p>
+    </div>
+  );
 };
 
 export default Test;

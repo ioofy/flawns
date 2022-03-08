@@ -1,16 +1,19 @@
 import React, { useContext, useEffect, useState } from "react";
-import { ContentError } from "@components/404/error";
+import { ContentError } from "@components/404/Error";
 import { Container } from "@styles/global.styles";
 import { useGetProfilePostQuery, useGetProfileQuery } from "generated/graphql";
 import { useRouter } from "next/router";
 import { AuthContext } from "@context/AuthContextProvider";
-import Loading from "@components/Loading/loading";
+import { BiEdit } from "react-icons/bi";
+import Loading from "@components/Loading/Loading";
 import SEO from "@components/Metadata/SEO";
 import Image from "next/image";
 import styled from "styled-components";
 import dynamic from "next/dynamic";
+import ModalProfile from "@components/Modal/ModalProfile";
 
-const AvatarUpload = dynamic(() => import("@components/Image/imageUpload"), {
+// ssr false
+const AvatarUpload = dynamic(() => import("@components/Avatar/AvatarUpload"), {
   ssr: false,
 });
 
@@ -31,6 +34,7 @@ const AvatarImage = styled(Image)`
 const UserProfile = () => {
   const router = useRouter();
   const [isMyProfile, setIsMyProfile] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const { loggedInUser } = useContext(AuthContext);
   const { username } = router.query;
 
@@ -94,6 +98,10 @@ const UserProfile = () => {
   const userProfile = ProfileData?.getProfile;
   const userPosts = ProfilePostData?.getProfilePost;
 
+  const openModal = () => {
+    setShowModal((prev) => !prev);
+  };
+
   return (
     <Container>
       <SEO
@@ -105,22 +113,29 @@ const UserProfile = () => {
       <p>
         {userProfile.username} - {userProfile.name}
       </p>
-      {isMyProfile && <AvatarUpload urlAvatar={userProfile.avatarUrl} />}
+      <ModalProfile isShowing={showModal} setShowModal={setShowModal}>
+        <AvatarUpload />
+      </ModalProfile>
       <div>
         <AvatarImage
           src={userProfile.avatarUrl}
           width={100}
           height={100}
-          loading="lazy"
-          alt="avatar"
+          objectFit="contain"
+          quality={100}
+          blurDataURL="1"
+          placeholder="blur"
+          priority
         />
+        {isMyProfile && (
+          <BiEdit size={22} className="icon" onClick={openModal} />
+        )}
       </div>
       {userProfile.bio ? (
         <p>{userProfile.bio}</p>
       ) : (
         <p>This user didnt create a bio yet</p>
       )}
-      {isMyProfile && <button>Edit Profile</button>}
       {userPosts?.map((post) => {
         return (
           <PostCard key={post.id}>

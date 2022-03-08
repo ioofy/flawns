@@ -1,6 +1,6 @@
 import React from "react";
 import { Container } from "@styles/global.styles";
-import { ContentError } from "@components/404/error";
+import { ContentError } from "@components/404/Error";
 
 const NotFound = () => {
   return (

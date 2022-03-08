@@ -30,7 +30,7 @@ import { patterns } from "@utils/pattern";
 import { useRouter } from "next/router";
 import { AuthContext } from "@context/AuthContextProvider";
 import { toast, Toaster } from "react-hot-toast";
-import Loading from "@components/Loading/loading";
+import Loading from "@components/Loading/Loading";
 import SEO from "@components/Metadata/SEO";
 import * as FCIcons from "react-icons/fc";
 

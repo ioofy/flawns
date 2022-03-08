@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import ArtBoard from "@components/Artboard/artboard";
-import Loading from "@components/Loading/loading";
+import ArtBoard from "@components/Artboard/Artboard";
+import Loading from "@components/Loading/Loading";
 import type { NextPage } from "next";
 import { colors } from "@styles/variables.styles";
 import { useCheckUsernameMutation } from "generated/graphql";

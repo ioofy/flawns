@@ -4,7 +4,7 @@ import { useGetCommentsQuery } from "generated/graphql";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import CommentTile from "./CommentTile";
-import Loading from "@components/Loading/loading";
+import Loading from "@components/Loading/Loading";
 
 const Wrapper = styled.div`
   width: 100%;

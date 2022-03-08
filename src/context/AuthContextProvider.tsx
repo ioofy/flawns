@@ -3,13 +3,18 @@ import { useMeQuery } from "generated/graphql";
 
 // same as gql data
 interface UserContext {
-  __typename?: "User";
-  name: string;
+  __typename: "User";
+  id: string;
   username?: string;
+  name: string;
+  email?: string;
+  bio?: string;
+  slug?: string;
   avatarUrl?: string;
   isCreator: boolean;
   profession?: {
     __typename?: "Profession";
+    id: string;
     role: string;
   }[];
 }

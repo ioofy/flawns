@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import { colors, maxWidth } from "@styles/variables.styles";
-import Search from "@components/Search/search";
+import Search from "@components/Search/Search";
 
 type ButtonProps = {
   margin: string;

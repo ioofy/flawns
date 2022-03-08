@@ -33,7 +33,9 @@ const Avatar: React.FC<AvatarComponentProps> = (props) => {
         width={props.width}
         objectFit="contain"
         quality={100}
-        loading="lazy"
+        blurDataURL="1"
+        placeholder="blur"
+        priority
         // custom props styling
         marginleft={props.marginleft}
       />

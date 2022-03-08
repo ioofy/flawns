@@ -46,6 +46,18 @@ export const Container = styled.div`
     font-size: 15px;
   }
 
+  .icon {
+    position: relative;
+    margin-left: -20px;
+    margin-bottom: 10px;
+    border: none;
+    cursor: pointer;
+    color: black;
+    z-index: 10;
+    background-color: white;
+    border-radius: 5px;
+  }
+
   @media screen and (max-width: 991px) {
     padding: 0px;
   }

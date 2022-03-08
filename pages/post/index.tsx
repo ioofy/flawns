@@ -2,14 +2,14 @@ import React, { useState, useContext } from "react";
 import { NetworkStatus } from "@apollo/client";
 import { Container } from "@styles/global.styles";
 import { usePostQuery } from "generated/graphql";
-import { ContentError } from "@components/404/error";
+import { ContentError } from "@components/404/Error";
 import { InView } from "react-intersection-observer";
 import { AuthContext } from "@context/AuthContextProvider";
 import styled from "styled-components";
-import Avatar from "@components/Avatar/avatar";
+import Avatar from "@components/Avatar/Avatar";
 import Link from "next/link";
-import Loading from "@components/Loading/loading";
-import IntoNow from "@components/Moment/intoNow";
+import Loading from "@components/Loading/Loading";
+import IntoNow from "@components/Moment/IntoNow";
 import SEO from "@components/Metadata/SEO";
 import * as Sentry from "@sentry/nextjs";
 

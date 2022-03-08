@@ -2,10 +2,10 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Container } from "@styles/global.styles";
 import { useActivateAccountMutation } from "generated/graphql";
 import { useRouter } from "next/router";
-import { ContentError } from "@components/404/error";
-import { SuccessImage } from "@components/Image/image";
+import { ContentError } from "@components/404/Error";
+import { SuccessImage } from "@components/Image/Image";
 import { colors } from "@styles/variables.styles";
-import Loading from "@components/Loading/loading";
+import Loading from "@components/Loading/Loading";
 import styled from "styled-components";
 import SEO from "@components/Metadata/SEO";
 

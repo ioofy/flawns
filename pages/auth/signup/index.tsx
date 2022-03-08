@@ -33,7 +33,7 @@ import { AuthContext } from "@context/AuthContextProvider";
 import { toast, Toaster } from "react-hot-toast";
 import SEO from "@components/Metadata/SEO";
 import axios from "axios";
-import Loading from "@components/Loading/loading";
+import Loading from "@components/Loading/Loading";
 import gravatarUrl from "gravatar-url";
 
 type FormDataProps = {
