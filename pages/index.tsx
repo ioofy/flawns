@@ -3,7 +3,7 @@ import type { NextPage } from "next";
 import { colors } from "@styles/variables.styles";
 import { useCheckUsernameMutation } from "generated/graphql";
 import styled from "styled-components";
-import ArtBoard from "@components/Artboard/Artboard";
+import ArtBoard from "@components/Artboards/Artboard";
 import Loading from "@components/Loadings/Loading";
 import SEO from "@components/Metadata/SEO";
 import Header from "@layout/components/Header/Header";
