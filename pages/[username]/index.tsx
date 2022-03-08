@@ -10,7 +10,7 @@ import SEO from "@components/Metadata/SEO";
 import Image from "next/image";
 import styled from "styled-components";
 import dynamic from "next/dynamic";
-import ModalProfile from "@components/Modal/ModalProfile";
+import ModalProfile from "@components/Modals/ModalProfile";
 
 // ssr false
 const AvatarUpload = dynamic(() => import("@components/Avatar/AvatarUpload"), {
