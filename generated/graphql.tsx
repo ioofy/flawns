@@ -175,8 +175,11 @@ export type MutationSigninArgs = {
 
 
 export type MutationSignupArgs = {
+  avatarUrl: Scalars['String'];
   credentials: CredentialsInput;
-  data: SignupInput;
+  name: Scalars['String'];
+  secretToken: Scalars['String'];
+  username: Scalars['String'];
 };
 
 
@@ -287,13 +290,6 @@ export type ResponseMessage = {
   userErrors: Array<UserError>;
 };
 
-export type SignupInput = {
-  avatarUrl: Scalars['String'];
-  name: Scalars['String'];
-  secretToken: Scalars['String'];
-  username: Scalars['String'];
-};
-
 export type Subscription = {
   __typename?: 'Subscription';
   commentCreated?: Maybe<Comment>;
@@ -370,7 +366,10 @@ export type SigninMutationVariables = Exact<{
 export type SigninMutation = { __typename?: 'Mutation', signin: { __typename?: 'AuthPayload', userErrors: Array<{ __typename?: 'UserError', message: string }>, user?: { __typename: 'User', id: string, username?: string | null | undefined, name: string, email?: string | null | undefined, bio?: string | null | undefined, slug?: string | null | undefined, avatarUrl?: string | null | undefined, isCreator: boolean, profession?: Array<{ __typename?: 'Profession', id: string, role: string } | null | undefined> | null | undefined } | null | undefined } };
 
 export type SignupMutationVariables = Exact<{
-  data: SignupInput;
+  secretToken: Scalars['String'];
+  name: Scalars['String'];
+  username: Scalars['String'];
+  avatarUrl: Scalars['String'];
   credentials: CredentialsInput;
 }>;
 
@@ -595,8 +594,14 @@ export type SigninMutationHookResult = ReturnType<typeof useSigninMutation>;
 export type SigninMutationResult = Apollo.MutationResult<SigninMutation>;
 export type SigninMutationOptions = Apollo.BaseMutationOptions<SigninMutation, SigninMutationVariables>;
 export const SignupDocument = gql`
-    mutation signup($data: SignupInput!, $credentials: CredentialsInput!) {
-  signup(data: $data, credentials: $credentials) {
+    mutation signup($secretToken: String!, $name: String!, $username: String!, $avatarUrl: String!, $credentials: CredentialsInput!) {
+  signup(
+    secretToken: $secretToken
+    name: $name
+    username: $username
+    avatarUrl: $avatarUrl
+    credentials: $credentials
+  ) {
     userErrors {
       message
     }
@@ -618,7 +623,10 @@ export type SignupMutationFn = Apollo.MutationFunction<SignupMutation, SignupMut
  * @example
  * const [signupMutation, { data, loading, error }] = useSignupMutation({
  *   variables: {
- *      data: // value for 'data'
+ *      secretToken: // value for 'secretToken'
+ *      name: // value for 'name'
+ *      username: // value for 'username'
+ *      avatarUrl: // value for 'avatarUrl'
  *      credentials: // value for 'credentials'
  *   },
  * });

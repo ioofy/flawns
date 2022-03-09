@@ -48,7 +48,7 @@ export const Container = styled.div`
 
   .icon {
     position: absolute;
-    margin-left: 120px;
+    margin-left: 90px;
     margin-top: -40px;
     border: none;
     cursor: pointer;

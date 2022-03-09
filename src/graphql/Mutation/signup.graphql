@@ -1,5 +1,17 @@
-mutation signup($data: SignupInput!, $credentials: CredentialsInput!) {
-  signup(data: $data, credentials: $credentials) {
+mutation signup(
+  $secretToken: String!
+  $name: String!
+  $username: String!
+  $avatarUrl: String!
+  $credentials: CredentialsInput!
+) {
+  signup(
+    secretToken: $secretToken
+    name: $name
+    username: $username
+    avatarUrl: $avatarUrl
+    credentials: $credentials
+  ) {
     userErrors {
       message
     }

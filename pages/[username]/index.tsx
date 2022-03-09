@@ -79,20 +79,34 @@ const UserProfile = () => {
 
   if (ProfileData.getProfile === null) {
     return (
-      <ContentErrors
-        margin="0px auto"
-        content="Oops.. Username not found"
-        imgUrl="/image/_error.png"
-      />
+      <>
+        <SEO
+          title="Oops.. user not found"
+          // og description from biodata
+          description="Oops.. user not found"
+        />
+        <ContentErrors
+          margin="0px auto"
+          content="Oops.. Username not found"
+          imgUrl="/image/_error.png"
+        />
+      </>
     );
   }
   if (ProfileError || ProfilePostError) {
     return (
-      <ContentErrors
-        margin="0px auto"
-        content="Oops.. Something went wrong"
-        imgUrl="/image/_error.png"
-      />
+      <>
+        <SEO
+          title="Oops.. Something went wrong"
+          // og description from biodata
+          description="Oops.. Something went wrong"
+        />
+        <ContentErrors
+          margin="0px auto"
+          content="Oops.. Something went wrong"
+          imgUrl="/image/_error.png"
+        />
+      </>
     );
   }
 
@@ -122,15 +136,15 @@ const UserProfile = () => {
         <AvatarContainer>
           <AvatarImage
             src={userProfile.avatarUrl}
-            width={150}
-            height={150}
+            width={110}
+            height={110}
             objectFit="contain"
             priority
             alt="avatar"
           />
         </AvatarContainer>
         {isMyProfile && (
-          <BiEdit size={25} className="icon" onClick={openModal} />
+          <BiEdit size={22} className="icon" onClick={openModal} />
         )}
       </div>
       {userProfile.bio ? (
