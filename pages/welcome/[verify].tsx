@@ -39,7 +39,7 @@ const Welcome = () => {
         // then push
         // reload
         setInterval(function () {
-          router.push("/post");
+          router.push("/post").then(() => window.location.reload());
         }, 1000);
       }
     },

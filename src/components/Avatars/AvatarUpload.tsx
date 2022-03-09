@@ -41,7 +41,7 @@ export default function AvatarUpload() {
   };
 
   const onBeforeFileLoad = (elem: React.ChangeEvent<HTMLInputElement>) => {
-    if (elem.target.files[0].size > 650000) {
+    if (elem.target.files[0].size > 1100000) {
       toast.error("File is too big! Please upload maximum size < 1mb");
       elem.target.value = "";
     } else {
@@ -53,7 +53,7 @@ export default function AvatarUpload() {
     console.log(preview);
 
     if (!preview) {
-      alert("Please select an image");
+      toast.error("Please select an image");
     } else {
       uploadImage({
         variables: {

@@ -248,6 +248,7 @@ export type Query = {
   getComments: CommentsConnection;
   getPost?: Maybe<Post>;
   getProfile?: Maybe<User>;
+  getProfilePhoto?: Maybe<User>;
   getProfilePost?: Maybe<Array<Maybe<Post>>>;
   me?: Maybe<User>;
   posts: Array<Maybe<Post>>;
@@ -272,6 +273,11 @@ export type QueryGetProfileArgs = {
 };
 
 
+export type QueryGetProfilePhotoArgs = {
+  userId: Scalars['ID'];
+};
+
+
 export type QueryGetProfilePostArgs = {
   authorId: Scalars['ID'];
   limit: Scalars['Int'];
@@ -293,17 +299,11 @@ export type ResponseMessage = {
 export type Subscription = {
   __typename?: 'Subscription';
   commentCreated?: Maybe<Comment>;
-  profileUpdated?: Maybe<User>;
 };
 
 
 export type SubscriptionCommentCreatedArgs = {
   postId: Scalars['ID'];
-};
-
-
-export type SubscriptionProfileUpdatedArgs = {
-  userId: Scalars['ID'];
 };
 
 export type UnfollowUserResult = {
@@ -400,12 +400,19 @@ export type GetCommentsQueryVariables = Exact<{
 
 export type GetCommentsQuery = { __typename?: 'Query', getComments: { __typename?: 'CommentsConnection', count?: number | null | undefined, cursor?: string | null | undefined, hasMore: boolean, comments: Array<{ __typename?: 'Comment', id: string, text: string, date?: any | null | undefined, user: { __typename?: 'User', name: string, username?: string | null | undefined } } | null | undefined> } };
 
+export type GetProfilePhotoQueryVariables = Exact<{
+  userId: Scalars['ID'];
+}>;
+
+
+export type GetProfilePhotoQuery = { __typename?: 'Query', getProfilePhoto?: { __typename?: 'User', avatarUrl?: string | null | undefined } | null | undefined };
+
 export type GetPostsQueryVariables = Exact<{
   postId: Scalars['ID'];
 }>;
 
 
-export type GetPostsQuery = { __typename?: 'Query', getPost?: { __typename?: 'Post', content: string, user: { __typename?: 'User', name: string, username?: string | null | undefined }, comments: Array<{ __typename?: 'Comment', id: string } | null | undefined>, likes: Array<{ __typename?: 'LikedPost', id: string } | null | undefined> } | null | undefined };
+export type GetPostsQuery = { __typename?: 'Query', getPost?: { __typename?: 'Post', content: string, createdAt?: any | null | undefined, user: { __typename?: 'User', id: string, name: string, username?: string | null | undefined }, comments: Array<{ __typename?: 'Comment', id: string } | null | undefined>, likes: Array<{ __typename?: 'LikedPost', id: string } | null | undefined> } | null | undefined };
 
 export type GetProfileQueryVariables = Exact<{
   username: Scalars['String'];
@@ -434,7 +441,7 @@ export type PostQueryVariables = Exact<{
 }>;
 
 
-export type PostQuery = { __typename?: 'Query', posts: Array<{ __typename?: 'Post', id: string, content: string, createdAt?: any | null | undefined, user: { __typename?: 'User', avatarUrl?: string | null | undefined, username?: string | null | undefined, id: string, name: string }, likes: Array<{ __typename?: 'LikedPost', id: string } | null | undefined>, comments: Array<{ __typename?: 'Comment', id: string } | null | undefined> } | null | undefined> };
+export type PostQuery = { __typename?: 'Query', posts: Array<{ __typename?: 'Post', id: string, content: string, createdAt?: any | null | undefined, user: { __typename?: 'User', username?: string | null | undefined, id: string, name: string }, likes: Array<{ __typename?: 'LikedPost', id: string } | null | undefined>, comments: Array<{ __typename?: 'Comment', id: string } | null | undefined> } | null | undefined> };
 
 
 export const ActivateAccountDocument = gql`
@@ -774,11 +781,48 @@ export function useGetCommentsLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type GetCommentsQueryHookResult = ReturnType<typeof useGetCommentsQuery>;
 export type GetCommentsLazyQueryHookResult = ReturnType<typeof useGetCommentsLazyQuery>;
 export type GetCommentsQueryResult = Apollo.QueryResult<GetCommentsQuery, GetCommentsQueryVariables>;
+export const GetProfilePhotoDocument = gql`
+    query getProfilePhoto($userId: ID!) {
+  getProfilePhoto(userId: $userId) {
+    avatarUrl
+  }
+}
+    `;
+
+/**
+ * __useGetProfilePhotoQuery__
+ *
+ * To run a query within a React component, call `useGetProfilePhotoQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProfilePhotoQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProfilePhotoQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useGetProfilePhotoQuery(baseOptions: Apollo.QueryHookOptions<GetProfilePhotoQuery, GetProfilePhotoQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetProfilePhotoQuery, GetProfilePhotoQueryVariables>(GetProfilePhotoDocument, options);
+      }
+export function useGetProfilePhotoLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProfilePhotoQuery, GetProfilePhotoQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetProfilePhotoQuery, GetProfilePhotoQueryVariables>(GetProfilePhotoDocument, options);
+        }
+export type GetProfilePhotoQueryHookResult = ReturnType<typeof useGetProfilePhotoQuery>;
+export type GetProfilePhotoLazyQueryHookResult = ReturnType<typeof useGetProfilePhotoLazyQuery>;
+export type GetProfilePhotoQueryResult = Apollo.QueryResult<GetProfilePhotoQuery, GetProfilePhotoQueryVariables>;
 export const GetPostsDocument = gql`
     query getPosts($postId: ID!) {
   getPost(postId: $postId) {
     content
+    createdAt
     user {
+      id
       name
       username
     }
@@ -963,7 +1007,6 @@ export const PostDocument = gql`
     content
     createdAt
     user {
-      avatarUrl
       username
       id
       name

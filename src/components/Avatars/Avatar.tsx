@@ -1,20 +1,21 @@
+import { useGetProfilePhotoQuery } from "generated/graphql";
 import Image from "next/image";
 import React from "react";
 import styled from "styled-components";
 
 type AvatarComponentProps = {
-  imgUrl: string;
   altText: string;
   height: number;
   width: number;
   marginleft?: string;
+  userId: string;
 };
 
 type ImageProps = {
   marginleft: string;
 };
 
-const AvatarSize = styled.div`
+const AvatarContainer = styled.div`
   max-width: 100%;
 `;
 
@@ -24,22 +25,32 @@ const AvatarImage = styled(Image)<ImageProps>`
 `;
 
 const Avatar: React.FC<AvatarComponentProps> = (props) => {
+  const { data } = useGetProfilePhotoQuery({
+    variables: {
+      userId: props.userId,
+    },
+  });
+
   return (
-    <AvatarSize>
-      <AvatarImage
-        src={props.imgUrl}
-        alt={props.altText}
-        height={props.height}
-        width={props.width}
-        objectFit="contain"
-        quality={100}
-        blurDataURL="1"
-        placeholder="blur"
-        priority
-        // custom props styling
-        marginleft={props.marginleft}
-      />
-    </AvatarSize>
+    <>
+      {data?.getProfilePhoto.avatarUrl && (
+        <AvatarContainer>
+          <AvatarImage
+            src={data.getProfilePhoto.avatarUrl}
+            alt={props.altText}
+            height={props.height}
+            width={props.width}
+            objectFit="contain"
+            quality={100}
+            blurDataURL="1"
+            placeholder="blur"
+            priority
+            // custom props styling
+            marginleft={props.marginleft}
+          />
+        </AvatarContainer>
+      )}
+    </>
   );
 };
 
