@@ -5,6 +5,7 @@ import { useGetProfilePostQuery, useGetProfileQuery } from "generated/graphql";
 import { useRouter } from "next/router";
 import { AuthContext } from "@context/AuthContextProvider";
 import { BiEdit } from "react-icons/bi";
+import Image from "next/image";
 import Loading from "@components/Loadings/Loading";
 import SEO from "@components/Metadata/SEO";
 import styled from "styled-components";
@@ -29,11 +30,8 @@ const AvatarContainer = styled.div`
   height: 100%;
 `;
 
-const AvatarImage = styled.img`
+const AvatarImage = styled(Image)`
   border-radius: 99px;
-  object-fit: contain;
-  height: 110px;
-  width: 110px;
 `;
 
 const UserProfile = () => {
@@ -122,10 +120,17 @@ const UserProfile = () => {
       </ModalProfile>
       <div>
         <AvatarContainer>
-          <AvatarImage src={userProfile.avatarUrl} />
+          <AvatarImage
+            src={userProfile.avatarUrl}
+            width={150}
+            height={150}
+            objectFit="contain"
+            priority
+            alt="avatar"
+          />
         </AvatarContainer>
         {isMyProfile && (
-          <BiEdit size={22} className="icon" onClick={openModal} />
+          <BiEdit size={25} className="icon" onClick={openModal} />
         )}
       </div>
       {userProfile.bio ? (

@@ -48,8 +48,8 @@ export const Container = styled.div`
 
   .icon {
     position: absolute;
-    margin-left: 80px;
-    margin-top: -30px;
+    margin-left: 120px;
+    margin-top: -40px;
     border: none;
     cursor: pointer;
     color: black;

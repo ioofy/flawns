@@ -71,8 +71,8 @@ export default function AvatarUpload() {
         containerClassName="toaster"
       />
       <Avatar
-        width={280}
-        height={160}
+        width={350}
+        height={350}
         onCrop={onCrop}
         onClose={onClose}
         onBeforeFileLoad={onBeforeFileLoad}

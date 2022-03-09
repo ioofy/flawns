@@ -31,16 +31,25 @@ const Background = styled.div`
 `;
 
 const ModalWrapper = styled.div`
-  width: 350px;
-  height: 250px;
+  width: 680px;
+  height: 450px;
   background: white;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
   border-radius: 10px;
+
+  @media screen and (max-width: 600px) {
+    width: 100%;
+    height: 100%;
+  }
 `;
 
 const Content = styled.div`
   display: flex;
   justify-content: center;
+
+  @media screen and (max-width: 600px) {
+    margin-top: 150px;
+  }
 `;
 
 const Editor = styled.div`

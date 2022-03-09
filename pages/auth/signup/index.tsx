@@ -82,10 +82,12 @@ const SignUp = () => {
 
     return signUp({
       variables: {
-        name,
-        username,
-        avatarUrl: gravatar,
-        secretToken: generateToken,
+        data: {
+          name,
+          username,
+          avatarUrl: gravatar,
+          secretToken: generateToken,
+        },
         credentials: {
           email,
           password,
