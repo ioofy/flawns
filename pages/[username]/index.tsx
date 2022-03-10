@@ -151,8 +151,8 @@ const UserProfile = () => {
       <ModalProfile
         isShowing={showModal}
         setShowModal={setShowModal}
-        customWidth="680px"
-        customHeight="450px"
+        customWidth="1300px"
+        customHeight="550px"
         customBg="#fff"
         customBorder="10px"
       >
