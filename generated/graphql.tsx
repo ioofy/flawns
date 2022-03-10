@@ -108,7 +108,7 @@ export type Mutation = {
   signout: ResponseMessage;
   signup: AuthPayload;
   unfollowUser: UnfollowUserResult;
-  updatePhotoProfile: Scalars["String"];
+  updatePhotoProfile: ProfilePhotoPayload;
   updateUser: UserUpdatePayload;
 };
 
@@ -225,11 +225,19 @@ export type ProfessionPayload = {
   userErrors: Array<UserError>;
 };
 
+export type ProfilePhotoPayload = {
+  __typename?: "ProfilePhotoPayload";
+  message: Scalars["String"];
+  user?: Maybe<User>;
+  userErrors: Array<UserError>;
+};
+
 export type Query = {
   __typename?: "Query";
   getComments: CommentsConnection;
   getPost?: Maybe<Post>;
   getProfile?: Maybe<User>;
+  getProfilePhoto?: Maybe<User>;
   getProfilePost?: Maybe<Array<Maybe<Post>>>;
   me?: Maybe<User>;
   posts: Array<Maybe<Post>>;
@@ -248,6 +256,10 @@ export type QueryGetPostArgs = {
 
 export type QueryGetProfileArgs = {
   username: Scalars["String"];
+};
+
+export type QueryGetProfilePhotoArgs = {
+  userId: Scalars["ID"];
 };
 
 export type QueryGetProfilePostArgs = {
@@ -393,6 +405,27 @@ export type SignupMutation = {
   };
 };
 
+export type UpdatePhotoProfileMutationVariables = Exact<{
+  photo: Scalars["String"];
+}>;
+
+export type UpdatePhotoProfileMutation = {
+  __typename?: "Mutation";
+  updatePhotoProfile: {
+    __typename?: "ProfilePhotoPayload";
+    message: string;
+    userErrors: Array<{ __typename?: "UserError"; message: string }>;
+    user?:
+      | {
+          __typename?: "User";
+          id: string;
+          avatarUrl?: string | null | undefined;
+        }
+      | null
+      | undefined;
+  };
+};
+
 export type UpdateUserMutationVariables = Exact<{
   password: Scalars["String"];
   username: Scalars["String"];
@@ -406,13 +439,16 @@ export type UpdateUserMutation = {
     user?:
       | {
           __typename: "User";
+          id: string;
           name: string;
           username?: string | null | undefined;
           avatarUrl?: string | null | undefined;
           isCreator: boolean;
           profession?:
             | Array<
-                { __typename?: "Profession"; role: string } | null | undefined
+                | { __typename?: "Profession"; id: string; role: string }
+                | null
+                | undefined
               >
             | null
             | undefined;
@@ -453,6 +489,18 @@ export type GetCommentsQuery = {
   };
 };
 
+export type GetProfilePhotoQueryVariables = Exact<{
+  userId: Scalars["ID"];
+}>;
+
+export type GetProfilePhotoQuery = {
+  __typename?: "Query";
+  getProfilePhoto?:
+    | { __typename?: "User"; avatarUrl?: string | null | undefined }
+    | null
+    | undefined;
+};
+
 export type GetPostsQueryVariables = Exact<{
   postId: Scalars["ID"];
 }>;
@@ -463,8 +511,10 @@ export type GetPostsQuery = {
     | {
         __typename?: "Post";
         content: string;
+        createdAt?: any | null | undefined;
         user: {
           __typename?: "User";
+          id: string;
           name: string;
           username?: string | null | undefined;
         };
@@ -523,6 +573,7 @@ export type GetProfilePostQuery = {
             __typename?: "Post";
             id: string;
             content: string;
+            createdAt?: any | null | undefined;
             likes: Array<
               { __typename?: "LikedPost"; id: string } | null | undefined
             >;
@@ -580,7 +631,6 @@ export type PostQuery = {
         createdAt?: any | null | undefined;
         user: {
           __typename?: "User";
-          avatarUrl?: string | null | undefined;
           username?: string | null | undefined;
           id: string;
           name: string;
@@ -886,6 +936,63 @@ export type SignupMutationOptions = Apollo.BaseMutationOptions<
   SignupMutation,
   SignupMutationVariables
 >;
+export const UpdatePhotoProfileDocument = gql`
+  mutation UpdatePhotoProfile($photo: String!) {
+    updatePhotoProfile(photo: $photo) {
+      userErrors {
+        message
+      }
+      message
+      user {
+        id
+        avatarUrl
+      }
+    }
+  }
+`;
+export type UpdatePhotoProfileMutationFn = Apollo.MutationFunction<
+  UpdatePhotoProfileMutation,
+  UpdatePhotoProfileMutationVariables
+>;
+
+/**
+ * __useUpdatePhotoProfileMutation__
+ *
+ * To run a mutation, you first call `useUpdatePhotoProfileMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdatePhotoProfileMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updatePhotoProfileMutation, { data, loading, error }] = useUpdatePhotoProfileMutation({
+ *   variables: {
+ *      photo: // value for 'photo'
+ *   },
+ * });
+ */
+export function useUpdatePhotoProfileMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdatePhotoProfileMutation,
+    UpdatePhotoProfileMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpdatePhotoProfileMutation,
+    UpdatePhotoProfileMutationVariables
+  >(UpdatePhotoProfileDocument, options);
+}
+export type UpdatePhotoProfileMutationHookResult = ReturnType<
+  typeof useUpdatePhotoProfileMutation
+>;
+export type UpdatePhotoProfileMutationResult =
+  Apollo.MutationResult<UpdatePhotoProfileMutation>;
+export type UpdatePhotoProfileMutationOptions = Apollo.BaseMutationOptions<
+  UpdatePhotoProfileMutation,
+  UpdatePhotoProfileMutationVariables
+>;
 export const UpdateUserDocument = gql`
   mutation updateUser($password: String!, $username: String!) {
     updateUser(password: $password, username: $username) {
@@ -893,12 +1000,14 @@ export const UpdateUserDocument = gql`
         message
       }
       user {
+        id
         __typename
         name
         username
         avatarUrl
         isCreator
         profession {
+          id
           role
         }
       }
@@ -1018,11 +1127,71 @@ export type GetCommentsQueryResult = Apollo.QueryResult<
   GetCommentsQuery,
   GetCommentsQueryVariables
 >;
+export const GetProfilePhotoDocument = gql`
+  query getProfilePhoto($userId: ID!) {
+    getProfilePhoto(userId: $userId) {
+      avatarUrl
+    }
+  }
+`;
+
+/**
+ * __useGetProfilePhotoQuery__
+ *
+ * To run a query within a React component, call `useGetProfilePhotoQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProfilePhotoQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProfilePhotoQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useGetProfilePhotoQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetProfilePhotoQuery,
+    GetProfilePhotoQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetProfilePhotoQuery, GetProfilePhotoQueryVariables>(
+    GetProfilePhotoDocument,
+    options
+  );
+}
+export function useGetProfilePhotoLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetProfilePhotoQuery,
+    GetProfilePhotoQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetProfilePhotoQuery,
+    GetProfilePhotoQueryVariables
+  >(GetProfilePhotoDocument, options);
+}
+export type GetProfilePhotoQueryHookResult = ReturnType<
+  typeof useGetProfilePhotoQuery
+>;
+export type GetProfilePhotoLazyQueryHookResult = ReturnType<
+  typeof useGetProfilePhotoLazyQuery
+>;
+export type GetProfilePhotoQueryResult = Apollo.QueryResult<
+  GetProfilePhotoQuery,
+  GetProfilePhotoQueryVariables
+>;
 export const GetPostsDocument = gql`
   query getPosts($postId: ID!) {
     getPost(postId: $postId) {
       content
+      createdAt
       user {
+        id
         name
         username
       }
@@ -1154,6 +1323,7 @@ export const GetProfilePostDocument = gql`
     getProfilePost(authorId: $authorId, limit: $limit, offset: $offset) {
       id
       content
+      createdAt
       likes {
         id
       }
@@ -1273,7 +1443,6 @@ export const PostDocument = gql`
       content
       createdAt
       user {
-        avatarUrl
         username
         id
         name

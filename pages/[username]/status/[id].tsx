@@ -1,13 +1,16 @@
 import React from "react";
 import CommentDisplay from "@components/Comments/CommentDisplay";
-import Loading from "@components/Loading/loading";
+import Loading from "@components/Loadings/Loading";
 import SEO from "@components/Metadata/SEO";
 import styled from "styled-components";
 import CommentForm from "@components/Comments/CommentForm";
+import IntoNow from "@components/Moments/IntoNow";
+import Avatar from "@components/Avatars/Avatar";
+import Link from "next/link";
 import * as Sentry from "@sentry/nextjs";
 import { Container } from "@styles/global.styles";
 import { useGetPostsQuery } from "generated/graphql";
-import { ContentError } from "@components/404/error";
+import { ContentErrors } from "@components/CustomError/Error";
 import { useRouter } from "next/router";
 
 const PostCard = styled.div`
@@ -42,7 +45,7 @@ const PostDetail = () => {
   if (postError) {
     Sentry.captureException(postError);
     return (
-      <ContentError
+      <ContentErrors
         margin="0px auto"
         content="Theres an error this caused in our server or something."
         imgUrl="/image/_error.png"
@@ -60,9 +63,20 @@ const PostDetail = () => {
       />
       PostDetail
       <PostCard>
+        <Avatar
+          userId={getPostWithId?.user.id}
+          altText={getPostWithId?.user.username}
+          height={45}
+          width={45}
+        />
+        <p>
+          {getPostWithId?.user.name} -
+          <Link href={`/${username}`}>
+            <a>@{username}</a>
+          </Link>{" "}
+          · <IntoNow actualDate={getPostWithId?.createdAt} interval={1000} />
+        </p>
         <p>{getPostWithId?.content}</p>
-        <p>{getPostWithId?.user.name}</p>
-        <p>{username}</p>
       </PostCard>
       <CommentForm />
       <CommentDisplay />

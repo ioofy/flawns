@@ -4,7 +4,6 @@ query Post($offset: Int!, $limit: Int!) {
     content
     createdAt
     user {
-      avatarUrl
       username
       id
       name

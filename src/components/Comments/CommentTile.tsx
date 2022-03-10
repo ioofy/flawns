@@ -1,4 +1,4 @@
-import IntoNow from "@components/Moment/intoNow";
+import IntoNow from "@components/Moments/IntoNow";
 import React from "react";
 import styled from "styled-components";
 

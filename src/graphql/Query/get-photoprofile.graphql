@@ -1,0 +1,5 @@
+query getProfilePhoto($userId: ID!) {
+  getProfilePhoto(userId: $userId) {
+    avatarUrl
+  }
+}

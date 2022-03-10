@@ -2,14 +2,14 @@ import React, { useState, useContext } from "react";
 import { NetworkStatus } from "@apollo/client";
 import { Container } from "@styles/global.styles";
 import { usePostQuery } from "generated/graphql";
-import { ContentError } from "@components/404/error";
+import { ContentErrors } from "@components/CustomError/Error";
 import { InView } from "react-intersection-observer";
 import { AuthContext } from "@context/AuthContextProvider";
 import styled from "styled-components";
-import Avatar from "@components/Avatar/avatar";
+import Avatar from "@components/Avatars/Avatar";
 import Link from "next/link";
-import Loading from "@components/Loading/loading";
-import IntoNow from "@components/Moment/intoNow";
+import Loading from "@components/Loadings/Loading";
+import IntoNow from "@components/Moments/IntoNow";
 import SEO from "@components/Metadata/SEO";
 import * as Sentry from "@sentry/nextjs";
 
@@ -37,7 +37,7 @@ const Post = () => {
   if (error) {
     Sentry.captureException(error);
     return (
-      <ContentError
+      <ContentErrors
         margin="0px auto"
         content="Theres an error this caused in our server or something."
         imgUrl="/image/_error.png"
@@ -65,10 +65,10 @@ const Post = () => {
           >
             <PostCard>
               <Avatar
-                imgUrl={post?.user.avatarUrl}
                 altText={post?.user.name}
                 height={45}
                 width={45}
+                userId={post?.user.id}
               />
               <p>
                 {post?.user.name}

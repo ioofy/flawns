@@ -1,7 +1,9 @@
 query getPosts($postId: ID!) {
   getPost(postId: $postId) {
     content
+    createdAt
     user {
+      id
       name
       username
     }

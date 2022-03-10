@@ -1,0 +1,12 @@
+mutation UpdatePhotoProfile($photo: String!) {
+  updatePhotoProfile(photo: $photo) {
+    userErrors {
+      message
+    }
+    message
+    user {
+      id
+      avatarUrl
+    }
+  }
+}

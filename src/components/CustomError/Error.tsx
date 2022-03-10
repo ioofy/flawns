@@ -49,7 +49,7 @@ const ImageComponents = styled.img`
   }
 `;
 
-export const ContentError: React.FC<ErrorContentsProps> = (props) => {
+export const ContentErrors: React.FC<ErrorContentsProps> = (props) => {
   return (
     <ContentWrapper margin={props.margin}>
       <ImageWrapper>

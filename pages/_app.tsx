@@ -1,5 +1,5 @@
 import React from "react";
-import Maintenance from "@components/404/maintenance";
+import Maintenance from "@components/CustomError/Maintenance";
 import Head from "next/head";
 import Layout from "@layout/Layout";
 import { GlobalStyles } from "@styles/global.styles";
@@ -28,6 +28,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           {/* default title */}
           <Head>
             <title>Flawn - Flawnn 👩‍🎤👨‍🎤</title>
+            <link rel="icon" href="/logo.png" />
           </Head>
           <Component {...pageProps} />
         </AuthContextProvider>

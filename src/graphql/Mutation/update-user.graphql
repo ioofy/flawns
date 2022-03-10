@@ -4,12 +4,14 @@ mutation updateUser($password: String!, $username: String!) {
       message
     }
     user {
+      id
       __typename
       name
       username
       avatarUrl
       isCreator
       profession {
+        id
         role
       }
     }

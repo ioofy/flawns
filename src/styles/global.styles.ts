@@ -9,7 +9,7 @@ export const GlobalStyles = createGlobalStyle`
 
   @font-face {
     font-family: "AllianceM";
-    src: url("/font/AllianceM.ttf") format("truetype");
+    src: url("/font/AllianceM.ttf") formkkat("truetype");
   }
 
   @font-face {
@@ -44,6 +44,18 @@ export const Container = styled.div`
   .toaster-error {
     font-family: "AllianceEB", sans-serif;
     font-size: 15px;
+  }
+
+  .icon {
+    position: absolute;
+    margin-left: 90px;
+    margin-top: -40px;
+    border: none;
+    cursor: pointer;
+    color: black;
+    z-index: 10;
+    background-color: white;
+    border-radius: 5px;
   }
 
   @media screen and (max-width: 991px) {
