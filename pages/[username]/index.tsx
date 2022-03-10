@@ -165,6 +165,8 @@ const UserProfile = () => {
             width={120}
             height={120}
             objectFit="contain"
+            blurDataURL="1"
+            placeholder="blur"
             priority
             alt={userProfile.name}
             onClick={openAvatarModal}
