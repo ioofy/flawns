@@ -32,12 +32,20 @@ const AvatarContainer = styled.div`
 
 const AvatarImage = styled(Image)`
   border-radius: 99px;
+  cursor: pointer;
+`;
+
+const AvatarShow = styled.img`
+  border-radius: 99px;
+  width: 100%;
+  height: 100%;
 `;
 
 const UserProfile = () => {
   const router = useRouter();
   const [isMyProfile, setIsMyProfile] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [showAvatar, setShowAvatar] = useState(false);
   const { loggedInUser } = useContext(AuthContext);
   const { username } = router.query;
 
@@ -118,6 +126,10 @@ const UserProfile = () => {
     setShowModal((prev) => !prev);
   };
 
+  const openAvatarModal = () => {
+    setShowAvatar((prev) => !prev);
+  };
+
   return (
     <Container>
       <SEO
@@ -129,7 +141,14 @@ const UserProfile = () => {
       <p>
         {userProfile.username} - {userProfile.name}
       </p>
-      <ModalProfile isShowing={showModal} setShowModal={setShowModal}>
+      <ModalProfile
+        isShowing={showModal}
+        setShowModal={setShowModal}
+        customWidth="680px"
+        customHeight="450px"
+        customBg="#fff"
+        customBorder="10px"
+      >
         <AvatarUpload />
       </ModalProfile>
       <div>
@@ -140,13 +159,24 @@ const UserProfile = () => {
             height={110}
             objectFit="contain"
             priority
-            alt="avatar"
+            alt={userProfile.name}
+            onClick={openAvatarModal}
           />
         </AvatarContainer>
         {isMyProfile && (
           <BiEdit size={22} className="icon" onClick={openModal} />
         )}
       </div>
+      <ModalProfile
+        isShowing={showAvatar}
+        setShowModal={setShowAvatar}
+        customHeight="100%"
+        customWidth="100%"
+        customBg="#286eca9d"
+        customBorder="0px"
+      >
+        <AvatarShow src={userProfile.avatarUrl} alt={userProfile.name} />
+      </ModalProfile>
       {userProfile.bio ? (
         <p>{userProfile.bio}</p>
       ) : (
