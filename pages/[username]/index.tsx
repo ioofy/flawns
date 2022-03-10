@@ -71,7 +71,7 @@ const UserProfile = () => {
   if (ProfileLoading || ProfilePostLoading)
     return <Loading justifycontent="center" />;
 
-  if (ProfileData.getProfile === null) {
+  if (ProfileData?.getProfile === null) {
     return (
       <ContentError
         margin="0px auto"

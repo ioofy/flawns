@@ -23,6 +23,9 @@ export default function ImageUpload() {
       // get the normale photo
     }
   };
+
+  console.log(preview);
+
   return (
     <div>
       <Avatar
