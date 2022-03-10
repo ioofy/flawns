@@ -11,6 +11,9 @@ import SEO from "@components/Metadata/SEO";
 import styled from "styled-components";
 import dynamic from "next/dynamic";
 import ModalProfile from "@components/Modals/ModalProfile";
+import Link from "next/link";
+import IntoNow from "@components/Moments/IntoNow";
+import Avatar from "@components/Avatars/Avatar";
 
 // ssr false
 const AvatarUpload = dynamic(() => import("@components/Avatars/AvatarUpload"), {
@@ -23,6 +26,10 @@ const PostCard = styled.div`
   background-color: pink;
   width: 320px;
   margin: 20px 0px;
+
+  @media screen and (max-width: 280px) {
+    width: 100%;
+  }
 `;
 
 const AvatarContainer = styled.div`
@@ -37,8 +44,11 @@ const AvatarImage = styled(Image)`
 
 const AvatarShow = styled.img`
   border-radius: 99px;
-  width: 100%;
-  height: 100%;
+
+  @media screen and (max-width: 280px) {
+    width: 100%;
+    padding: 10px;
+  }
 `;
 
 const UserProfile = () => {
@@ -90,7 +100,6 @@ const UserProfile = () => {
       <>
         <SEO
           title="Oops.. user not found"
-          // og description from biodata
           description="Oops.. user not found"
         />
         <ContentErrors
@@ -106,7 +115,6 @@ const UserProfile = () => {
       <>
         <SEO
           title="Oops.. Something went wrong"
-          // og description from biodata
           description="Oops.. Something went wrong"
         />
         <ContentErrors
@@ -172,7 +180,7 @@ const UserProfile = () => {
         setShowModal={setShowAvatar}
         customHeight="100%"
         customWidth="100%"
-        customBg="#286eca9d"
+        customBg="#2889ca8b"
         customBorder="0px"
       >
         <AvatarShow src={userProfile.avatarUrl} alt={userProfile.name} />
@@ -187,9 +195,24 @@ const UserProfile = () => {
       ) : (
         userPosts?.map((post) => {
           return (
-            <PostCard key={post.id}>
-              <p>{post.content}</p>
-            </PostCard>
+            <Link
+              key={post.id}
+              href={`/${userProfile.username}/status/${post?.id}`}
+            >
+              <PostCard>
+                <Avatar
+                  userId={userProfile.id}
+                  altText={userProfile.username}
+                  height={45}
+                  width={45}
+                />
+                <p>
+                  {userProfile.name} - @{username}
+                  · <IntoNow actualDate={post.createdAt} interval={1000} />
+                </p>
+                <p>{post.content}</p>
+              </PostCard>
+            </Link>
           );
         })
       )}

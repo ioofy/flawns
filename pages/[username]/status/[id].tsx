@@ -4,14 +4,14 @@ import Loading from "@components/Loadings/Loading";
 import SEO from "@components/Metadata/SEO";
 import styled from "styled-components";
 import CommentForm from "@components/Comments/CommentForm";
+import IntoNow from "@components/Moments/IntoNow";
+import Avatar from "@components/Avatars/Avatar";
+import Link from "next/link";
 import * as Sentry from "@sentry/nextjs";
 import { Container } from "@styles/global.styles";
 import { useGetPostsQuery } from "generated/graphql";
 import { ContentErrors } from "@components/CustomError/Error";
 import { useRouter } from "next/router";
-import IntoNow from "@components/Moments/IntoNow";
-import Avatar from "@components/Avatars/Avatar";
-import Link from "next/link";
 
 const PostCard = styled.div`
   width: 370px;
@@ -70,9 +70,11 @@ const PostDetail = () => {
           width={45}
         />
         <p>
-          {getPostWithId?.user.name} - @
-          <Link href={`/${username}`}>{username}</Link> ·{" "}
-          <IntoNow actualDate={getPostWithId?.createdAt} interval={1000} />
+          {getPostWithId?.user.name} -
+          <Link href={`/${username}`}>
+            <a>@{username}</a>
+          </Link>{" "}
+          · <IntoNow actualDate={getPostWithId?.createdAt} interval={1000} />
         </p>
         <p>{getPostWithId?.content}</p>
       </PostCard>

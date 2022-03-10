@@ -2,6 +2,7 @@ query getProfilePost($authorId: ID!, $limit: Int!, $offset: Int!) {
   getProfilePost(authorId: $authorId, limit: $limit, offset: $offset) {
     id
     content
+    createdAt
     likes {
       id
     }

@@ -28,6 +28,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           {/* default title */}
           <Head>
             <title>Flawn - Flawnn 👩‍🎤👨‍🎤</title>
+            <link rel="icon" href="/logo.png" />
           </Head>
           <Component {...pageProps} />
         </AuthContextProvider>

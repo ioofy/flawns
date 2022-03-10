@@ -1,4 +1,3 @@
-import { colors } from "@styles/variables.styles";
 import React, { Dispatch, SetStateAction, useRef } from "react";
 import { BiX } from "react-icons/bi";
 import styled from "styled-components";
@@ -29,6 +28,7 @@ const Container = styled.div`
 const Background = styled.div`
   width: 100%;
   height: 100%;
+  background: rgba(0, 0, 0, 0.5);
   top: 0px;
   position: fixed;
   display: flex;
@@ -48,19 +48,13 @@ const ModalWrapper = styled.div`
     width: 100%;
     height: 100%;
   }
-
-  @media screen and (max-width: 280px) {
-    display: none;
-  }
 `;
 
 const Content = styled.div`
+  height: 100%;
   display: flex;
+  align-items: center;
   justify-content: center;
-
-  @media screen and (max-width: 600px) {
-    margin-top: 150px;
-  }
 `;
 
 const Editor = styled.div`
@@ -72,7 +66,7 @@ const CloseModalIcon = styled(BiX)`
   position: absolute;
   margin-top: 10px;
   margin-left: 10px;
-  color: ${colors.error};
+  color: black;
 `;
 
 const ModalProfile = ({
