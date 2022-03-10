@@ -41,12 +41,26 @@ export default function AvatarUpload() {
   };
 
   const onBeforeFileLoad = (elem: React.ChangeEvent<HTMLInputElement>) => {
-    if (elem.target.files[0].size > 1100000) {
+    if (elem.target.files[0].size > 1000) {
       toast.error("File is too big! Please upload maximum size < 1mb");
       elem.target.value = "";
     } else {
       console.log(elem.target.files[0]);
     }
+
+    // let image = new Image();
+
+    // image.onload = () => {
+    //   console.log(image.width);
+    //   if (image.height > 199) {
+    //     // alert("Image height must be less than 200px");
+
+    //     elem.target.value = "";
+    //     image.src = "";
+    //   }
+    // };
+
+    // image.src = URL.createObjectURL(elem.target.files[0]);
   };
 
   const handleClick = () => {
