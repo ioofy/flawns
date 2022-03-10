@@ -32,23 +32,18 @@ const Welcome = () => {
       }
 
       if (!updateUser.userErrors.length) {
-        // Toast succes
-        toast.success("Your account has been verified!");
         // updating the data
         setAuthUser(updateUser.user);
-        // then push
-        // reload
-        setInterval(function () {
-          router.push("/post").then(() => window.location.reload());
-        }, 1000);
       }
     },
   });
 
   useEffect(() => {
     // if not null
-    if (loggedInUser?.username) {
-      router.push("/post");
+    if (loggedInUser) {
+      if (loggedInUser?.username) {
+        router.push("/post");
+      }
     }
   }, [loggedInUser, router]);
 

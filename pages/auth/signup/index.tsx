@@ -77,7 +77,7 @@ const SignUp = () => {
   const onSignUpAction = useCallback(() => {
     const gravatar = gravatarUrl(email, {
       default: "identicon",
-      size: 150,
+      size: 200,
     });
 
     return signUp({
