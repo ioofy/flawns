@@ -38,13 +38,12 @@ const AvatarContainer = styled.div`
 `;
 
 const AvatarImage = styled(Image)`
-  border-radius: 99px;
   cursor: pointer;
+  border-radius: 99px;
+  border: 2px solid pink !important;
 `;
 
 const AvatarShow = styled.img`
-  border-radius: 99px;
-
   @media screen and (max-width: 280px) {
     width: 100%;
     padding: 10px;
@@ -163,8 +162,8 @@ const UserProfile = () => {
         <AvatarContainer>
           <AvatarImage
             src={userProfile.avatarUrl}
-            width={110}
-            height={110}
+            width={120}
+            height={120}
             objectFit="contain"
             priority
             alt={userProfile.name}
