@@ -62,6 +62,7 @@ const Editor = styled.div`
 
 const TopWrapperContent = styled.div`
   display: block;
+  margin-top: 15px;
 `;
 
 const TopTitle = styled.span`
@@ -79,7 +80,7 @@ const TopTitle = styled.span`
 const CloseModalIcon = styled(BiX)`
   cursor: pointer;
   position: relative;
-  margin-top: 10px;
+  margin-top: 9px;
   margin-left: 10px;
   color: black;
 `;
