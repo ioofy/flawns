@@ -298,6 +298,8 @@ export type User = {
   avatarUrl?: Maybe<Scalars["String"]>;
   bio?: Maybe<Scalars["String"]>;
   email?: Maybe<Scalars["String"]>;
+  followers?: Maybe<Array<Maybe<User>>>;
+  following?: Maybe<Array<Maybe<User>>>;
   id: Scalars["ID"];
   isCreator: Scalars["Boolean"];
   name: Scalars["String"];
@@ -554,6 +556,14 @@ export type GetProfileQuery = {
             >
           | null
           | undefined;
+        followers?:
+          | Array<{ __typename?: "User"; id: string } | null | undefined>
+          | null
+          | undefined;
+        following?:
+          | Array<{ __typename?: "User"; id: string } | null | undefined>
+          | null
+          | undefined;
       }
     | null
     | undefined;
@@ -609,6 +619,14 @@ export type MeQuery = {
               | null
               | undefined
             >
+          | null
+          | undefined;
+        followers?:
+          | Array<{ __typename?: "User"; id: string } | null | undefined>
+          | null
+          | undefined;
+        following?:
+          | Array<{ __typename?: "User"; id: string } | null | undefined>
           | null
           | undefined;
       }
@@ -1266,6 +1284,12 @@ export const GetProfileDocument = gql`
         id
         role
       }
+      followers {
+        id
+      }
+      following {
+        id
+      }
     }
   }
 `;
@@ -1401,6 +1425,12 @@ export const MeDocument = gql`
       profession {
         id
         role
+      }
+      followers {
+        id
+      }
+      following {
+        id
       }
     }
   }

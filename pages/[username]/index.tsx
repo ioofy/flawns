@@ -4,16 +4,17 @@ import { Container } from "@styles/global.styles";
 import { useGetProfilePostQuery, useGetProfileQuery } from "generated/graphql";
 import { useRouter } from "next/router";
 import { AuthContext } from "@context/AuthContextProvider";
-import { BiEdit } from "react-icons/bi";
-import Image from "next/image";
+import { toast, Toaster } from "react-hot-toast";
 import Loading from "@components/Loadings/Loading";
 import SEO from "@components/Metadata/SEO";
 import styled from "styled-components";
 import dynamic from "next/dynamic";
 import ModalProfile from "@components/Modals/ModalProfile";
+import ModalEdit from "@components/Modals/ModalEdit";
 import Link from "next/link";
 import IntoNow from "@components/Moments/IntoNow";
 import Avatar from "@components/Avatars/Avatar";
+import ButtonUpload from "@components/Buttons/ButtonUpload";
 
 // ssr false
 const AvatarUpload = dynamic(() => import("@components/Avatars/AvatarUpload"), {
@@ -33,28 +34,47 @@ const PostCard = styled.div`
 `;
 
 const AvatarContainer = styled.div`
-  width: 100%;
-  height: 100%;
+  max-width: 130px;
+
+  .__wrapper {
+    .__avatar {
+      z-index: 9 !important;
+    }
+  }
 `;
 
-const AvatarImage = styled(Image)`
-  cursor: pointer;
-  border-radius: 99px;
-  border: 2px solid pink !important;
+const AvatarImage = styled.img<AvatarProps>`
+  cursor: ${(props) => props.cursor};
+  border-radius: 9999px;
+  width: 100%;
 `;
 
 const AvatarShow = styled.img`
-  @media screen and (max-width: 280px) {
-    width: 100%;
+  width: 450px;
+  border-radius: 999px;
+
+  @media screen and (max-width: 428px) {
+    width: 95%;
     padding: 10px;
   }
 `;
 
+const WrapperCanvas = styled.div`
+  position: relative;
+  z-index: 99999;
+`;
+
+type AvatarProps = {
+  cursor: string;
+};
+
 const UserProfile = () => {
   const router = useRouter();
   const [isMyProfile, setIsMyProfile] = useState(false);
+  const [avatar, setAvatar] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [showAvatar, setShowAvatar] = useState(false);
+  const [showCanvasEdit, setShowCanvasEdit] = useState(false);
   const { loggedInUser } = useContext(AuthContext);
   const { username } = router.query;
 
@@ -94,7 +114,7 @@ const UserProfile = () => {
 
   if (ProfileLoading) return <Loading justifycontent="center" />;
 
-  if (ProfileData.getProfile === null) {
+  if (ProfileData?.getProfile === null) {
     return (
       <>
         <SEO
@@ -129,16 +149,73 @@ const UserProfile = () => {
   const userProfile = ProfileData?.getProfile;
   const userPosts = ProfilePostData?.getProfilePost;
 
+  // show modal update profile
   const openModal = () => {
     setShowModal((prev) => !prev);
   };
 
+  // show modal avatar profile
   const openAvatarModal = () => {
     setShowAvatar((prev) => !prev);
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files[0];
+
+    if (files) {
+      const img = new Image();
+
+      img.src = URL.createObjectURL(e.target.files[0]);
+
+      img.onload = () => {
+        const { width } = img;
+
+        if (width > 2560) {
+          toast.error("Image width is too big");
+          return false;
+        }
+
+        if (files.size > 1100000) {
+          toast.error("File size is too big, please upload less than 1mb");
+        } else {
+          const setBlob = URL.createObjectURL(files);
+          setAvatar(setBlob);
+
+          setShowCanvasEdit(true);
+          console.log(files);
+        }
+      };
+    }
+  };
+
+  const AvatarEditCanvas = () => {
+    return (
+      <WrapperCanvas>
+        <ModalProfile
+          isShowing={showCanvasEdit}
+          setShowModal={setShowCanvasEdit}
+          customWidth="750px"
+          customHeight="600px"
+          customBg="#fff"
+          customBorder="10px"
+          topTitle="Edit Image"
+        >
+          <AvatarUpload
+            avatarUrl={avatar}
+            onClick={() => setShowCanvasEdit(false)}
+          />
+        </ModalProfile>
+      </WrapperCanvas>
+    );
+  };
+
   return (
     <Container>
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+        containerClassName="toaster"
+      />
       <SEO
         title={`${userProfile.name} (@${userProfile.username})`}
         // og description from biodata
@@ -148,34 +225,45 @@ const UserProfile = () => {
       <p>
         {userProfile.username} - {userProfile.name}
       </p>
-      <ModalProfile
+      <AvatarEditCanvas />
+      {/* Modal Avatar */}
+      <ModalEdit
         isShowing={showModal}
         setShowModal={setShowModal}
-        customWidth="1300px"
-        customHeight="550px"
+        customWidth="750px"
+        customHeight="600px"
         customBg="#fff"
         customBorder="10px"
       >
-        <AvatarUpload />
-      </ModalProfile>
+        <AvatarContainer>
+          <div className="__wrapper">
+            <AvatarImage
+              src={userProfile.avatarUrl}
+              cursor="default"
+              alt={userProfile.name}
+              className="__avatar"
+            />
+            <ButtonUpload onChange={handleChange} />
+          </div>
+        </AvatarContainer>
+      </ModalEdit>
+      {/* Avatar*/}
       <div>
         <AvatarContainer>
           <AvatarImage
             src={userProfile.avatarUrl}
-            width={120}
-            height={120}
-            objectFit="contain"
-            blurDataURL="1"
-            placeholder="blur"
-            priority
+            cursor="pointer"
             alt={userProfile.name}
             onClick={openAvatarModal}
           />
         </AvatarContainer>
         {isMyProfile && (
-          <BiEdit size={22} className="icon" onClick={openModal} />
+          <button style={{ margin: "20px 0" }} onClick={openModal}>
+            Edit Profile
+          </button>
         )}
       </div>
+      {/* Modal Profile */}
       <ModalProfile
         isShowing={showAvatar}
         setShowModal={setShowAvatar}
@@ -191,6 +279,10 @@ const UserProfile = () => {
       ) : (
         <p>This user didnt create a bio yet</p>
       )}
+      <p>
+        {userProfile.followers.length} Followers -{" "}
+        {userProfile.following.length} Following
+      </p>
       {ProfilePostLoading ? (
         <Loading justifycontent="start" />
       ) : (

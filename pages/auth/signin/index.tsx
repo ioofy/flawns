@@ -91,7 +91,7 @@ const SignIn = () => {
       <Toaster
         position="top-center"
         reverseOrder={false}
-        containerClassName="toaster-error"
+        containerClassName="toaster"
       />
       <Container>
         <Cover>

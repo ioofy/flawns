@@ -69,7 +69,7 @@ const Welcome = () => {
       <Toaster
         position="top-center"
         reverseOrder={false}
-        containerClassName="toaster-error"
+        containerClassName="toaster"
       />
       <form
         style={{ margin: "20px 0px" }}

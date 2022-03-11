@@ -2,14 +2,13 @@ import React, { Dispatch, SetStateAction, useRef } from "react";
 import { BiX } from "react-icons/bi";
 import styled from "styled-components";
 
-type ModalProfileProps = {
+type ModalEditProps = {
   isShowing: boolean;
   setShowModal: Dispatch<SetStateAction<boolean>>;
   children: React.ReactNode;
   customWidth: number | string;
   customHeight: number | string;
   customBg: string;
-  topTitle?: string;
   customBorder: string;
 };
 
@@ -53,21 +52,16 @@ const ModalWrapper = styled.div`
 `;
 
 const Content = styled.div`
-  height: 90%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  height: 100%;
+  padding: 15px;
 `;
 
-const TopWrapper = styled.div`
+const Editor = styled.div`
+  margin-top: 35px;
+`;
+
+const TopWrapperContent = styled.div`
   display: block;
-`;
-
-const CloseModalIcon = styled(BiX)`
-  cursor: pointer;
-  margin-top: 10px;
-  margin-left: 10px;
-  color: black;
 `;
 
 const TopTitle = styled.span`
@@ -82,16 +76,23 @@ const TopTitle = styled.span`
   }
 `;
 
-const ModalProfile = ({
+const CloseModalIcon = styled(BiX)`
+  cursor: pointer;
+  position: relative;
+  margin-top: 10px;
+  margin-left: 10px;
+  color: black;
+`;
+
+const ModalEdit = ({
   isShowing,
   setShowModal,
   customHeight,
   customWidth,
   customBorder,
-  topTitle,
   customBg,
   children,
-}: ModalProfileProps) => {
+}: ModalEditProps) => {
   const modalRef = useRef(null);
 
   return (
@@ -104,14 +105,17 @@ const ModalProfile = ({
             bg={customBg}
             border={customBorder}
           >
-            <TopWrapper>
+            <TopWrapperContent>
               <CloseModalIcon
                 size={32}
                 onClick={() => setShowModal((prev) => !prev)}
               />
-              <TopTitle>{topTitle}</TopTitle>
-            </TopWrapper>
-            <Content>{children}</Content>
+              <TopTitle>Edit Profile</TopTitle>
+            </TopWrapperContent>
+
+            <Content>
+              <Editor>{children}</Editor>
+            </Content>
           </ModalWrapper>
         </Background>
       ) : null}
@@ -119,4 +123,4 @@ const ModalProfile = ({
   );
 };
 
-export default ModalProfile;
+export default ModalEdit;
