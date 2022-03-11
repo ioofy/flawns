@@ -52,18 +52,27 @@ const ModalWrapper = styled.div`
 `;
 
 const Content = styled.div`
-  height: 100%;
+  height: 90%;
   display: flex;
   align-items: center;
   justify-content: center;
 `;
 
+const TopWrapper = styled.div`
+  display: flex;
+`;
+
 const CloseModalIcon = styled(BiX)`
   cursor: pointer;
-  position: absolute;
   margin-top: 10px;
   margin-left: 10px;
   color: black;
+`;
+
+const TopTitle = styled.span`
+  font-family: "AllianceEB", sans-serif;
+  font-size: 20px;
+  margin: 10px 20px 0px;
 `;
 
 const ModalProfile = ({
@@ -87,10 +96,13 @@ const ModalProfile = ({
             bg={customBg}
             border={customBorder}
           >
-            <CloseModalIcon
-              size={30}
-              onClick={() => setShowModal((prev) => !prev)}
-            />
+            <TopWrapper>
+              <CloseModalIcon
+                size={30}
+                onClick={() => setShowModal((prev) => !prev)}
+              />
+              <TopTitle>Edit Image</TopTitle>
+            </TopWrapper>
             <Content>{children}</Content>
           </ModalWrapper>
         </Background>

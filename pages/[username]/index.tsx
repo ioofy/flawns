@@ -5,7 +5,6 @@ import { useGetProfilePostQuery, useGetProfileQuery } from "generated/graphql";
 import { useRouter } from "next/router";
 import { AuthContext } from "@context/AuthContextProvider";
 import { toast, Toaster } from "react-hot-toast";
-// import image from "next/image";
 import Loading from "@components/Loadings/Loading";
 import SEO from "@components/Metadata/SEO";
 import styled from "styled-components";
@@ -172,7 +171,7 @@ const UserProfile = () => {
         const { width } = img;
 
         if (width > 2560) {
-          toast.error("Image size is too big");
+          toast.error("Image width is too big");
           return false;
         }
 
@@ -195,8 +194,8 @@ const UserProfile = () => {
         <ModalProfile
           isShowing={showCanvasEdit}
           setShowModal={setShowCanvasEdit}
-          customWidth="800px"
-          customHeight="650px"
+          customWidth="750px"
+          customHeight="600px"
           customBg="#fff"
           customBorder="10px"
         >
@@ -230,8 +229,8 @@ const UserProfile = () => {
       <ModalEdit
         isShowing={showModal}
         setShowModal={setShowModal}
-        customWidth="800px"
-        customHeight="650px"
+        customWidth="750px"
+        customHeight="600px"
         customBg="#fff"
         customBorder="10px"
       >

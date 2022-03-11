@@ -65,8 +65,8 @@ export default function AvatarUpload(props: AvatarUploadProps) {
       />
       <div className="__avatar-container">
         <Avatar
-          width={450}
-          height={450}
+          width={370}
+          height={350}
           onCrop={onCrop}
           onClose={onClose}
           src={src}

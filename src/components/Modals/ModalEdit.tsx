@@ -60,9 +60,22 @@ const Editor = styled.div`
   margin-top: 35px;
 `;
 
+const TopWrapperContent = styled.div`
+  display: flex;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+`;
+
+const TopTitle = styled.span`
+  font-family: "AllianceEB", sans-serif;
+  font-size: 20px;
+  margin: 7px 20px 0px;
+`;
+
 const CloseModalIcon = styled(BiX)`
   cursor: pointer;
-  position: absolute;
+  position: relative;
   margin-top: 10px;
   margin-left: 10px;
   color: black;
@@ -89,10 +102,14 @@ const ModalEdit = ({
             bg={customBg}
             border={customBorder}
           >
-            <CloseModalIcon
-              size={30}
-              onClick={() => setShowModal((prev) => !prev)}
-            />
+            <TopWrapperContent>
+              <CloseModalIcon
+                size={30}
+                onClick={() => setShowModal((prev) => !prev)}
+              />
+              <TopTitle>Edit Profile</TopTitle>
+            </TopWrapperContent>
+
             <Content>
               <Editor>{children}</Editor>
             </Content>
