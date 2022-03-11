@@ -198,6 +198,7 @@ const UserProfile = () => {
           customHeight="600px"
           customBg="#fff"
           customBorder="10px"
+          topTitle="Edit Image"
         >
           <AvatarUpload
             avatarUrl={avatar}

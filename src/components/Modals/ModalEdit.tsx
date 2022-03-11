@@ -61,16 +61,15 @@ const Editor = styled.div`
 `;
 
 const TopWrapperContent = styled.div`
-  display: flex;
-  position: absolute;
-  justify-content: center;
-  align-items: center;
+  display: block;
 `;
 
 const TopTitle = styled.span`
   font-family: "AllianceEB", sans-serif;
   font-size: 20px;
-  margin: 7px 20px 0px;
+  position: absolute;
+  margin-top: 11px;
+  margin-left: 20px;
 `;
 
 const CloseModalIcon = styled(BiX)`
