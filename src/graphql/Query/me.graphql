@@ -13,5 +13,11 @@ query Me {
       id
       role
     }
+    followers {
+      id
+    }
+    following {
+      id
+    }
   }
 }

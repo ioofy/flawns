@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
   justify-content: center;
   padding: 20px;
 
-  .toaster-error {
+  .toaster {
     font-family: "AllianceEB", sans-serif;
     font-size: 15px;
   }

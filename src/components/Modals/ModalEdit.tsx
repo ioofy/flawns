@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction, useRef } from "react";
 import { BiX } from "react-icons/bi";
 import styled from "styled-components";
 
-type ModalProfileProps = {
+type ModalEditProps = {
   isShowing: boolean;
   setShowModal: Dispatch<SetStateAction<boolean>>;
   children: React.ReactNode;
@@ -53,9 +53,11 @@ const ModalWrapper = styled.div`
 
 const Content = styled.div`
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: 15px;
+`;
+
+const Editor = styled.div`
+  margin-top: 35px;
 `;
 
 const CloseModalIcon = styled(BiX)`
@@ -66,7 +68,7 @@ const CloseModalIcon = styled(BiX)`
   color: black;
 `;
 
-const ModalProfile = ({
+const ModalEdit = ({
   isShowing,
   setShowModal,
   customHeight,
@@ -74,7 +76,7 @@ const ModalProfile = ({
   customBorder,
   customBg,
   children,
-}: ModalProfileProps) => {
+}: ModalEditProps) => {
   const modalRef = useRef(null);
 
   return (
@@ -91,7 +93,9 @@ const ModalProfile = ({
               size={30}
               onClick={() => setShowModal((prev) => !prev)}
             />
-            <Content>{children}</Content>
+            <Content>
+              <Editor>{children}</Editor>
+            </Content>
           </ModalWrapper>
         </Background>
       ) : null}
@@ -99,4 +103,4 @@ const ModalProfile = ({
   );
 };
 
-export default ModalProfile;
+export default ModalEdit;

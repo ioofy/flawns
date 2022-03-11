@@ -145,7 +145,7 @@ const SignUp = () => {
       <Toaster
         position="top-center"
         reverseOrder={false}
-        containerClassName="toaster-error"
+        containerClassName="toaster"
       />
       <Container>
         <Cover>

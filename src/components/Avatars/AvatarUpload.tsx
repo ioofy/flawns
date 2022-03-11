@@ -11,19 +11,20 @@ const Container = styled.div`
   }
 `;
 
-export default function AvatarUpload() {
+type AvatarUploadProps = {
+  avatarUrl: string;
+  onClick: () => void;
+};
+
+export default function AvatarUpload(props: AvatarUploadProps) {
   const [preview, setPreview] = useState<string>(null);
-  const [src] = useState("");
+  const [src] = useState(props.avatarUrl);
 
   const [uploadImage, { loading }] = useUpdatePhotoProfileMutation({
     onCompleted: (data) => {
       if (data) {
         if (data.updatePhotoProfile.message) {
           toast.success(data.updatePhotoProfile.message);
-          // reload
-          setInterval(function () {
-            window.location.reload();
-          }, 800);
         }
         if (data.updatePhotoProfile.userErrors.length) {
           toast.error(data.updatePhotoProfile.userErrors[0].message);
@@ -34,19 +35,11 @@ export default function AvatarUpload() {
 
   const onClose = () => {
     setPreview(null);
+    props.onClick();
   };
 
   const onCrop = (preview: string) => {
     setPreview(preview);
-  };
-
-  const onBeforeFileLoad = (elem: React.ChangeEvent<HTMLInputElement>) => {
-    if (elem.target.files[0].size > 1100000) {
-      toast.error("File is too big! Please upload maximum size < 1mb");
-      elem.target.value = "";
-    } else {
-      console.log(elem.target.files[0]);
-    }
   };
 
   const handleClick = () => {
@@ -70,14 +63,16 @@ export default function AvatarUpload() {
         reverseOrder={false}
         containerClassName="toaster"
       />
-      <Avatar
-        width={350}
-        height={350}
-        onCrop={onCrop}
-        onClose={onClose}
-        onBeforeFileLoad={onBeforeFileLoad}
-        src={src}
-      />
+      <div className="__avatar-container">
+        <Avatar
+          width={450}
+          height={450}
+          onCrop={onCrop}
+          onClose={onClose}
+          src={src}
+          exportAsSquare
+        />
+      </div>
 
       <button
         onClick={handleClick}

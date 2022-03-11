@@ -13,5 +13,11 @@ query getProfile($username: String!) {
       id
       role
     }
+    followers {
+      id
+    }
+    following {
+      id
+    }
   }
 }
