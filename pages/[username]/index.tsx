@@ -53,8 +53,9 @@ const AvatarImage = styled.img<AvatarProps>`
 const AvatarShow = styled.img`
   width: 450px;
   border-radius: 999px;
-  @media screen and (max-width: 280px) {
-    width: 100%;
+
+  @media screen and (max-width: 428px) {
+    width: 95%;
     padding: 10px;
   }
 `;
