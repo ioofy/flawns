@@ -74,8 +74,12 @@ const TopTitle = styled.span`
   font-family: "AllianceEB", sans-serif;
   font-size: 20px;
   position: absolute;
-  margin-top: 11px;
+  margin-top: 12px;
   margin-left: 20px;
+
+  @media screen and (max-width: 600px) {
+    margin-top: 13px;
+  }
 `;
 
 const ModalProfile = ({
@@ -102,7 +106,7 @@ const ModalProfile = ({
           >
             <TopWrapper>
               <CloseModalIcon
-                size={30}
+                size={32}
                 onClick={() => setShowModal((prev) => !prev)}
               />
               <TopTitle>{topTitle}</TopTitle>
