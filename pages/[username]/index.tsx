@@ -35,7 +35,7 @@ const PostCard = styled.div`
 `;
 
 const AvatarContainer = styled.div`
-  max-width: 150px;
+  max-width: 130px;
 
   .__wrapper {
     .__avatar {
@@ -175,7 +175,7 @@ const UserProfile = () => {
           return false;
         }
 
-        if (files?.size > 1100000) {
+        if (files.size > 1100000) {
           toast.error("File size is too big, please upload less than 1mb");
         } else {
           const setBlob = URL.createObjectURL(files);

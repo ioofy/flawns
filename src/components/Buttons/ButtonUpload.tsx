@@ -4,8 +4,8 @@ import { BiImageAdd } from "react-icons/bi";
 
 const Wrapper = styled.div`
   position: absolute;
-  margin-top: -85px;
-  margin-left: 38px;
+  margin-top: -90px;
+  margin-left: 43px;
   z-index: 10;
   border-radius: 99px;
   background: rgba(0, 0, 0, 0.5);
