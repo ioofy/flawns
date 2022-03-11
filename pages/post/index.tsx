@@ -66,8 +66,8 @@ const Post = () => {
             <PostCard>
               <Avatar
                 altText={post?.user.name}
-                height={45}
-                width={45}
+                height={55}
+                width={55}
                 userId={post?.user.id}
               />
               <p>

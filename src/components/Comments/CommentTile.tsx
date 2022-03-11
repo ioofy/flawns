@@ -1,3 +1,4 @@
+import Avatar from "@components/Avatars/Avatar";
 import IntoNow from "@components/Moments/IntoNow";
 import React from "react";
 import styled from "styled-components";
@@ -10,6 +11,7 @@ type CommentTileProps = {
     date?: any;
     user: {
       __typename?: "User";
+      id: string;
       name: string;
       username?: string;
     };
@@ -29,11 +31,12 @@ const CommentTile = ({ comment }: CommentTileProps) => {
   const {
     date,
     text,
-    user: { name, username },
+    user: { id, name, username },
   } = comment;
 
   return (
     <CommentBox>
+      <Avatar altText={username} height={55} width={55} userId={id} />
       <p>
         on <IntoNow actualDate={date} interval={1000} />
       </p>

@@ -295,9 +295,9 @@ const UserProfile = () => {
               <PostCard>
                 <Avatar
                   userId={userProfile.id}
-                  altText={userProfile.username}
-                  height={45}
-                  width={45}
+                  altText={userProfile.name}
+                  height={55}
+                  width={55}
                 />
                 <p>
                   {userProfile.name} - @{username}

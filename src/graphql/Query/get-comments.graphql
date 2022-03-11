@@ -8,6 +8,7 @@ query getComments($postId: ID!, $after: String, $pageSize: Int) {
       text
       date
       user {
+        id
         name
         username
       }

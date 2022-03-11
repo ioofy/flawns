@@ -1,5 +1,6 @@
+import { useCommentCreateMutation } from "generated/graphql";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
@@ -31,6 +32,7 @@ const CommentButton = styled.button`
   border: none;
   outline: none;
   width: 100px;
+  cursor: pointer;
 `;
 
 const ReplyInfo = styled.p`
@@ -39,14 +41,36 @@ const ReplyInfo = styled.p`
 
 const CommentForm = () => {
   const router = useRouter();
-  const { username } = router.query;
+  const { username, id } = router.query;
+  const [comment, setComment] = useState("");
+
+  const [createComment, { loading }] = useCommentCreateMutation();
+
+  const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    await createComment({
+      variables: {
+        comment: {
+          text: comment,
+          postId: String(id),
+        },
+      },
+    });
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setComment(e.target.value);
+  };
 
   return (
     <Wrapper>
       <ReplyInfo>Reply @{username}</ReplyInfo>
       <CommentForms>
-        <CommentArea placeholder="Comment" />
-        <CommentButton>Reply</CommentButton>
+        <CommentArea placeholder="Comment" onChange={handleChange} />
+        <CommentButton onClick={handleClick}>
+          {loading ? "Loading.." : "Reply"}
+        </CommentButton>
       </CommentForms>
     </Wrapper>
   );
