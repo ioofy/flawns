@@ -22,6 +22,7 @@ const COMMENT_SUBSCRIPTION = gql`
       text
       date
       user {
+        id
         name
         username
       }
@@ -101,7 +102,7 @@ const CommentDisplay = () => {
         <Wrapper onScroll={handleMore}>
           {data &&
             data.getComments.comments &&
-            data.getComments.comments.map((commentItem: any, index: any) => {
+            data.getComments.comments.map((commentItem: any, index: number) => {
               const comment = data.getComments.comments[index];
 
               if (comment) {

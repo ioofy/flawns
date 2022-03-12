@@ -481,6 +481,7 @@ export type GetCommentsQuery = {
           date?: any | null | undefined;
           user: {
             __typename?: "User";
+            id: string;
             name: string;
             username?: string | null | undefined;
           };
@@ -1087,6 +1088,7 @@ export const GetCommentsDocument = gql`
         text
         date
         user {
+          id
           name
           username
         }

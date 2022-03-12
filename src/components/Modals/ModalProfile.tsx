@@ -61,11 +61,12 @@ const Content = styled.div`
 
 const TopWrapper = styled.div`
   display: block;
+  margin-top: 15px;
 `;
 
 const CloseModalIcon = styled(BiX)`
   cursor: pointer;
-  margin-top: 10px;
+  margin-top: 9px;
   margin-left: 10px;
   color: black;
 `;
@@ -78,7 +79,7 @@ const TopTitle = styled.span`
   margin-left: 20px;
 
   @media screen and (max-width: 600px) {
-    margin-top: 14px;
+    margin-top: 13px;
   }
 `;
 
