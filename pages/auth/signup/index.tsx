@@ -40,6 +40,7 @@ type FormDataProps = {
   email: string;
   username: string;
   name: string;
+  password: string;
 };
 
 const SignUp = () => {
@@ -227,12 +228,19 @@ const SignUp = () => {
                     />
                     <Label htmlFor="email">E-mail</Label>
                   </InputBox>
+                  {errors.password && (
+                    <ErrorContent>*Oops enter your password</ErrorContent>
+                  )}
                   <InputBox>
                     <Input
                       type="password"
                       name="password"
                       autoComplete="off"
                       placeholder="7+ strong character"
+                      {...register("password", {
+                        required: true,
+                        minLength: 7,
+                      })}
                       value={password}
                       onChange={onChange}
                     />

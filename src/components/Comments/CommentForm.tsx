@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useCommentCreateMutation } from "generated/graphql";
 import { useRouter } from "next/router";
 import { toast, Toaster } from "react-hot-toast";
@@ -50,6 +50,7 @@ const CommentForm = () => {
   const router = useRouter();
   const { username, id } = router.query;
   const { loggedInUser } = useContext(AuthContext);
+  const [isMyPost, setIsMyPost] = useState(false);
   const [comment, setComment] = useState("");
 
   const [createComment, { loading }] = useCommentCreateMutation({
@@ -66,6 +67,14 @@ const CommentForm = () => {
       }
     },
   });
+
+  useEffect(() => {
+    if (loggedInUser) {
+      if (loggedInUser.username === username) {
+        setIsMyPost(true);
+      }
+    }
+  }, [loggedInUser]);
 
   const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -93,7 +102,7 @@ const CommentForm = () => {
       />
       {loggedInUser && (
         <>
-          <ReplyInfo>Reply @{username}</ReplyInfo>
+          <ReplyInfo>Reply @{isMyPost ? "Myself" : username}</ReplyInfo>
           <CommentForms>
             <CommentArea placeholder="Comment" onChange={handleChange} />
             <CommentButton onClick={handleClick}>
