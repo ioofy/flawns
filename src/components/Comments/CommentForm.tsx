@@ -1,11 +1,17 @@
 import React, { useState, useContext } from "react";
 import { useCommentCreateMutation } from "generated/graphql";
 import { useRouter } from "next/router";
-import styled from "styled-components";
+import { toast, Toaster } from "react-hot-toast";
 import { AuthContext } from "@context/AuthContextProvider";
+import styled from "styled-components";
 
 const Wrapper = styled.div`
   width: 370px;
+
+  .toaster {
+    font-family: "AllianceEB", sans-serif;
+    font-size: 15px;
+  }
 `;
 
 const CommentForms = styled.form`
@@ -46,7 +52,20 @@ const CommentForm = () => {
   const { loggedInUser } = useContext(AuthContext);
   const [comment, setComment] = useState("");
 
-  const [createComment, { loading }] = useCommentCreateMutation();
+  const [createComment, { loading }] = useCommentCreateMutation({
+    onCompleted: (data) => {
+      console.log(data);
+
+      if (data) {
+        if (!data.commentCreate.userErrors.length) {
+          toast.success("Your comment has been posted");
+        }
+        if (data.commentCreate.userErrors.length) {
+          toast.error(data.commentCreate.userErrors[0].message);
+        }
+      }
+    },
+  });
 
   const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -67,6 +86,11 @@ const CommentForm = () => {
 
   return (
     <Wrapper>
+      <Toaster
+        position="bottom-center"
+        reverseOrder={false}
+        containerClassName="toaster"
+      />
       {loggedInUser && (
         <>
           <ReplyInfo>Reply @{username}</ReplyInfo>
