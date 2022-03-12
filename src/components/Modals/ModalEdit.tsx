@@ -72,7 +72,7 @@ const TopTitle = styled.span`
   margin-left: 20px;
 
   @media screen and (max-width: 600px) {
-    margin-top: 13px;
+    margin-top: 14px;
   }
 `;
 
