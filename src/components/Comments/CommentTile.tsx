@@ -36,7 +36,7 @@ const CommentTile = ({ comment }: CommentTileProps) => {
 
   return (
     <CommentBox>
-      <Avatar altText={username} height={55} width={55} userId={id} />
+      <Avatar altText={username} userId={id} />
       <p>
         on <IntoNow actualDate={date} interval={1000} />
       </p>

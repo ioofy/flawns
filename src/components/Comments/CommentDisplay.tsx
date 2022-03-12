@@ -2,12 +2,30 @@ import React, { useEffect, useState } from "react";
 import { gql } from "@apollo/client";
 import { useGetCommentsQuery } from "generated/graphql";
 import { useRouter } from "next/router";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 import styled from "styled-components";
 import CommentTile from "./CommentTile";
 import Loading from "@components/Loadings/Loading";
 
 const Wrapper = styled.div`
   width: 100%;
+
+  .__comments-item-enter {
+    opacity: 0.01;
+  }
+  .__comments-item-enter-active {
+    opacity: 1;
+    transform: translate(0, 0);
+    transition: all 400ms ease-in;
+  }
+  .__comments-item-exit {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+  .__comments-item-exit-active {
+    opacity: 0.01;
+    transition: all 400ms ease-in;
+  }
 `;
 
 const ContentWrapper = styled.div`
@@ -100,17 +118,25 @@ const CommentDisplay = () => {
         <Loading justifycontent="center" />
       ) : (
         <Wrapper onScroll={handleMore}>
-          {data &&
-            data.getComments.comments &&
-            data.getComments.comments.map((commentItem: any, index: number) => {
-              const comment = data.getComments.comments[index];
+          <TransitionGroup className="__comments-list">
+            {data &&
+              data.getComments.comments &&
+              data.getComments.comments.map(
+                (commentItem: any, index: number) => {
+                  const comment = data.getComments.comments[index];
 
-              if (comment) {
-                return <CommentTile comment={comment} key={commentItem.id} />;
-              }
-
-              return null;
-            })}
+                  return (
+                    <CSSTransition
+                      key={commentItem.id}
+                      timeout={500}
+                      classNames="__comments-item"
+                    >
+                      <CommentTile comment={comment} />
+                    </CSSTransition>
+                  );
+                }
+              )}
+          </TransitionGroup>
           {hasMore && (
             <div className="more-button">
               <button onClick={() => handleMore()}>

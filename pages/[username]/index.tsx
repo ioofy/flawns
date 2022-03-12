@@ -293,12 +293,7 @@ const UserProfile = () => {
               href={`/${userProfile.username}/status/${post?.id}`}
             >
               <PostCard>
-                <Avatar
-                  userId={userProfile.id}
-                  altText={userProfile.name}
-                  height={55}
-                  width={55}
-                />
+                <Avatar userId={userProfile.id} altText={userProfile.name} />
                 <p>
                   {userProfile.name} - @{username}
                   · <IntoNow actualDate={post.createdAt} interval={1000} />

@@ -1,7 +1,8 @@
+import React, { useState, useContext } from "react";
 import { useCommentCreateMutation } from "generated/graphql";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
 import styled from "styled-components";
+import { AuthContext } from "@context/AuthContextProvider";
 
 const Wrapper = styled.div`
   width: 370px;
@@ -42,6 +43,7 @@ const ReplyInfo = styled.p`
 const CommentForm = () => {
   const router = useRouter();
   const { username, id } = router.query;
+  const { loggedInUser } = useContext(AuthContext);
   const [comment, setComment] = useState("");
 
   const [createComment, { loading }] = useCommentCreateMutation();
@@ -65,13 +67,17 @@ const CommentForm = () => {
 
   return (
     <Wrapper>
-      <ReplyInfo>Reply @{username}</ReplyInfo>
-      <CommentForms>
-        <CommentArea placeholder="Comment" onChange={handleChange} />
-        <CommentButton onClick={handleClick}>
-          {loading ? "Loading.." : "Reply"}
-        </CommentButton>
-      </CommentForms>
+      {loggedInUser && (
+        <>
+          <ReplyInfo>Reply @{username}</ReplyInfo>
+          <CommentForms>
+            <CommentArea placeholder="Comment" onChange={handleChange} />
+            <CommentButton onClick={handleClick}>
+              {loading ? "Loading.." : "Reply"}
+            </CommentButton>
+          </CommentForms>
+        </>
+      )}
     </Wrapper>
   );
 };

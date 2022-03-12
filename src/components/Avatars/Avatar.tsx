@@ -5,8 +5,6 @@ import styled from "styled-components";
 
 type AvatarComponentProps = {
   altText: string;
-  height: number;
-  width: number;
   marginleft?: string;
   userId: string;
 };
@@ -38,8 +36,8 @@ const Avatar: React.FC<AvatarComponentProps> = (props) => {
           <AvatarImage
             src={data.getProfilePhoto.avatarUrl}
             alt={props.altText}
-            height={props.height}
-            width={props.width}
+            height={50}
+            width={50}
             objectFit="contain"
             quality={100}
             blurDataURL="1"

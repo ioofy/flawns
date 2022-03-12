@@ -64,12 +64,7 @@ const Post = () => {
             href={`/${post?.user.username}/status/${post?.id}`}
           >
             <PostCard>
-              <Avatar
-                altText={post?.user.name}
-                height={55}
-                width={55}
-                userId={post?.user.id}
-              />
+              <Avatar altText={post?.user.name} userId={post?.user.id} />
               <p>
                 {post?.user.name}
                 <span>

@@ -66,8 +66,6 @@ const PostDetail = () => {
         <Avatar
           userId={getPostWithId?.user.id}
           altText={getPostWithId?.user.username}
-          height={55}
-          width={55}
         />
         <p>
           {getPostWithId?.user.name} -
