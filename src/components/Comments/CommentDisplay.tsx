@@ -145,7 +145,7 @@ const CommentDisplay = () => {
             </div>
           )}
           {hasMore === false && (
-            <p style={{ margin: "10px 0px" }}>😞No more Comments</p>
+            <p style={{ margin: "10px 0px" }}>😞 No more Comments</p>
           )}
         </Wrapper>
       )}
