@@ -9,7 +9,7 @@ import Loading from "@components/Loadings/Loading";
 import SEO from "@components/Metadata/SEO";
 import styled from "styled-components";
 import dynamic from "next/dynamic";
-import ModalProfile from "@components/Modals/ModalProfile";
+import Modal from "@components/Modals/Modal";
 import ModalEdit from "@components/Modals/ModalEdit";
 import Link from "next/link";
 import IntoNow from "@components/Moments/IntoNow";
@@ -191,7 +191,7 @@ const UserProfile = () => {
   const AvatarEditCanvas = () => {
     return (
       <WrapperCanvas>
-        <ModalProfile
+        <Modal
           isShowing={showCanvasEdit}
           setShowModal={setShowCanvasEdit}
           customWidth="750px"
@@ -204,7 +204,7 @@ const UserProfile = () => {
             avatarUrl={avatar}
             onClick={() => setShowCanvasEdit(false)}
           />
-        </ModalProfile>
+        </Modal>
       </WrapperCanvas>
     );
   };
@@ -264,7 +264,7 @@ const UserProfile = () => {
         )}
       </div>
       {/* Modal Profile */}
-      <ModalProfile
+      <Modal
         isShowing={showAvatar}
         setShowModal={setShowAvatar}
         customHeight="100%"
@@ -273,7 +273,7 @@ const UserProfile = () => {
         customBorder="0px"
       >
         <AvatarShow src={userProfile.avatarUrl} alt={userProfile.name} />
-      </ModalProfile>
+      </Modal>
       {userProfile.bio ? (
         <p>{userProfile.bio}</p>
       ) : (

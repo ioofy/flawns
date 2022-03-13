@@ -83,7 +83,7 @@ const TopTitle = styled.span`
   }
 `;
 
-const ModalProfile = ({
+const Modal = ({
   isShowing,
   setShowModal,
   customHeight,
@@ -120,4 +120,4 @@ const ModalProfile = ({
   );
 };
 
-export default ModalProfile;
+export default Modal;

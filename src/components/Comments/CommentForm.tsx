@@ -53,21 +53,7 @@ const CommentForm = () => {
   const [isMyPost, setIsMyPost] = useState(false);
   const [comment, setComment] = useState("");
 
-  const [createComment, { loading }] = useCommentCreateMutation({
-    onCompleted: (data) => {
-      console.log(data);
-
-      if (data) {
-        if (!data.commentCreate.userErrors.length) {
-          toast.success("Your comment has been posted");
-          setComment("");
-        }
-        if (data.commentCreate.userErrors.length) {
-          toast.error(data.commentCreate.userErrors[0].message);
-        }
-      }
-    },
-  });
+  const [createComment, { loading }] = useCommentCreateMutation();
 
   useEffect(() => {
     if (loggedInUser) {
@@ -86,6 +72,17 @@ const CommentForm = () => {
           text: comment,
           postId: String(id),
         },
+      },
+      onCompleted: (data) => {
+        if (data) {
+          if (!data.commentCreate.userErrors.length) {
+            toast.success("Your comment has been posted");
+            setComment("");
+          }
+          if (data.commentCreate.userErrors.length) {
+            toast.error(data.commentCreate.userErrors[0].message);
+          }
+        }
       },
     });
   };
@@ -106,7 +103,11 @@ const CommentForm = () => {
         <>
           <ReplyInfo>Reply @{isMyPost ? "Myself" : username}</ReplyInfo>
           <CommentForms>
-            <CommentArea placeholder="Comment" onChange={handleChange} />
+            <CommentArea
+              placeholder="Comment"
+              onChange={handleChange}
+              value={comment}
+            />
             <CommentButton onClick={handleClick}>
               {loading ? "Loading.." : "Reply"}
             </CommentButton>

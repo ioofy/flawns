@@ -41,6 +41,7 @@ export type CheckPayload = {
 
 export type Comment = {
   __typename?: "Comment";
+  comments?: Maybe<Array<Maybe<Comment>>>;
   date?: Maybe<Scalars["DateTime"]>;
   id: Scalars["ID"];
   post: Post;
@@ -49,7 +50,8 @@ export type Comment = {
 };
 
 export type CommentInput = {
-  postId: Scalars["ID"];
+  commentId?: InputMaybe<Scalars["ID"]>;
+  postId?: InputMaybe<Scalars["ID"]>;
   text?: InputMaybe<Scalars["String"]>;
 };
 
@@ -65,6 +67,12 @@ export type CommentsConnection = {
   count?: Maybe<Scalars["Int"]>;
   cursor?: Maybe<Scalars["String"]>;
   hasMore: Scalars["Boolean"];
+};
+
+export type CommentsToCommentsConnection = {
+  __typename?: "CommentsToCommentsConnection";
+  comments: Array<Maybe<Comment>>;
+  count?: Maybe<Scalars["Int"]>;
 };
 
 export type CredentialsInput = {
@@ -95,6 +103,7 @@ export type Mutation = {
   activationAccount: ActivationAccountPayload;
   checkUsername: CheckPayload;
   commentCreate: CommentPayload;
+  commentCreateFromComments: CommentPayload;
   followUser: FollowUserResult;
   likesCreate: LikePostPayload;
   postCreate: PostPayload;
@@ -122,6 +131,10 @@ export type MutationCheckUsernameArgs = {
 };
 
 export type MutationCommentCreateArgs = {
+  comment: CommentInput;
+};
+
+export type MutationCommentCreateFromCommentsArgs = {
   comment: CommentInput;
 };
 
@@ -235,6 +248,7 @@ export type ProfilePhotoPayload = {
 export type Query = {
   __typename?: "Query";
   getComments: CommentsConnection;
+  getCommentsFromComents: CommentsToCommentsConnection;
   getPost?: Maybe<Post>;
   getProfile?: Maybe<User>;
   getProfilePhoto?: Maybe<User>;
@@ -250,6 +264,12 @@ export type QueryGetCommentsArgs = {
   postId: Scalars["ID"];
 };
 
+export type QueryGetCommentsFromComentsArgs = {
+  commentId: Scalars["ID"];
+  limit: Scalars["Int"];
+  offset: Scalars["Int"];
+};
+
 export type QueryGetPostArgs = {
   postId: Scalars["ID"];
 };
@@ -259,7 +279,7 @@ export type QueryGetProfileArgs = {
 };
 
 export type QueryGetProfilePhotoArgs = {
-  userId: Scalars["ID"];
+  userId?: InputMaybe<Scalars["ID"]>;
 };
 
 export type QueryGetProfilePostArgs = {
@@ -285,7 +305,8 @@ export type Subscription = {
 };
 
 export type SubscriptionCommentCreatedArgs = {
-  postId: Scalars["ID"];
+  commentId?: InputMaybe<Scalars["ID"]>;
+  postId?: InputMaybe<Scalars["ID"]>;
 };
 
 export type UnfollowUserResult = {
@@ -493,7 +514,7 @@ export type GetCommentsQuery = {
 };
 
 export type GetProfilePhotoQueryVariables = Exact<{
-  userId: Scalars["ID"];
+  userId?: InputMaybe<Scalars["ID"]>;
 }>;
 
 export type GetProfilePhotoQuery = {
@@ -1148,7 +1169,7 @@ export type GetCommentsQueryResult = Apollo.QueryResult<
   GetCommentsQueryVariables
 >;
 export const GetProfilePhotoDocument = gql`
-  query getProfilePhoto($userId: ID!) {
+  query getProfilePhoto($userId: ID) {
     getProfilePhoto(userId: $userId) {
       avatarUrl
     }
@@ -1172,7 +1193,7 @@ export const GetProfilePhotoDocument = gql`
  * });
  */
 export function useGetProfilePhotoQuery(
-  baseOptions: Apollo.QueryHookOptions<
+  baseOptions?: Apollo.QueryHookOptions<
     GetProfilePhotoQuery,
     GetProfilePhotoQueryVariables
   >

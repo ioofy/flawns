@@ -34,7 +34,7 @@ const ContentWrapper = styled.div`
 `;
 
 const COMMENT_SUBSCRIPTION = gql`
-  subscription commentCreated($postId: ID!) {
+  subscription commentCreated($postId: ID) {
     commentCreated(postId: $postId) {
       id
       text
@@ -43,6 +43,10 @@ const COMMENT_SUBSCRIPTION = gql`
         id
         name
         username
+      }
+      comments {
+        id
+        text
       }
     }
   }

@@ -45,16 +45,36 @@ const PostDetail = () => {
   if (postError) {
     Sentry.captureException(postError);
     return (
-      <ContentErrors
-        margin="0px auto"
-        content="Theres an error this caused in our server or something."
-        imgUrl="/image/_error.png"
-      />
+      <>
+        <SEO
+          title="Oops.. Something went wrong"
+          description="Theres an error this caused in our server or something."
+        />
+        <ContentErrors
+          margin="0px auto"
+          content="Theres an error this caused in our server or something."
+          imgUrl="/image/_error.png"
+        />
+      </>
     );
   }
 
   const getPostWithId = postData?.getPost;
 
+  console.log(getPostWithId, "getPostWithId");
+
+  if (getPostWithId === null) {
+    return (
+      <>
+        <SEO title="Oops.. Post Not Found" description="Post Not Found" />
+        <ContentErrors
+          margin="0px auto"
+          content="Oops.. Post Not Found"
+          imgUrl="/image/_error.png"
+        />
+      </>
+    );
+  }
   return (
     <Container>
       <SEO
