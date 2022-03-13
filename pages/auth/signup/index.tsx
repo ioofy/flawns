@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useContext } from "react";
+import React, { useContext } from "react";
 import { Base64 } from "base64-string";
 import { useForm } from "react-hook-form";
 import { useSignupMutation } from "generated/graphql";
@@ -47,17 +47,7 @@ const SignUp = () => {
   const enc = new Base64();
   const router = useRouter();
 
-  // initial state for input form
-  const initialState = {
-    email: "",
-    username: "",
-    name: "",
-    password: "",
-  };
-
   const { handleAuthAction } = useContext(AuthContext);
-  const [{ email, password, name, username }, setState] =
-    useState(initialState);
 
   const {
     register,
@@ -67,35 +57,16 @@ const SignUp = () => {
 
   const [signUp, { loading }] = useSignupMutation();
 
-  // encrypt secret token
-  const generateToken = enc.encode(email);
+  const onSubmitForm = (values: FormDataProps & Object) => {
+    const { email, name, password, username } = values;
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setState((prevState) => ({ ...prevState, [name]: value }));
-  };
+    const generateToken = enc.encode(email);
 
-  const onSignUpAction = useCallback(() => {
     const gravatar = gravatarUrl(email, {
       default: "identicon",
       size: 200,
     });
 
-    return signUp({
-      variables: {
-        name,
-        username,
-        avatarUrl: gravatar,
-        secretToken: generateToken,
-        credentials: {
-          email,
-          password,
-        },
-      },
-    });
-  }, [name, email, password, generateToken, signUp, username]);
-
-  const onSubmitForm = (values: Object) => {
     // axios data
     const config: Object = {
       method: "post",
@@ -106,34 +77,50 @@ const SignUp = () => {
       data: { ...values, generateToken },
     };
 
-    onSignUpAction().then(async (res) => {
-      const {
-        data: { signup },
-      } = res;
+    signUp({
+      variables: {
+        name,
+        username,
+        avatarUrl: gravatar,
+        secretToken: generateToken,
+        credentials: {
+          email,
+          password,
+        },
+      },
+      onCompleted: async (data) => {
+        const { signup } = data;
 
-      if (signup.userErrors.length) {
-        toast.error(signup.userErrors[0].message);
-      } else {
-        // close forrm
-        handleAuthAction("close");
-        toast.success("Successfully created account");
+        // if have error
+        if (signup.userErrors.length) {
+          console.log("flawns auth null");
+          // set Toast error
+          toast.error(signup.userErrors[0].message);
+        }
+        // if success
+        if (!signup.userErrors.length) {
+          // set Auth
+          handleAuthAction("close");
 
-        try {
-          if (setState) {
-            const response = await axios(config);
-            if (response.status == 200) {
-              console.log("successfully sent email");
+          // set Toast sucess
+          toast.success("Successfully created account");
+
+          try {
+            if (values) {
+              const response = await axios(config);
+              if (response.status == 200) {
+                console.log("successfully sent email");
+              }
             }
+          } catch (error) {
+            console.log(error);
           }
-        } catch (err) {
-          console.log(err);
-        }
 
-        // if not loading and not error
-        if (!loading && !signup.userErrors.length) {
-          router.push(`/auth/signup/flow/thankyou/show?username=${username}`);
+          if (!loading && !signup.userErrors.length) {
+            router.push(`/auth/signup/flow/thankyou/show?username=${username}`);
+          }
         }
-      }
+      },
     });
   };
 
@@ -185,8 +172,6 @@ const SignUp = () => {
                         required: true,
                         minLength: 1,
                       })}
-                      value={username}
-                      onChange={onChange}
                     />
                     <Label htmlFor="username">Username</Label>
                   </InputBox>
@@ -203,8 +188,6 @@ const SignUp = () => {
                         required: true,
                         minLength: 1,
                       })}
-                      value={name}
-                      onChange={onChange}
                     />
                     <Label htmlFor="name">Name</Label>
                   </InputBox>
@@ -223,8 +206,6 @@ const SignUp = () => {
                         required: true,
                         pattern: patterns,
                       })}
-                      value={email}
-                      onChange={onChange}
                     />
                     <Label htmlFor="email">E-mail</Label>
                   </InputBox>
@@ -241,8 +222,6 @@ const SignUp = () => {
                         required: true,
                         minLength: 7,
                       })}
-                      value={password}
-                      onChange={onChange}
                     />
                     <Label htmlFor="password">Password</Label>
                   </InputBox>

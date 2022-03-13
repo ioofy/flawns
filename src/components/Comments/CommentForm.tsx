@@ -75,7 +75,7 @@ const CommentForm = () => {
         setIsMyPost(true);
       }
     }
-  }, [loggedInUser]);
+  }, [loggedInUser, username]);
 
   const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
