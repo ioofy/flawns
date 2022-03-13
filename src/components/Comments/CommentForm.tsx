@@ -59,6 +59,7 @@ const CommentForm = () => {
       if (data) {
         if (!data.commentCreate.userErrors.length) {
           toast.success("Your comment has been posted");
+          setComment("");
         }
         if (data.commentCreate.userErrors.length) {
           toast.error(data.commentCreate.userErrors[0].message);
@@ -81,6 +82,7 @@ const CommentForm = () => {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    // assign in into hooks
     setComment(e.target.value);
   };
 
