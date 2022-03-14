@@ -2,36 +2,29 @@ import React, { useEffect, useState } from "react";
 import { gql } from "@apollo/client";
 import { useGetCommentsQuery } from "generated/graphql";
 import { useRouter } from "next/router";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
 import styled from "styled-components";
 import CommentTile from "./CommentTile";
 import Loading from "@components/Loadings/Loading";
+import { AnimatePresence, motion } from "framer-motion";
 
 const Wrapper = styled.div`
   width: 100%;
-
-  .__comments-item-enter {
-    opacity: 0.01;
-  }
-  .__comments-item-enter-active {
-    opacity: 1;
-    transform: translate(0, 0);
-    transition: all 400ms ease-in;
-  }
-  .__comments-item-exit {
-    opacity: 1;
-    transform: translate(0, 0);
-  }
-  .__comments-item-exit-active {
-    opacity: 0.01;
-    transition: all 400ms ease-in;
-  }
 `;
 
 const ContentWrapper = styled.div`
   width: 100%;
   max-width: 370px;
 `;
+
+const animates = {
+  initial: { scale: 0 },
+  animate: { scale: 1 },
+  exit: { scale: 0 },
+  // giving transition all ease 0.3
+  transition: {
+    default: { duration: 0.3, ease: "easeInOut" },
+  },
+};
 
 const COMMENT_SUBSCRIPTION = gql`
   subscription commentCreated($postId: ID!) {
@@ -118,7 +111,7 @@ const CommentDisplay = () => {
         <Loading justifycontent="center" />
       ) : (
         <Wrapper onScroll={handleMore}>
-          <TransitionGroup className="__comments-list">
+          <AnimatePresence>
             {data &&
               data.getComments.comments &&
               data.getComments.comments.map(
@@ -126,17 +119,13 @@ const CommentDisplay = () => {
                   const comment = data.getComments.comments[index];
 
                   return (
-                    <CSSTransition
-                      key={commentItem.id}
-                      timeout={500}
-                      classNames="__comments-item"
-                    >
+                    <motion.div key={commentItem.id} layout {...animates}>
                       <CommentTile comment={comment} />
-                    </CSSTransition>
+                    </motion.div>
                   );
                 }
               )}
-          </TransitionGroup>
+          </AnimatePresence>
           {hasMore && (
             <div className="more-button">
               <button onClick={() => handleMore()}>
