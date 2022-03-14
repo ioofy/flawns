@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useCommentCreateMutation } from "generated/graphql";
 import { useRouter } from "next/router";
 import { toast, Toaster } from "react-hot-toast";
@@ -7,7 +7,6 @@ import styled from "styled-components";
 
 const Wrapper = styled.div`
   width: 370px;
-
   .toaster {
     font-family: "AllianceEB", sans-serif;
     font-size: 15px;
@@ -27,7 +26,6 @@ const CommentArea = styled.textarea`
   width: 100%;
   resize: none;
   background: skyblue;
-
   &::placeholder {
     color: black;
   }
@@ -50,22 +48,18 @@ const CommentForm = () => {
   const router = useRouter();
   const { username, id } = router.query;
   const { loggedInUser } = useContext(AuthContext);
+  const [isMyPost, setIsMyPost] = useState(false);
   const [comment, setComment] = useState("");
 
-  const [createComment, { loading }] = useCommentCreateMutation({
-    onCompleted: (data) => {
-      console.log(data);
+  const [createComment, { loading }] = useCommentCreateMutation();
 
-      if (data) {
-        if (!data.commentCreate.userErrors.length) {
-          toast.success("Your comment has been posted");
-        }
-        if (data.commentCreate.userErrors.length) {
-          toast.error(data.commentCreate.userErrors[0].message);
-        }
+  useEffect(() => {
+    if (loggedInUser) {
+      if (loggedInUser.username === username) {
+        setIsMyPost(true);
       }
-    },
-  });
+    }
+  }, [loggedInUser, username]);
 
   const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -77,10 +71,22 @@ const CommentForm = () => {
           postId: String(id),
         },
       },
+      onCompleted: (data) => {
+        if (data) {
+          if (!data.commentCreate.userErrors.length) {
+            toast.success("Your comment has been posted");
+            setComment("");
+          }
+          if (data.commentCreate.userErrors.length) {
+            toast.error(data.commentCreate.userErrors[0].message);
+          }
+        }
+      },
     });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    // assign in into hooks
     setComment(e.target.value);
   };
 
@@ -93,9 +99,13 @@ const CommentForm = () => {
       />
       {loggedInUser && (
         <>
-          <ReplyInfo>Reply @{username}</ReplyInfo>
+          <ReplyInfo>Reply @{isMyPost ? "Myself" : username}</ReplyInfo>
           <CommentForms>
-            <CommentArea placeholder="Comment" onChange={handleChange} />
+            <CommentArea
+              placeholder="Comment"
+              onChange={handleChange}
+              value={comment}
+            />
             <CommentButton onClick={handleClick}>
               {loading ? "Loading.." : "Reply"}
             </CommentButton>
