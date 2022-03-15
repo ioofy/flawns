@@ -3,7 +3,7 @@
 const { withSentryConfig } = require("@sentry/nextjs");
 
 const moduleExports = {
-  reactStrictMode: false,
+  reactStrictMode: true,
   optimizeFonts: false,
   images: {
     domains: [

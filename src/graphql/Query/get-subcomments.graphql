@@ -1,0 +1,17 @@
+query getSubComments($commentId: ID!, $after: String, $pageSize: Int) {
+  getSubComments(commentId: $commentId, after: $after, pageSize: $pageSize) {
+    count
+    hasMore
+    cursor
+    subComments {
+      id
+      text
+      date
+      user {
+        id
+        name
+        username
+      }
+    }
+  }
+}

@@ -1,0 +1,7 @@
+mutation createSubComment($subComment: SubCommentInput!) {
+  subCommentCreate(subComment: $subComment) {
+    userErrors {
+      message
+    }
+  }
+}

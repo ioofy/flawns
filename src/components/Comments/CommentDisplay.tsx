@@ -37,6 +37,9 @@ const COMMENT_SUBSCRIPTION = gql`
         name
         username
       }
+      subComments {
+        id
+      }
     }
   }
 `;

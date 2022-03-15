@@ -22,6 +22,22 @@ export const cache = new InMemoryCache({
             }
           },
         },
+        getSubComments: {
+          keyArgs: ["commentId"],
+          merge(existing, incoming, { args }) {
+            if (existing === undefined) {
+              return incoming;
+            }
+
+            if (args.after && existing.subComments) {
+              return Object.assign({}, incoming, {
+                subComments: [...existing.subComments, ...incoming.subComments],
+              });
+            } else {
+              return incoming;
+            }
+          },
+        },
       },
     },
   },
