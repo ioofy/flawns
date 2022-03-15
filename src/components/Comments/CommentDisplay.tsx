@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { gql } from "@apollo/client";
 import { useGetCommentsQuery } from "generated/graphql";
 import { useRouter } from "next/router";
+import { AnimatePresence, motion } from "framer-motion";
 import styled from "styled-components";
 import CommentTile from "./CommentTile";
 import Loading from "@components/Loadings/Loading";
-import { AnimatePresence, motion } from "framer-motion";
 
 const Wrapper = styled.div`
   width: 100%;

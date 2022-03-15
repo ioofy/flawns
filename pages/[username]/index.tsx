@@ -177,6 +177,10 @@ const UserProfile = () => {
 
         if (files.size > 1100000) {
           toast.error("File size is too big, please upload less than 1mb");
+        }
+
+        if (files.type !== "image/jpeg" && files.type !== "image/png") {
+          toast.error("Please upload image file");
         } else {
           const setBlob = URL.createObjectURL(files);
           setAvatar(setBlob);
