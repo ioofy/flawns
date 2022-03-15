@@ -15,6 +15,7 @@ import Link from "next/link";
 import IntoNow from "@components/Moments/IntoNow";
 import Avatar from "@components/Avatars/Avatar";
 import ButtonUpload from "@components/Buttons/ButtonUpload";
+import { isValidFileUploaded } from "@utils/validateFile";
 
 // ssr false
 const AvatarUpload = dynamic(() => import("@components/Avatars/AvatarUpload"), {
@@ -162,6 +163,13 @@ const UserProfile = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files[0];
 
+    // check file is valid
+    if (isValidFileUploaded(files)) {
+      console.log("valid image");
+    } else {
+      toast.error("Please upload an image file");
+    }
+
     if (files) {
       const img = new Image();
 
@@ -177,16 +185,12 @@ const UserProfile = () => {
 
         if (files.size > 1100000) {
           toast.error("File size is too big, please upload less than 1mb");
-        }
-
-        if (files.type !== "image/jpeg" && files.type !== "image/png") {
-          toast.error("Please upload image file");
         } else {
           const setBlob = URL.createObjectURL(files);
+
           setAvatar(setBlob);
 
           setShowCanvasEdit(true);
-          console.log(files);
         }
       };
     }
