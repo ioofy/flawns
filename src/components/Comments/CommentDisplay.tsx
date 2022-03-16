@@ -113,7 +113,7 @@ const CommentDisplay = () => {
       {loading ? (
         <Loading justifycontent="center" />
       ) : (
-        <Wrapper onScroll={handleMore}>
+        <Wrapper>
           <AnimatePresence>
             {data &&
               data.getComments.comments &&

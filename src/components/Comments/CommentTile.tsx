@@ -20,10 +20,6 @@ type CommentTileProps = {
       name: string;
       username?: string;
     };
-    subComments?: {
-      __typename?: "SubComment";
-      id: string;
-    }[];
   };
 };
 
@@ -84,7 +80,6 @@ const CommentTile = ({ comment }: CommentTileProps) => {
     date,
     text,
     user: { id, name, username },
-    subComments,
   } = comment;
 
   const { data, error, subscribeToMore, fetchMore } = useGetSubCommentsQuery({
@@ -135,7 +130,7 @@ const CommentTile = ({ comment }: CommentTileProps) => {
     fetchMore({
       variables: {
         commentId,
-        pageSize: 5,
+        pageSize: 3,
         after: data.getSubComments.cursor,
       },
     });
@@ -152,43 +147,49 @@ const CommentTile = ({ comment }: CommentTileProps) => {
   const hasMore = data?.getSubComments.hasMore;
 
   return (
-    <CommentBox>
-      <Avatar altText={username} userId={id} />
-      <p>
-        on <IntoNow actualDate={date} interval={1000} />
-      </p>
-      <p>
-        By: {name} - {username}
-      </p>
-      <p>{text}</p>
+    <>
+      <CommentBox>
+        <Avatar altText={username} userId={id} />
+        <p>id {commentId}</p>
+        <p>
+          on <IntoNow actualDate={date} interval={1000} />
+        </p>
+        <p>
+          By: {name} - {username}
+        </p>
+        <p>{text}</p>
 
-      <AnimatePresence>
-        {subComments &&
-          data &&
-          data.getSubComments.subComments.map((subComment) => {
-            return (
-              <motion.div key={subComment.id} layout {...animates}>
-                <SubCommentBox>
-                  <SubCommentTile>
-                    <PeopleOnComment>
-                      <Avatar
-                        altText={subComment.user.username}
-                        userId={subComment.user.id}
-                      />
-                      <p>
-                        on{" "}
-                        <IntoNow actualDate={subComment.date} interval={1000} />
-                      </p>
-                      <p>
-                        {subComment.user.name} - {subComment.user.username}
-                      </p>
-                      <p>{subComment.text}</p>
-                    </PeopleOnComment>
-                  </SubCommentTile>
-                </SubCommentBox>
-              </motion.div>
-            );
-          })}
+        <AnimatePresence>
+          {data &&
+            data.getSubComments.subComments &&
+            data.getSubComments.subComments.map((subComment) => {
+              return (
+                <motion.div key={subComment.id} layout {...animates}>
+                  <SubCommentBox>
+                    <SubCommentTile>
+                      <PeopleOnComment>
+                        <Avatar
+                          altText={subComment.user.username}
+                          userId={subComment.user.id}
+                        />
+                        <p>
+                          on{" "}
+                          <IntoNow
+                            actualDate={subComment.date}
+                            interval={1000}
+                          />
+                        </p>
+                        <p>
+                          {subComment.user.name} - {subComment.user.username}
+                        </p>
+                        <p>{subComment.text}</p>
+                      </PeopleOnComment>
+                    </SubCommentTile>
+                  </SubCommentBox>
+                </motion.div>
+              );
+            })}
+        </AnimatePresence>
         {hasMore && (
           <div className="more-button">
             <button onClick={() => handleMore()}>
@@ -196,9 +197,9 @@ const CommentTile = ({ comment }: CommentTileProps) => {
             </button>
           </div>
         )}
-      </AnimatePresence>
+      </CommentBox>
       <CommentSubForm commentId={commentId} />
-    </CommentBox>
+    </>
   );
 };
 
