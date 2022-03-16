@@ -1,6 +1,7 @@
 import { AuthContext } from "@context/AuthContextProvider";
 import { useCreateSubCommentMutation } from "generated/graphql";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
@@ -42,11 +43,26 @@ const ReplyInfo = styled.p`
   margin: 10px 0px;
 `;
 
-const CommentSubForm = ({ commentId }: { commentId: string }) => {
+const CommentSubForm = ({
+  commentId,
+  username,
+}: {
+  commentId: string;
+  username: string;
+}) => {
   const { loggedInUser } = useContext(AuthContext);
 
   const [createSubComment, { loading }] = useCreateSubCommentMutation();
   const [comment, setComment] = useState("");
+  const [isMyComment, setIsMyComment] = useState(false);
+
+  useEffect(() => {
+    if (loggedInUser) {
+      if (loggedInUser.username === username) {
+        setIsMyComment(true);
+      }
+    }
+  }, [loggedInUser, username]);
 
   const handleClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -61,7 +77,11 @@ const CommentSubForm = ({ commentId }: { commentId: string }) => {
 
       onCompleted: (data) => {
         if (!data.subCommentCreate.userErrors.length) {
+          toast.success("Your comment has been posted");
           setComment("");
+        }
+        if (data.subCommentCreate.userErrors.length) {
+          toast.error(data.subCommentCreate.userErrors[0].message);
         }
       },
     });
@@ -76,10 +96,10 @@ const CommentSubForm = ({ commentId }: { commentId: string }) => {
     <Wrapper>
       {loggedInUser && (
         <>
-          <ReplyInfo>Reply</ReplyInfo>
+          <ReplyInfo>Reply @{isMyComment ? "Myself" : username}</ReplyInfo>
           <CommentForms>
             <CommentArea
-              placeholder="Comment"
+              placeholder="Replies to this comment"
               onChange={handleChange}
               value={comment}
             />

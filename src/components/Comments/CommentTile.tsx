@@ -105,7 +105,6 @@ const CommentTile = ({ comment }: CommentTileProps) => {
 
         const newCache = Object.assign({}, prev, {
           getSubComments: {
-            count: prev.getSubComments.count,
             hasMore: prev.getSubComments.hasMore,
             cursor: prev.getSubComments.cursor,
             subComments: [
@@ -196,7 +195,7 @@ const CommentTile = ({ comment }: CommentTileProps) => {
             </button>
           </div>
         )}
-        <CommentSubForm commentId={commentId} />
+        <CommentSubForm commentId={commentId} username={username} />
       </CommentBox>
     </>
   );

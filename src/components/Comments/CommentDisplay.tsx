@@ -71,7 +71,6 @@ const CommentDisplay = () => {
 
         const newCache = Object.assign({}, prev, {
           getComments: {
-            count: prev.getComments.count,
             hasMore: prev.getComments.hasMore,
             cursor: prev.getComments.cursor,
             comments: [subscriptionResponse, ...prev.getComments.comments],
