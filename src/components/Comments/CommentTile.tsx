@@ -1,10 +1,10 @@
+import React, { useEffect, useState } from "react";
 import { gql } from "@apollo/client";
+import { AnimatePresence, motion } from "framer-motion";
+import { useGetSubCommentsQuery } from "generated/graphql";
 import Avatar from "@components/Avatars/Avatar";
 import Loading from "@components/Loadings/Loading";
 import IntoNow from "@components/Moments/IntoNow";
-import { AnimatePresence, motion } from "framer-motion";
-import { useGetSubCommentsQuery } from "generated/graphql";
-import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import CommentSubForm from "./CommentSubForm";
 
@@ -150,7 +150,6 @@ const CommentTile = ({ comment }: CommentTileProps) => {
     <>
       <CommentBox>
         <Avatar altText={username} userId={id} />
-        <p>id {commentId}</p>
         <p>
           on <IntoNow actualDate={date} interval={1000} />
         </p>
@@ -197,8 +196,8 @@ const CommentTile = ({ comment }: CommentTileProps) => {
             </button>
           </div>
         )}
+        <CommentSubForm commentId={commentId} />
       </CommentBox>
-      <CommentSubForm commentId={commentId} />
     </>
   );
 };

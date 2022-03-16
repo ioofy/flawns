@@ -57,7 +57,6 @@ export type CommentPayload = {
 export type CommentsConnection = {
   __typename?: 'CommentsConnection';
   comments: Array<Maybe<Comment>>;
-  count?: Maybe<Scalars['Int']>;
   cursor?: Maybe<Scalars['String']>;
   hasMore: Scalars['Boolean'];
 };
@@ -332,7 +331,6 @@ export type SubCommentPayload = {
 
 export type SubCommentsConnection = {
   __typename?: 'SubCommentsConnection';
-  count?: Maybe<Scalars['Int']>;
   cursor?: Maybe<Scalars['String']>;
   hasMore: Scalars['Boolean'];
   subComments: Array<Maybe<SubComment>>;
@@ -455,7 +453,7 @@ export type GetCommentsQueryVariables = Exact<{
 }>;
 
 
-export type GetCommentsQuery = { __typename?: 'Query', getComments: { __typename?: 'CommentsConnection', count?: number | null | undefined, cursor?: string | null | undefined, hasMore: boolean, comments: Array<{ __typename?: 'Comment', id: string, text: string, date?: any | null | undefined, user: { __typename?: 'User', id: string, name: string, username?: string | null | undefined }, subComments?: Array<{ __typename?: 'SubComment', id: string } | null | undefined> | null | undefined } | null | undefined> } };
+export type GetCommentsQuery = { __typename?: 'Query', getComments: { __typename?: 'CommentsConnection', cursor?: string | null | undefined, hasMore: boolean, comments: Array<{ __typename?: 'Comment', id: string, text: string, date?: any | null | undefined, user: { __typename?: 'User', id: string, name: string, username?: string | null | undefined }, subComments?: Array<{ __typename?: 'SubComment', id: string } | null | undefined> | null | undefined } | null | undefined> } };
 
 export type GetProfilePhotoQueryVariables = Exact<{
   userId?: InputMaybe<Scalars['ID']>;
@@ -494,7 +492,7 @@ export type GetSubCommentsQueryVariables = Exact<{
 }>;
 
 
-export type GetSubCommentsQuery = { __typename?: 'Query', getSubComments: { __typename?: 'SubCommentsConnection', count?: number | null | undefined, hasMore: boolean, cursor?: string | null | undefined, subComments: Array<{ __typename?: 'SubComment', id: string, text: string, date: any, user: { __typename?: 'User', id: string, name: string, username?: string | null | undefined } } | null | undefined> } };
+export type GetSubCommentsQuery = { __typename?: 'Query', getSubComments: { __typename?: 'SubCommentsConnection', hasMore: boolean, cursor?: string | null | undefined, subComments: Array<{ __typename?: 'SubComment', id: string, text: string, date: any, user: { __typename?: 'User', id: string, name: string, username?: string | null | undefined } } | null | undefined> } };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -837,7 +835,6 @@ export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMut
 export const GetCommentsDocument = gql`
     query getComments($postId: ID!, $after: String, $pageSize: Int) {
   getComments(postId: $postId, after: $after, pageSize: $pageSize) {
-    count
     cursor
     hasMore
     comments {
@@ -1069,7 +1066,6 @@ export type GetProfilePostQueryResult = Apollo.QueryResult<GetProfilePostQuery, 
 export const GetSubCommentsDocument = gql`
     query getSubComments($commentId: ID!, $after: String, $pageSize: Int) {
   getSubComments(commentId: $commentId, after: $after, pageSize: $pageSize) {
-    count
     hasMore
     cursor
     subComments {

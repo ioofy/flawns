@@ -8,7 +8,6 @@ const SEO = (props: any) => {
 
   return (
     <Head>
-      <link rel="icon" href="/logo.png" />
       <title>{title} - Flawnn 👩‍🎤👨‍🎤</title>
       <meta
         name="description"
