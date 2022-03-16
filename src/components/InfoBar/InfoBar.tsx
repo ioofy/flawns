@@ -1,7 +1,17 @@
 import React from "react";
 
-const InfoBar = () => {
-  return <div>InfoBar</div>;
+type InfoBarProps = {
+  commentCount: number;
+  LikeCount?: number;
+};
+
+const InfoBar = (props: InfoBarProps) => {
+  return (
+    <div>
+      <p>Comment : {props.commentCount}</p>
+      <p>Like: {props.LikeCount}</p>
+    </div>
+  );
 };
 
 export default InfoBar;

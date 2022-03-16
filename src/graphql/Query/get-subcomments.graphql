@@ -1,7 +1,7 @@
 query getSubComments($commentId: ID!, $after: String, $pageSize: Int) {
   getSubComments(commentId: $commentId, after: $after, pageSize: $pageSize) {
-    hasMore
     cursor
+    hasMore
     subComments {
       id
       text

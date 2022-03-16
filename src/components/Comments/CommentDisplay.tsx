@@ -7,7 +7,6 @@ import styled from "styled-components";
 import CommentTile from "./CommentTile";
 import Loading from "@components/Loadings/Loading";
 import CommentForm from "./CommentForm";
-import InfoBar from "@components/InfoBar/InfoBar";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -111,7 +110,6 @@ const CommentDisplay = () => {
 
   return (
     <>
-      <InfoBar />
       <CommentForm />
       <ContentWrapper>
         {loading ? (
