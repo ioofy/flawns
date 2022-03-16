@@ -3,7 +3,6 @@ import CommentDisplay from "@components/Comments/CommentDisplay";
 import Loading from "@components/Loadings/Loading";
 import SEO from "@components/Metadata/SEO";
 import styled from "styled-components";
-import CommentForm from "@components/Comments/CommentForm";
 import IntoNow from "@components/Moments/IntoNow";
 import Avatar from "@components/Avatars/Avatar";
 import Link from "next/link";
@@ -76,7 +75,6 @@ const PostDetail = () => {
         </p>
         <p>{getPostWithId?.content}</p>
       </PostCard>
-      <CommentForm />
       <CommentDisplay />
     </Container>
   );

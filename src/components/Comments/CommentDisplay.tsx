@@ -6,6 +6,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import styled from "styled-components";
 import CommentTile from "./CommentTile";
 import Loading from "@components/Loadings/Loading";
+import CommentForm from "./CommentForm";
+import InfoBar from "@components/InfoBar/InfoBar";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -108,39 +110,47 @@ const CommentDisplay = () => {
   const hasMore = data?.getComments.hasMore;
 
   return (
-    <ContentWrapper>
-      {loading ? (
-        <Loading justifycontent="center" />
-      ) : (
-        <Wrapper>
-          <AnimatePresence>
-            {data &&
-              data.getComments.comments &&
-              data.getComments.comments.map(
-                (commentItem: any, index: number) => {
-                  const comment = data.getComments.comments[index];
+    <>
+      <InfoBar />
+      <CommentForm />
+      <ContentWrapper>
+        {loading ? (
+          <Loading justifycontent="center" />
+        ) : (
+          <Wrapper>
+            <AnimatePresence>
+              {data &&
+                data.getComments.comments &&
+                data.getComments.comments.map(
+                  (commentItem: any, index: number) => {
+                    const comment = data.getComments.comments[index];
 
-                  return (
-                    <motion.div key={commentItem.id} layout {...animates}>
-                      <CommentTile comment={comment} />
-                    </motion.div>
-                  );
-                }
-              )}
-          </AnimatePresence>
-          {hasMore && (
-            <div className="more-button">
-              <button onClick={() => handleMore()}>
-                {isLoading ? <Loading justifycontent="center" /> : "Load More"}
-              </button>
-            </div>
-          )}
-          {hasMore === false && (
-            <p style={{ margin: "10px 0px" }}>😞No more Comments</p>
-          )}
-        </Wrapper>
-      )}
-    </ContentWrapper>
+                    return (
+                      <motion.div key={commentItem.id} layout {...animates}>
+                        <CommentTile comment={comment} />
+                      </motion.div>
+                    );
+                  }
+                )}
+            </AnimatePresence>
+            {hasMore && (
+              <div className="more-button">
+                <button onClick={() => handleMore()}>
+                  {isLoading ? (
+                    <Loading justifycontent="center" />
+                  ) : (
+                    "Load More"
+                  )}
+                </button>
+              </div>
+            )}
+            {hasMore === false && (
+              <p style={{ margin: "10px 0px" }}>😞No more Comments</p>
+            )}
+          </Wrapper>
+        )}
+      </ContentWrapper>
+    </>
   );
 };
 

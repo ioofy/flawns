@@ -20,7 +20,7 @@ const Test = () => {
 
   return (
     <Container>
-      <p>info: {data.status}</p>
+      <p>{data?.status}</p>
     </Container>
   );
 };

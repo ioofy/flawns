@@ -63,6 +63,7 @@ export type CommentPayload = {
 export type CommentsConnection = {
   __typename?: "CommentsConnection";
   comments: Array<Maybe<Comment>>;
+  count?: Maybe<Scalars["Int"]>;
   cursor?: Maybe<Scalars["String"]>;
   hasMore: Scalars["Boolean"];
 };
@@ -168,11 +169,8 @@ export type MutationSigninArgs = {
 };
 
 export type MutationSignupArgs = {
-  avatarUrl: Scalars["String"];
   credentials: CredentialsInput;
-  name: Scalars["String"];
-  secretToken: Scalars["String"];
-  username: Scalars["String"];
+  data: SignUpInput;
 };
 
 export type MutationSubCommentCreateArgs = {
@@ -291,6 +289,13 @@ export type ResponseMessage = {
   userErrors: Array<UserError>;
 };
 
+export type SignUpInput = {
+  avatarUrl: Scalars["String"];
+  name: Scalars["String"];
+  secretToken: Scalars["String"];
+  username: Scalars["String"];
+};
+
 export type SubComment = {
   __typename?: "SubComment";
   date: Scalars["DateTime"];
@@ -320,10 +325,15 @@ export type SubCommentsConnection = {
 export type Subscription = {
   __typename?: "Subscription";
   commentCreated?: Maybe<Comment>;
+  likeCreated?: Maybe<LikedPost>;
   subCommentCreated?: Maybe<SubComment>;
 };
 
 export type SubscriptionCommentCreatedArgs = {
+  postId: Scalars["ID"];
+};
+
+export type SubscriptionLikeCreatedArgs = {
   postId: Scalars["ID"];
 };
 
@@ -447,10 +457,7 @@ export type SigninMutation = {
 };
 
 export type SignupMutationVariables = Exact<{
-  secretToken: Scalars["String"];
-  name: Scalars["String"];
-  username: Scalars["String"];
-  avatarUrl: Scalars["String"];
+  data: SignUpInput;
   credentials: CredentialsInput;
 }>;
 
@@ -527,6 +534,7 @@ export type GetCommentsQuery = {
     __typename?: "CommentsConnection";
     cursor?: string | null | undefined;
     hasMore: boolean;
+    count?: number | null | undefined;
     comments: Array<
       | {
           __typename?: "Comment";
@@ -1034,20 +1042,8 @@ export type SigninMutationOptions = Apollo.BaseMutationOptions<
   SigninMutationVariables
 >;
 export const SignupDocument = gql`
-  mutation signup(
-    $secretToken: String!
-    $name: String!
-    $username: String!
-    $avatarUrl: String!
-    $credentials: CredentialsInput!
-  ) {
-    signup(
-      secretToken: $secretToken
-      name: $name
-      username: $username
-      avatarUrl: $avatarUrl
-      credentials: $credentials
-    ) {
+  mutation signup($data: SignUpInput!, $credentials: CredentialsInput!) {
+    signup(data: $data, credentials: $credentials) {
       userErrors {
         message
       }
@@ -1072,10 +1068,7 @@ export type SignupMutationFn = Apollo.MutationFunction<
  * @example
  * const [signupMutation, { data, loading, error }] = useSignupMutation({
  *   variables: {
- *      secretToken: // value for 'secretToken'
- *      name: // value for 'name'
- *      username: // value for 'username'
- *      avatarUrl: // value for 'avatarUrl'
+ *      data: // value for 'data'
  *      credentials: // value for 'credentials'
  *   },
  * });
@@ -1225,6 +1218,7 @@ export const GetCommentsDocument = gql`
     getComments(postId: $postId, after: $after, pageSize: $pageSize) {
       cursor
       hasMore
+      count
       comments {
         id
         text

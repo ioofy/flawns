@@ -2,6 +2,7 @@ query getComments($postId: ID!, $after: String, $pageSize: Int) {
   getComments(postId: $postId, after: $after, pageSize: $pageSize) {
     cursor
     hasMore
+    count
     comments {
       id
       text
