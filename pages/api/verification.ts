@@ -5,6 +5,11 @@ import handlebars from "handlebars";
 import fs from "fs";
 import path from "path";
 
+// config from env
+require("dotenv").config();
+console.log(process.env.GOOGLE_MAIL);
+console.log(process.env.GOOGLE_PASS);
+
 const server = async (req: NextApiRequest, res: NextApiResponse) => {
   const { email, username, generateToken } = req.body;
 
