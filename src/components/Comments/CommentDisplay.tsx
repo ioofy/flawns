@@ -125,6 +125,15 @@ const CommentDisplay = () => {
 
                     return (
                       <motion.div key={commentItem.id} layout {...animates}>
+                        {/* DELETE BUTTON */}
+                        {/* <button
+                          onClick={() => {
+                            console.log("delete!");
+                          }}
+                        >
+                          <BiTrash size={20} style={{ cursor: "pointer" }} />
+                        </button> */}
+
                         <CommentTile comment={comment} />
                       </motion.div>
                     );

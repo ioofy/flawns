@@ -89,6 +89,7 @@ export type Mutation = {
   activationAccount: ActivationAccountPayload;
   checkUsername: CheckPayload;
   commentCreate: CommentPayload;
+  commentDelete: CommentPayload;
   followUser: FollowUserResult;
   likesCreate: LikePostPayload;
   postCreate: PostPayload;
@@ -121,6 +122,11 @@ export type MutationCheckUsernameArgs = {
 
 export type MutationCommentCreateArgs = {
   comment: CommentInput;
+};
+
+
+export type MutationCommentDeleteArgs = {
+  commentId: Scalars['ID'];
 };
 
 
@@ -343,17 +349,11 @@ export type SubCommentsConnection = {
 export type Subscription = {
   __typename?: 'Subscription';
   commentCreated: Comment;
-  likeCreated: LikedPost;
   subCommentCreated: SubComment;
 };
 
 
 export type SubscriptionCommentCreatedArgs = {
-  postId: Scalars['ID'];
-};
-
-
-export type SubscriptionLikeCreatedArgs = {
   postId: Scalars['ID'];
 };
 
@@ -415,6 +415,13 @@ export type CommentCreateMutationVariables = Exact<{
 
 
 export type CommentCreateMutation = { __typename?: 'Mutation', commentCreate: { __typename?: 'CommentPayload', userErrors: Array<{ __typename?: 'UserError', message: string }> } };
+
+export type PostCreateMutationVariables = Exact<{
+  post: PostInput;
+}>;
+
+
+export type PostCreateMutation = { __typename?: 'Mutation', postCreate: { __typename?: 'PostPayload', userErrors: Array<{ __typename?: 'UserError', message: string }> } };
 
 export type CreateSubCommentMutationVariables = Exact<{
   subComment: SubCommentInput;
@@ -621,6 +628,41 @@ export function useCommentCreateMutation(baseOptions?: Apollo.MutationHookOption
 export type CommentCreateMutationHookResult = ReturnType<typeof useCommentCreateMutation>;
 export type CommentCreateMutationResult = Apollo.MutationResult<CommentCreateMutation>;
 export type CommentCreateMutationOptions = Apollo.BaseMutationOptions<CommentCreateMutation, CommentCreateMutationVariables>;
+export const PostCreateDocument = gql`
+    mutation postCreate($post: PostInput!) {
+  postCreate(post: $post) {
+    userErrors {
+      message
+    }
+  }
+}
+    `;
+export type PostCreateMutationFn = Apollo.MutationFunction<PostCreateMutation, PostCreateMutationVariables>;
+
+/**
+ * __usePostCreateMutation__
+ *
+ * To run a mutation, you first call `usePostCreateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `usePostCreateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [postCreateMutation, { data, loading, error }] = usePostCreateMutation({
+ *   variables: {
+ *      post: // value for 'post'
+ *   },
+ * });
+ */
+export function usePostCreateMutation(baseOptions?: Apollo.MutationHookOptions<PostCreateMutation, PostCreateMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<PostCreateMutation, PostCreateMutationVariables>(PostCreateDocument, options);
+      }
+export type PostCreateMutationHookResult = ReturnType<typeof usePostCreateMutation>;
+export type PostCreateMutationResult = Apollo.MutationResult<PostCreateMutation>;
+export type PostCreateMutationOptions = Apollo.BaseMutationOptions<PostCreateMutation, PostCreateMutationVariables>;
 export const CreateSubCommentDocument = gql`
     mutation createSubComment($subComment: SubCommentInput!) {
   subCommentCreate(subComment: $subComment) {

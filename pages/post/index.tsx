@@ -12,6 +12,8 @@ import Loading from "@components/Loadings/Loading";
 import IntoNow from "@components/Moments/IntoNow";
 import SEO from "@components/Metadata/SEO";
 import * as Sentry from "@sentry/nextjs";
+import PostsInput from "@components/Posts/PostsInput";
+import Delete from "@components/Posts/components/Delete";
 
 const PostCard = styled.div`
   padding: 10px;
@@ -25,14 +27,15 @@ const Post = () => {
   const { loggedInUser } = useContext(AuthContext);
   const [fullyLoaded, setFullyLoaded] = useState<any>(false);
 
-  const { data, networkStatus, error, fetchMore, variables } = usePostQuery({
-    variables: {
-      limit: 5,
-      offset: 0,
-    },
-    fetchPolicy: "network-only",
-    notifyOnNetworkStatusChange: true,
-  });
+  const { data, networkStatus, error, fetchMore, variables, refetch } =
+    usePostQuery({
+      variables: {
+        limit: 5,
+        offset: 0,
+      },
+      fetchPolicy: "network-only",
+      notifyOnNetworkStatusChange: true,
+    });
 
   if (error) {
     Sentry.captureException(error);
@@ -56,29 +59,33 @@ const Post = () => {
         description="Lets create something interest now."
       />
       {isLoading && <Loading justifycontent="center" />}
-      {loggedInUser && !isLoading && <button>Create Post</button>}
+      {loggedInUser && <PostsInput onPostCreated={refetch} />}
+
       {posts?.map((post) => {
         return (
-          <Link
-            key={post?.id}
-            href={`/${post?.user.username}/status/${post?.id}`}
-          >
-            <PostCard>
-              <Avatar altText={post?.user.name} userId={post?.user.id} />
-              <p>
-                {post?.user.name}
-                <span>
-                  <Link key={post?.id} href={`/${post?.user.username}`}>
-                    <a> @{post?.user.username}</a>
-                  </Link>
-                  · <IntoNow actualDate={post?.createdAt} interval={1000} />
-                </span>
-              </p>
-              <p>{post?.content}</p>
-              <p>❤️Likes {post?.likes.length}</p>
-              <p>💬Comment: {post?.comments.length}</p>
-            </PostCard>
-          </Link>
+          <>
+            <Delete username={post.user.username} />
+            <Link
+              key={post?.id}
+              href={`/${post?.user.username}/status/${post?.id}`}
+            >
+              <PostCard>
+                <Avatar altText={post?.user.name} userId={post?.user.id} />
+                <p>
+                  {post?.user.name}
+                  <span>
+                    <Link key={post?.id} href={`/${post?.user.username}`}>
+                      <a> @{post?.user.username}</a>
+                    </Link>
+                    · <IntoNow actualDate={post?.createdAt} interval={1000} />
+                  </span>
+                </p>
+                <p>{post?.content}</p>
+                <p>❤️Likes {post?.likes.length}</p>
+                <p>💬Comment: {post?.comments.length}</p>
+              </PostCard>
+            </Link>
+          </>
         );
       })}
 

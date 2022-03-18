@@ -1,0 +1,7 @@
+mutation postCreate($post: PostInput!) {
+  postCreate(post: $post) {
+    userErrors {
+      message
+    }
+  }
+}

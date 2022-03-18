@@ -59,6 +59,8 @@ const AuthContextProvider: React.FC<Props> = ({ children }) => {
     setLoggedInUser(user);
   };
 
+  // console.log("User as ", loggedInUser);
+
   return (
     <AuthContext.Provider
       value={{ authAction, handleAuthAction, loggedInUser, setAuthUser }}

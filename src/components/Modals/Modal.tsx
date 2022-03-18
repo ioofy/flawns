@@ -61,7 +61,6 @@ const Content = styled.div`
 
 const TopWrapper = styled.div`
   display: block;
-  margin-top: 15px;
 `;
 
 const CloseModalIcon = styled(BiX)`
@@ -83,7 +82,7 @@ const TopTitle = styled.span`
   }
 `;
 
-const ModalProfile = ({
+const Modal = ({
   isShowing,
   setShowModal,
   customHeight,
@@ -120,4 +119,4 @@ const ModalProfile = ({
   );
 };
 
-export default ModalProfile;
+export default Modal;
