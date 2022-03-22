@@ -30,7 +30,7 @@ import {
 import Link from "next/link";
 import { patterns } from "@utils/pattern";
 import { AuthContext } from "@context/AuthContextProvider";
-import { toast, Toaster } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import SEO from "@components/Metadata/SEO";
 import axios from "axios";
 import Loading from "@components/Loadings/Loading";
@@ -131,11 +131,6 @@ const SignUp = () => {
       <SEO
         title="Welcome!"
         description="Lets signup and start create something interest now!"
-      />
-      <Toaster
-        position="top-center"
-        reverseOrder={false}
-        containerClassName="toaster"
       />
       <Container>
         <Cover>

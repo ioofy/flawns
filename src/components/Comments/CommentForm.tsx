@@ -1,16 +1,12 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useCommentCreateMutation } from "generated/graphql";
 import { useRouter } from "next/router";
-import { toast, Toaster } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import { AuthContext } from "@context/AuthContextProvider";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
   width: 370px;
-  .toaster {
-    font-family: "AllianceEB", sans-serif;
-    font-size: 15px;
-  }
 `;
 
 const CommentForms = styled.form`
@@ -92,11 +88,6 @@ const CommentForm = () => {
 
   return (
     <Wrapper>
-      <Toaster
-        position="bottom-center"
-        reverseOrder={false}
-        containerClassName="toaster"
-      />
       {loggedInUser && (
         <>
           <ReplyInfo>Reply @{isMyPost ? "Myself" : username}</ReplyInfo>

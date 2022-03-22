@@ -12,11 +12,6 @@ export const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   padding: 20px;
-
-  .toaster {
-    font-family: "AllianceEB", sans-serif;
-    font-size: 15px;
-  }
 `;
 
 export const Container = styled.div`

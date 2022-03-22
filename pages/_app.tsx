@@ -6,6 +6,7 @@ import { GlobalStyles } from "@styles/global.styles";
 import { ApolloProvider } from "@apollo/client";
 import { client } from "@lib/apollo";
 import { AppProps } from "next/app";
+import { Toaster } from "react-hot-toast";
 // tailwind
 import "@styles/css/globals.css";
 import AuthContextProvider from "@context/AuthContextProvider";
@@ -23,8 +24,13 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Layout>
       <ApolloProvider client={client}>
+        <GlobalStyles />
         <AuthContextProvider>
-          <GlobalStyles />
+          <Toaster
+            position="top-center"
+            reverseOrder={false}
+            containerClassName="toaster"
+          />
           {/* default title */}
           <Head>
             <title>Flawn - Flawnn 👩‍🎤👨‍🎤</title>

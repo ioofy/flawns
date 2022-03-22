@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { colors } from "@styles/variables.styles";
+import SEO from "@components/Metadata/SEO";
 
 // only provide error page
 
@@ -52,6 +53,7 @@ const ImageComponents = styled.img`
 export const ContentErrors: React.FC<ErrorContentsProps> = (props) => {
   return (
     <ContentWrapper margin={props.margin}>
+      <SEO title="Something went wrong" description="Sorry, theres an error " />
       <ImageWrapper>
         <ImageComponents src={props.imgUrl} alt="avatar" />
       </ImageWrapper>

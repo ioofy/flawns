@@ -2,10 +2,18 @@ import { useRouter } from "next/router";
 import React, { ReactNode } from "react";
 import NewFooter from "./components/Footer/NewFooter";
 import NewHeader from "./components/Header/NewHeader";
+import styled from "styled-components";
 
 interface LayoutProps {
   children: ReactNode;
 }
+
+const Main = styled.main`
+  .toaster {
+    font-family: "AllianceEB", sans-serif;
+    font-size: 15px;
+  }
+`;
 
 const Layout = (props: LayoutProps) => {
   const router = useRouter();
@@ -27,7 +35,7 @@ const Layout = (props: LayoutProps) => {
   return (
     <>
       {noLayouts.includes(pathname) ? null : <NewHeader />}
-      <main className="main-container __wxZSmv">{children}</main>
+      <Main className="main-container __wxZSmv">{children}</Main>
       {noLayouts.includes(pathname) ? null : <NewFooter />}
     </>
   );

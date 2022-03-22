@@ -6,10 +6,6 @@ import styled from "styled-components";
 
 const Wrapper = styled.div`
   width: 325px;
-  .toaster {
-    font-family: "AllianceEB", sans-serif;
-    font-size: 15px;
-  }
 `;
 
 const CommentForms = styled.form`

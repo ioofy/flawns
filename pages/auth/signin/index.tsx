@@ -29,7 +29,7 @@ import { useSigninMutation } from "generated/graphql";
 import { patterns } from "@utils/pattern";
 import { useRouter } from "next/router";
 import { AuthContext } from "@context/AuthContextProvider";
-import { toast, Toaster } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import Loading from "@components/Loadings/Loading";
 import SEO from "@components/Metadata/SEO";
 import * as FCIcons from "react-icons/fc";
@@ -87,11 +87,6 @@ const SignIn = () => {
       <SEO
         title="Hello, Welcome Back 👋"
         description="Lets signin and share your idea!"
-      />
-      <Toaster
-        position="top-center"
-        reverseOrder={false}
-        containerClassName="toaster"
       />
       <Container>
         <Cover>

@@ -38,7 +38,6 @@ const PostsInput = (props: Props) => {
     onCompleted: (data) => {
       if (data) {
         setInput("");
-        // do something in here
         props.onPostCreated();
       }
     },

@@ -41,11 +41,6 @@ export const Container = styled.div`
   margin: 0px auto;
   padding: 15px;
 
-  .toaster {
-    font-family: "AllianceEB", sans-serif;
-    font-size: 15px;
-  }
-
   @media screen and (max-width: 991px) {
     padding: 0px;
   }

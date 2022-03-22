@@ -4,7 +4,7 @@ import { Container } from "@styles/global.styles";
 import { useGetProfilePostQuery, useGetProfileQuery } from "generated/graphql";
 import { useRouter } from "next/router";
 import { AuthContext } from "@context/AuthContextProvider";
-import { toast, Toaster } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import { isValidFileUploaded } from "@utils/validateFile";
 import Loading from "@components/Loadings/Loading";
 import SEO from "@components/Metadata/SEO";
@@ -211,11 +211,6 @@ const UserProfile = () => {
 
   return (
     <Container>
-      <Toaster
-        position="top-center"
-        reverseOrder={false}
-        containerClassName="toaster"
-      />
       <SEO
         title={`${userProfile.name} (@${userProfile.username})`}
         // og description from biodata

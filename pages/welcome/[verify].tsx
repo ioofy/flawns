@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { Container } from "@styles/global.styles";
 import { useForm } from "react-hook-form";
 import { useUpdateUserMutation } from "generated/graphql";
-import { toast, Toaster } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import SEO from "@components/Metadata/SEO";
 
 type FormDataProps = {
@@ -66,11 +66,6 @@ const Welcome = () => {
       />
       <p>Welcome, {email}</p>
       <p>update your name and password</p>
-      <Toaster
-        position="top-center"
-        reverseOrder={false}
-        containerClassName="toaster"
-      />
       <form
         style={{ margin: "20px 0px" }}
         onSubmit={handleSubmit(onSubmitForm)}

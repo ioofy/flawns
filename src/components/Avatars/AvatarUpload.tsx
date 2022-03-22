@@ -1,15 +1,10 @@
 import React, { useState } from "react";
 import { useUpdatePhotoProfileMutation } from "generated/graphql";
-import { toast, Toaster } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import Avatar from "react-avatar-edit";
 import styled from "styled-components";
 
-const Container = styled.div`
-  .toaster {
-    font-family: "AllianceEB", sans-serif;
-    font-size: 15px;
-  }
-`;
+const Container = styled.div``;
 
 type AvatarUploadProps = {
   avatarUrl: string;
@@ -58,11 +53,6 @@ export default function AvatarUpload(props: AvatarUploadProps) {
 
   return (
     <Container>
-      <Toaster
-        position="top-center"
-        reverseOrder={false}
-        containerClassName="toaster"
-      />
       <div className="__avatar-container">
         <Avatar
           width={370}
