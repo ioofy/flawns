@@ -1,0 +1,11 @@
+query comments($postId: ID!) {
+  comments(postId: $postId) {
+    id
+    text
+    date
+    user {
+      name
+      username
+    }
+  }
+}

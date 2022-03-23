@@ -1,0 +1,12 @@
+mutation deleteComment($commentId: ID!) {
+  commentDelete(commentId: $commentId) {
+    __typename
+    userErrors {
+      message
+    }
+    comment {
+      id
+      text
+    }
+  }
+}

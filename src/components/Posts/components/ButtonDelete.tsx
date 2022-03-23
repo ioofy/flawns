@@ -55,10 +55,45 @@ type ButtonProps = {
   };
 };
 
-const Delete = (props: DeleteProps) => {
+const ButtonDelete = (props: DeleteProps) => {
   const [showModal, setShowModal] = useState(false);
   const [isMyPost, setIsMyPost] = useState(false);
-  const [deletePost, { loading }] = usePostDeleteMutation();
+  const [deletePost, { loading }] = usePostDeleteMutation({
+    optimisticResponse: {
+      postDelete: {
+        __typename: "PostPayload",
+        post: {
+          __typename: "Post",
+          id: props.postId,
+          content: "",
+        },
+        userErrors: [],
+      },
+    },
+
+    update: (cache) => {
+      const data = cache.readQuery<PostQuery, PostQueryVariables>({
+        query: PostDocument,
+        variables: {
+          limit: 5,
+          offset: 0,
+        },
+      });
+
+      if (data) {
+        cache.writeQuery<PostQuery, PostQueryVariables>({
+          query: PostDocument,
+          variables: {
+            limit: 5,
+            offset: 0,
+          },
+          data: {
+            posts: data.posts.filter(({ id }) => id !== props.postId),
+          },
+        });
+      }
+    },
+  });
 
   const { loggedInUser } = useContext(AuthContext);
 
@@ -80,40 +115,6 @@ const Delete = (props: DeleteProps) => {
 
   const onDelete = async () => {
     await deletePost({
-      optimisticResponse: {
-        postDelete: {
-          __typename: "PostPayload",
-          post: {
-            __typename: "Post",
-            id: props.postId,
-            content: "",
-          },
-          userErrors: [],
-        },
-      },
-
-      update: (cache) => {
-        const data = cache.readQuery<PostQuery, PostQueryVariables>({
-          query: PostDocument,
-          variables: {
-            limit: 5,
-            offset: 0,
-          },
-        });
-
-        if (data) {
-          cache.writeQuery<PostQuery, PostQueryVariables>({
-            query: PostDocument,
-            variables: {
-              limit: 5,
-              offset: 0,
-            },
-            data: {
-              posts: data.posts.filter(({ id }) => id !== props.postId),
-            },
-          });
-        }
-      },
       variables: {
         postId: props.postId,
       },
@@ -178,4 +179,4 @@ const Delete = (props: DeleteProps) => {
   );
 };
 
-export default Delete;
+export default ButtonDelete;

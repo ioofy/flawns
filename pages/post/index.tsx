@@ -13,7 +13,7 @@ import IntoNow from "@components/Moments/IntoNow";
 import SEO from "@components/Metadata/SEO";
 import * as Sentry from "@sentry/nextjs";
 import PostsInput from "@components/Posts/PostsInput";
-import Delete from "@components/Posts/components/Delete";
+import ButtonDelete from "@components/Posts/components/ButtonDelete";
 
 const PostCard = styled.div`
   padding: 10px;
@@ -66,7 +66,7 @@ const Post = () => {
           return (
             <div key={index}>
               <p>{post.id}</p>
-              <Delete
+              <ButtonDelete
                 username={post.user.username}
                 postId={post.id}
                 onDeleted={refetch}

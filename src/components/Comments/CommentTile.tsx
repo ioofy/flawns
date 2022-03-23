@@ -6,7 +6,7 @@ import Avatar from "@components/Avatars/Avatar";
 import Loading from "@components/Loadings/Loading";
 import IntoNow from "@components/Moments/IntoNow";
 import styled from "styled-components";
-import CommentSubForm from "./CommentSubForm";
+import CommentSubForm from "./SubComment/CommentSubForm";
 
 type CommentTileProps = {
   comment: {
