@@ -198,6 +198,8 @@ const UserProfile = () => {
           customHeight="600px"
           customBg="#fff"
           customBorder="10px"
+          customMediaRpv="100%"
+          customHeightContent="100%"
           topTitle="Edit Image"
         >
           <AvatarUpload
@@ -266,6 +268,8 @@ const UserProfile = () => {
         customWidth="100%"
         customBg="#2889ca8b"
         customBorder="0px"
+        customMediaRpv="100%"
+        customHeightContent="100%"
       >
         <AvatarShow src={userProfile.avatarUrl} alt={userProfile.name} />
       </Modal>

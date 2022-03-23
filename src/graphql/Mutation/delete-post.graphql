@@ -1,0 +1,11 @@
+mutation postDelete($postId: ID!) {
+  postDelete(postId: $postId) {
+    userErrors {
+      message
+    }
+    post {
+      id
+      content
+    }
+  }
+}

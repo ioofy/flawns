@@ -7,6 +7,7 @@ import styled from "styled-components";
 import CommentTile from "./CommentTile";
 import Loading from "@components/Loadings/Loading";
 import CommentForm from "./CommentForm";
+import { animateCommentItem } from "src/animations";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -16,16 +17,6 @@ const ContentWrapper = styled.div`
   width: 100%;
   max-width: 370px;
 `;
-
-const animates = {
-  initial: { scale: 0 },
-  animate: { scale: 1 },
-  exit: { scale: 0 },
-  // giving transition all ease 0.3
-  transition: {
-    default: { duration: 0.3, ease: "easeInOut" },
-  },
-};
 
 const COMMENT_SUBSCRIPTION = gql`
   subscription commentCreated($postId: ID!) {
@@ -124,7 +115,11 @@ const CommentDisplay = () => {
                     const comment = data.getComments.comments[index];
 
                     return (
-                      <motion.div key={commentItem.id} layout {...animates}>
+                      <motion.div
+                        key={commentItem.id}
+                        layout
+                        {...animateCommentItem}
+                      >
                         {/* DELETE BUTTON */}
                         {/* <button
                           onClick={() => {

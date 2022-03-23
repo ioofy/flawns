@@ -36,6 +36,7 @@
       "@utils/*": ["src/utils/*"],
       "@config/*": ["src/config/*"],
       "@context/*": ["src/context/*"],
+      "@animations/*": ["src/animations/*"],
       //Graphql utility
       "@graphql/*": ["src/graphql/*"],
       "@lib/*": ["src/lib/*"]

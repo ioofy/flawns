@@ -6,24 +6,36 @@ type ModalProfileProps = {
   isShowing: boolean;
   setShowModal: Dispatch<SetStateAction<boolean>>;
   children: React.ReactNode;
-  customWidth: number | string;
-  customHeight: number | string;
+  // css style
+  customWidth: string;
+  customHeight: string;
+  customHeightContent: string;
+  customMediaRpv?: string;
   customBg: string;
   topTitle?: string;
   customBorder: string;
 };
 
 type ModalWrapperProps = {
-  width: number | string;
-  height: number | string;
+  width: string;
+  height: string;
+  mediaRpv: string;
   bg: string;
   border: string;
+};
+
+type ContentProps = {
+  heightContent: number | string;
 };
 
 const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media screen and (max-width: 280px) {
+    display: none;
+  }
 `;
 
 const Background = styled.div`
@@ -42,18 +54,17 @@ const ModalWrapper = styled.div`
   width: ${(props: ModalWrapperProps) => props.width};
   height: ${(props: ModalWrapperProps) => props.height};
   background: ${(props: ModalWrapperProps) => props.bg};
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
   border-radius: ${(props: ModalWrapperProps) => props.border};
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
 
   @media screen and (max-width: 600px) {
-    width: 100%;
-    height: 100%;
-    border-radius: 0px;
+    width: ${(props: ModalWrapperProps) => props.mediaRpv};
+    height: ${(props: ModalWrapperProps) => props.mediaRpv};
   }
 `;
 
-const Content = styled.div`
-  height: 90%;
+const Content = styled.div<ContentProps>`
+  height: ${(props: ContentProps) => props.heightContent};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -87,7 +98,9 @@ const Modal = ({
   setShowModal,
   customHeight,
   customWidth,
+  customHeightContent,
   customBorder,
+  customMediaRpv,
   topTitle,
   customBg,
   children,
@@ -103,6 +116,7 @@ const Modal = ({
             height={customHeight}
             bg={customBg}
             border={customBorder}
+            mediaRpv={customMediaRpv}
           >
             <TopWrapper>
               <CloseModalIcon
@@ -111,7 +125,7 @@ const Modal = ({
               />
               <TopTitle>{topTitle}</TopTitle>
             </TopWrapper>
-            <Content>{children}</Content>
+            <Content heightContent={customHeightContent}>{children}</Content>
           </ModalWrapper>
         </Background>
       ) : null}

@@ -50,7 +50,6 @@ const Post = () => {
 
   const isRefetching = networkStatus === 3;
   const isLoading = networkStatus === 1;
-  const posts = data?.posts;
 
   return (
     <Container>
@@ -61,40 +60,44 @@ const Post = () => {
       {isLoading && <Loading justifycontent="center" />}
       {loggedInUser && <PostsInput onPostCreated={refetch} />}
 
-      {posts?.map((post) => {
-        return (
-          <>
-            <Delete username={post.user.username} />
-            <Link
-              key={post?.id}
-              href={`/${post?.user.username}/status/${post?.id}`}
-            >
-              <PostCard>
-                <Avatar altText={post?.user.name} userId={post?.user.id} />
-                <p>
-                  {post?.user.name}
-                  <span>
-                    <Link key={post?.id} href={`/${post?.user.username}`}>
-                      <a> @{post?.user.username}</a>
-                    </Link>
-                    · <IntoNow actualDate={post?.createdAt} interval={1000} />
-                  </span>
-                </p>
-                <p>{post?.content}</p>
-                <p>❤️Likes {post?.likes.length}</p>
-                <p>💬Comment: {post?.comments.length}</p>
-              </PostCard>
-            </Link>
-          </>
-        );
-      })}
+      {data &&
+        data.posts &&
+        data.posts.map((post, index: number) => {
+          return (
+            <div key={index}>
+              <p>{post.id}</p>
+              <Delete
+                username={post.user.username}
+                postId={post.id}
+                onDeleted={refetch}
+              />
+              <Link href={`/${post.user.username}/status/${post.id}`}>
+                <PostCard>
+                  <Avatar altText={post.user.name} userId={post?.user.id} />
+                  <p>
+                    {post.user.name}
+                    <span>
+                      <Link key={post.id} href={`/${post.user.username}`}>
+                        <a> @{post.user.username}</a>
+                      </Link>
+                      · <IntoNow actualDate={post?.createdAt} interval={1000} />
+                    </span>
+                  </p>
+                  <p>{post.content}</p>
+                  <p>❤️Likes {post.likes.length}</p>
+                  <p>💬Comment: {post.comments.length}</p>
+                </PostCard>
+              </Link>
+            </div>
+          );
+        })}
 
       {isRefetching && (
         <Loading justifycontent="flex-start" style={{ marginBottom: "10px" }} />
       )}
 
       {networkStatus !== NetworkStatus.fetchMore &&
-        posts?.length % variables.limit === 0 &&
+        data?.posts?.length % variables.limit === 0 &&
         !fullyLoaded && (
           <InView
             onChange={async (inView) => {
