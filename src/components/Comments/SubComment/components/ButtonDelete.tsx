@@ -2,9 +2,9 @@ import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "@context/AuthContextProvider";
 import { BiTrash } from "react-icons/bi";
 import {
-  GetCommentsDocument,
-  GetCommentsQuery,
-  useDeleteCommentMutation,
+  GetSubCommentsDocument,
+  GetSubCommentsQuery,
+  useSubCommentDeleteMutation,
 } from "generated/graphql";
 import Modal from "@components/Modals/Modal";
 import styled from "styled-components";
@@ -44,7 +44,7 @@ const Dialog = styled.p`
 
 type DeleteProps = {
   commentId: string;
-  postId: string;
+  subCommentId: string;
   username: string;
   onDeleted?: () => void;
 };
@@ -58,25 +58,25 @@ type ButtonProps = {
 export const ButtonDelete = (props: DeleteProps) => {
   const [showModal, setShowModal] = useState(false);
   const [isMyPost, setIsMyPost] = useState(false);
-  const [deleteComment, { loading }] = useDeleteCommentMutation({
+  const [deleteComment, { loading }] = useSubCommentDeleteMutation({
     update: (cache) => {
-      const prevData = cache.readQuery<GetCommentsQuery>({
-        query: GetCommentsDocument,
+      const prevData = cache.readQuery<GetSubCommentsQuery>({
+        query: GetSubCommentsDocument,
       });
 
-      const filteringComments = prevData?.getComments?.comments.filter(
+      const filteringComments = prevData?.getSubComments?.subComments.filter(
         ({ id }) => id !== props.commentId
       );
 
       if (filteringComments) {
-        cache.writeQuery<GetCommentsQuery>({
-          query: GetCommentsDocument,
+        cache.writeQuery<GetSubCommentsQuery>({
+          query: GetSubCommentsDocument,
           data: {
-            getComments: {
-              __typename: prevData?.getComments?.__typename,
-              hasMore: prevData?.getComments?.hasMore,
-              cursor: prevData?.getComments?.cursor,
-              comments: [...filteringComments],
+            getSubComments: {
+              __typename: prevData?.getSubComments?.__typename,
+              hasMore: prevData?.getSubComments?.hasMore,
+              cursor: prevData?.getSubComments?.cursor,
+              subComments: [...filteringComments],
             },
           },
         });
@@ -105,10 +105,10 @@ export const ButtonDelete = (props: DeleteProps) => {
   const onDelete = async () => {
     await deleteComment({
       variables: {
-        commentId: props.commentId,
+        subCommentId: props.subCommentId,
       },
       onCompleted: (data) => {
-        if (!data.commentDelete.userErrors.length) {
+        if (!data.subCommentDelete.userErrors.length) {
           props.onDeleted();
 
           toast.success("Your Comment was deleted");

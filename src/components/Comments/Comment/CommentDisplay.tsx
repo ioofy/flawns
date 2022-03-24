@@ -8,17 +8,13 @@ import CommentTile from "../CommentTile";
 import Loading from "@components/Loadings/Loading";
 import CommentForm from "./CommentForm";
 import { animateCommentItem } from "src/animations";
-import ButtonDelete from "./components/ButtonDelete";
-import { Container } from "@styles/global.styles";
+import { ButtonDelete as ButtonCommentDelete } from "./components/ButtonDelete";
 
 const Wrapper = styled.div`
-  width: 100%;
+  max-width: 100%;
 `;
 
-const ContentWrapper = styled.div`
-  width: 100%;
-  max-width: 370px;
-`;
+const ContentWrapper = styled.div``;
 
 const COMMENT_SUBSCRIPTION = gql`
   subscription commentCreated($postId: ID!) {
@@ -104,7 +100,7 @@ const CommentDisplay = () => {
   const hasMore = data?.getComments.hasMore;
 
   return (
-    <Container>
+    <>
       <CommentForm />
 
       {loading ? (
@@ -124,14 +120,14 @@ const CommentDisplay = () => {
                       layout
                       {...animateCommentItem}
                     >
-                      <ButtonDelete
-                        commentId={comment.id}
-                        username={comment.user.username}
-                        postId={postId}
-                        onDeleted={refetch}
-                      />
                       <p>{commentItem.id}</p>
                       <ContentWrapper>
+                        <ButtonCommentDelete
+                          commentId={comment.id}
+                          username={comment.user.username}
+                          postId={postId}
+                          onDeleted={refetch}
+                        />
                         <CommentTile comment={comment} />
                       </ContentWrapper>
                     </motion.div>
@@ -151,7 +147,7 @@ const CommentDisplay = () => {
           )}
         </Wrapper>
       )}
-    </Container>
+    </>
   );
 };
 

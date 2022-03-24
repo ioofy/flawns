@@ -1,0 +1,12 @@
+mutation subCommentDelete($subCommentId: ID!) {
+  subCommentDelete(subCommentId: $subCommentId) {
+    __typename
+    userErrors {
+      message
+    }
+    subComment {
+      id
+      text
+    }
+  }
+}

@@ -66,11 +66,7 @@ const Post = () => {
           return (
             <div key={index}>
               <p>{post.id}</p>
-              <ButtonDelete
-                username={post.user.username}
-                postId={post.id}
-                onDeleted={refetch}
-              />
+              <ButtonDelete username={post.user.username} postId={post.id} />
               <Link href={`/${post.user.username}/status/${post.id}`}>
                 <PostCard>
                   <Avatar altText={post.user.name} userId={post?.user.id} />

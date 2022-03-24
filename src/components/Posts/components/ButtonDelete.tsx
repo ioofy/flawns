@@ -2,7 +2,6 @@ import React, { useState, useContext, useEffect } from "react";
 import {
   PostDocument,
   PostQuery,
-  PostQueryVariables,
   usePostDeleteMutation,
 } from "generated/graphql";
 import { AuthContext } from "@context/AuthContextProvider";
@@ -46,7 +45,7 @@ const Dialog = styled.p`
 type DeleteProps = {
   postId: string;
   username: string;
-  onDeleted: () => void;
+  onDeleted?: () => void;
 };
 
 type ButtonProps = {
@@ -59,39 +58,30 @@ const ButtonDelete = (props: DeleteProps) => {
   const [showModal, setShowModal] = useState(false);
   const [isMyPost, setIsMyPost] = useState(false);
   const [deletePost, { loading }] = usePostDeleteMutation({
-    optimisticResponse: {
-      postDelete: {
-        __typename: "PostPayload",
-        post: {
-          __typename: "Post",
-          id: props.postId,
-          content: "",
-        },
-        userErrors: [],
-      },
-    },
-
     update: (cache) => {
-      const data = cache.readQuery<PostQuery, PostQueryVariables>({
+      const prevData = cache.readQuery<PostQuery>({
         query: PostDocument,
-        variables: {
-          limit: 5,
-          offset: 0,
+      });
+
+      const filteringPosts = prevData?.posts.filter(
+        ({ id }) => id !== props.postId
+      );
+
+      cache.writeQuery<PostQuery>({
+        query: PostDocument,
+        data: {
+          posts: [...filteringPosts],
         },
       });
 
-      if (data) {
-        cache.writeQuery<PostQuery, PostQueryVariables>({
-          query: PostDocument,
-          variables: {
-            limit: 5,
-            offset: 0,
-          },
-          data: {
-            posts: data.posts.filter(({ id }) => id !== props.postId),
-          },
-        });
-      }
+      // if (prevData) {
+      //   cache.writeQuery<PostQuery>({
+      //     query: PostDocument,
+      //     data: {
+      //       posts: prevData.posts.filter(({ id }) => id !== props.postId),
+      //     },
+      //   });
+      // }
     },
   });
 
@@ -123,7 +113,7 @@ const ButtonDelete = (props: DeleteProps) => {
         if (!data.postDelete.userErrors.length) {
           // implementation now bcz
           // delete post caused duplicate key in
-          props.onDeleted();
+          // props.onDeleted();
 
           toast.success("Your Post was deleted");
           closeModal();

@@ -13,6 +13,9 @@ query getComments($postId: ID!, $after: String, $pageSize: Int) {
       }
       subComments {
         id
+        user {
+          username
+        }
       }
     }
   }

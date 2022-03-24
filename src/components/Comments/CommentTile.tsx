@@ -7,6 +7,7 @@ import Loading from "@components/Loadings/Loading";
 import IntoNow from "@components/Moments/IntoNow";
 import styled from "styled-components";
 import CommentSubForm from "./SubComment/CommentSubForm";
+import { ButtonDelete as ButtonSubCommentDelete } from "./SubComment/components/ButtonDelete";
 
 type CommentTileProps = {
   comment: {
@@ -24,12 +25,13 @@ type CommentTileProps = {
 };
 
 const CommentBox = styled.div`
-  width: 370px;
+  /* width: 370px; */
   background-color: pink;
   margin: 10px 0;
   padding: 20px;
   font-family: "AllianceM";
   font-size: 15px;
+  /* min-width: 200px; */
 `;
 
 const SubCommentBox = styled.div`
@@ -82,7 +84,7 @@ const CommentTile = ({ comment }: CommentTileProps) => {
     user: { id, name, username },
   } = comment;
 
-  const { data, error, subscribeToMore, fetchMore, loading } =
+  const { data, error, subscribeToMore, fetchMore, loading, refetch } =
     useGetSubCommentsQuery({
       variables: {
         commentId,
@@ -147,62 +149,66 @@ const CommentTile = ({ comment }: CommentTileProps) => {
   const hasMore = data?.getSubComments.hasMore;
 
   return (
-    <>
-      <CommentBox>
-        <Avatar altText={username} userId={id} />
-        <p>
-          on <IntoNow actualDate={date} interval={1000} />
-        </p>
-        <p>
-          By: {name} - {username}
-        </p>
-        <p>{text}</p>
-        {loading ? (
-          <Loading justifycontent="center" />
-        ) : (
-          <AnimatePresence>
-            {data &&
-              data.getSubComments.subComments &&
-              data.getSubComments.subComments.map((subComment) => {
-                return (
-                  <motion.div key={subComment.id} layout {...animates}>
-                    <SubCommentBox>
-                      <SubCommentTile>
-                        <PeopleOnComment>
-                          <Avatar
-                            altText={subComment.user.username}
-                            userId={subComment.user.id}
+    <CommentBox>
+      <Avatar altText={username} userId={id} />
+      <p>
+        on <IntoNow actualDate={date} interval={1000} />
+      </p>
+      <p>
+        By: {name} - {username}
+      </p>
+      <p>{text}</p>
+      {loading ? (
+        <Loading justifycontent="center" />
+      ) : (
+        <AnimatePresence>
+          {data &&
+            data.getSubComments.subComments &&
+            data.getSubComments.subComments.map((subComment) => {
+              return (
+                <motion.div key={subComment.id} layout {...animates}>
+                  <ButtonSubCommentDelete
+                    username={subComment.user.username}
+                    subCommentId={subComment.id}
+                    commentId={commentId}
+                    onDeleted={refetch}
+                  />
+                  <SubCommentBox>
+                    <SubCommentTile>
+                      <PeopleOnComment>
+                        <Avatar
+                          altText={subComment.user.username}
+                          userId={subComment.user.id}
+                        />
+                        <p>
+                          on{" "}
+                          <IntoNow
+                            actualDate={subComment.date}
+                            interval={1000}
                           />
-                          <p>
-                            on{" "}
-                            <IntoNow
-                              actualDate={subComment.date}
-                              interval={1000}
-                            />
-                          </p>
-                          <p>
-                            {subComment.user.name} - {subComment.user.username}
-                          </p>
-                          <p>{subComment.text}</p>
-                        </PeopleOnComment>
-                      </SubCommentTile>
-                    </SubCommentBox>
-                  </motion.div>
-                );
-              })}
-          </AnimatePresence>
-        )}
+                        </p>
+                        <p>
+                          {subComment.user.name} - {subComment.user.username}
+                        </p>
+                        <p>{subComment.text}</p>
+                      </PeopleOnComment>
+                    </SubCommentTile>
+                  </SubCommentBox>
+                </motion.div>
+              );
+            })}
+        </AnimatePresence>
+      )}
 
-        {hasMore && (
-          <div className="more-button">
-            <button onClick={() => handleMore()}>
-              {isLoading ? <Loading justifycontent="center" /> : "Load More"}
-            </button>
-          </div>
-        )}
-        <CommentSubForm commentId={commentId} username={username} />
-      </CommentBox>
-    </>
+      {hasMore && (
+        <div className="more-button">
+          <button onClick={() => handleMore()}>
+            {isLoading ? <Loading justifycontent="center" /> : "Load More"}
+          </button>
+        </div>
+      )}
+      <CommentSubForm commentId={commentId} username={username} />
+    </CommentBox>
   );
 };
 
