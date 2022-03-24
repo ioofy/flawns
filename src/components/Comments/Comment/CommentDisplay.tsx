@@ -1,38 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { gql } from "@apollo/client";
-import { useGetCommentsQuery } from "generated/graphql";
 import { useRouter } from "next/router";
+import { animateCommentItem } from "src/animations";
+import { useGetCommentsQuery } from "generated/graphql";
 import { AnimatePresence, motion } from "framer-motion";
+import { COMMENT_SUBSCRIPTION } from "@graphql/Subscription/comments-subs";
+import { ButtonDelete as ButtonCommentDelete } from "./components/ButtonDelete";
 import styled from "styled-components";
 import CommentTile from "../CommentTile";
 import Loading from "@components/Loadings/Loading";
 import CommentForm from "./CommentForm";
-import { animateCommentItem } from "src/animations";
-import { ButtonDelete as ButtonCommentDelete } from "./components/ButtonDelete";
 
 const Wrapper = styled.div`
   max-width: 100%;
 `;
 
 const ContentWrapper = styled.div``;
-
-const COMMENT_SUBSCRIPTION = gql`
-  subscription commentCreated($postId: ID!) {
-    commentCreated(postId: $postId) {
-      id
-      text
-      date
-      user {
-        id
-        name
-        username
-      }
-      subComments {
-        id
-      }
-    }
-  }
-`;
 
 const CommentDisplay = () => {
   const router = useRouter();

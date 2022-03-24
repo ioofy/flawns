@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { gql } from "@apollo/client";
 import { AnimatePresence, motion } from "framer-motion";
+import { animateCommentItem } from "@animations/index";
 import { useGetSubCommentsQuery } from "generated/graphql";
+import { SUBCOMMENT_SUBSCRIPTION } from "@graphql/Subscription/comments-subs";
+import { ButtonDelete as ButtonSubCommentDelete } from "./SubComment/components/ButtonDelete";
 import Avatar from "@components/Avatars/Avatar";
 import Loading from "@components/Loadings/Loading";
 import IntoNow from "@components/Moments/IntoNow";
 import styled from "styled-components";
 import CommentSubForm from "./SubComment/CommentSubForm";
-import { ButtonDelete as ButtonSubCommentDelete } from "./SubComment/components/ButtonDelete";
 
 type CommentTileProps = {
   comment: {
@@ -49,31 +50,6 @@ const SubCommentTile = styled.div`
 
 const PeopleOnComment = styled.div`
   margin: 10px 0;
-`;
-
-const animates = {
-  initial: { scale: 0 },
-  animate: { scale: 1 },
-  exit: { scale: 0 },
-  // giving transition all ease 0.3
-  transition: {
-    default: { duration: 0.3, ease: "easeInOut" },
-  },
-};
-
-const SUBCOMMENT_SUBSCRIPTION = gql`
-  subscription ($commentId: Int) {
-    subCommentCreated(commentId: $commentId) {
-      id
-      text
-      date
-      user {
-        id
-        name
-        username
-      }
-    }
-  }
 `;
 
 const CommentTile = ({ comment }: CommentTileProps) => {
@@ -166,7 +142,7 @@ const CommentTile = ({ comment }: CommentTileProps) => {
             data.getSubComments.subComments &&
             data.getSubComments.subComments.map((subComment) => {
               return (
-                <motion.div key={subComment.id} layout {...animates}>
+                <motion.div key={subComment.id} layout {...animateCommentItem}>
                   <ButtonSubCommentDelete
                     username={subComment.user.username}
                     subCommentId={subComment.id}

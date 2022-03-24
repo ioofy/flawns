@@ -3,6 +3,7 @@ import { usePostCreateMutation } from "generated/graphql";
 import EmojiPicker from "@components/Emojis/EmojiPicker";
 import styled from "styled-components";
 import ImagePicker from "@components/Emojis/ImagePicker";
+import toast from "react-hot-toast";
 
 const Container = styled.div`
   display: flex;
@@ -36,9 +37,12 @@ const PostsInput = (props: Props) => {
 
   const [createPost, { loading }] = usePostCreateMutation({
     onCompleted: (data) => {
-      if (data) {
+      if (!data.postCreate.userErrors.length) {
         setInput("");
         props.onPostCreated();
+        toast.success("Your post has been created!");
+      } else {
+        toast.error(data.postCreate.userErrors[0].message);
       }
     },
   });
