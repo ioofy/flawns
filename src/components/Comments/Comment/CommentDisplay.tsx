@@ -120,7 +120,6 @@ const CommentDisplay = () => {
                       layout
                       {...animateCommentItem}
                     >
-                      <p>{commentItem.id}</p>
                       <ContentWrapper>
                         <ButtonCommentDelete
                           commentId={comment.id}

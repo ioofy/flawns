@@ -67,21 +67,14 @@ const ButtonDelete = (props: DeleteProps) => {
         ({ id }) => id !== props.postId
       );
 
-      cache.writeQuery<PostQuery>({
-        query: PostDocument,
-        data: {
-          posts: [...filteringPosts],
-        },
-      });
-
-      // if (prevData) {
-      //   cache.writeQuery<PostQuery>({
-      //     query: PostDocument,
-      //     data: {
-      //       posts: prevData.posts.filter(({ id }) => id !== props.postId),
-      //     },
-      //   });
-      // }
+      if (filteringPosts) {
+        cache.writeQuery<PostQuery>({
+          query: PostDocument,
+          data: {
+            posts: [...filteringPosts],
+          },
+        });
+      }
     },
   });
 

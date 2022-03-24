@@ -65,7 +65,6 @@ const Post = () => {
         data.posts.map((post, index: number) => {
           return (
             <div key={index}>
-              <p>{post.id}</p>
               <ButtonDelete username={post.user.username} postId={post.id} />
               <Link href={`/${post.user.username}/status/${post.id}`}>
                 <PostCard>
