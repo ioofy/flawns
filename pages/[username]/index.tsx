@@ -46,7 +46,7 @@ const AvatarContainer = styled.div`
 
 const AvatarImage = styled.img<AvatarProps>`
   cursor: ${(props) => props.cursor};
-  border-radius: 9999px;
+  border-radius: 999px;
   width: 100%;
 `;
 
@@ -62,7 +62,7 @@ const AvatarShow = styled.img`
 
 const WrapperCanvas = styled.div`
   position: relative;
-  z-index: 99999;
+  z-index: 100;
 `;
 
 type AvatarProps = {
