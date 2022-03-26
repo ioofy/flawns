@@ -10,7 +10,17 @@ import { Toaster } from "react-hot-toast";
 // tailwind
 import "@styles/css/globals.css";
 import AuthContextProvider from "@context/AuthContextProvider";
+import NotifContextProvider from "@context/NotifContextProvider";
 // import ProvidersTheme from "@config/providersTheme";
+
+const DefaultTitle = () => {
+  return (
+    <Head>
+      <title>Flawn - Flawnn 👩‍🎤👨‍🎤</title>
+      <link rel="icon" href="/logo.png" />
+    </Head>
+  );
+};
 
 function MyApp({ Component, pageProps }: AppProps) {
   if (process.env.NEXT_PUBLIC_MAINTENANCE === "true") {
@@ -25,18 +35,17 @@ function MyApp({ Component, pageProps }: AppProps) {
     <Layout>
       <ApolloProvider client={client}>
         <GlobalStyles />
+        {/* default title */}
+        <DefaultTitle />
         <AuthContextProvider>
-          <Toaster
-            position="top-center"
-            reverseOrder={false}
-            containerClassName="toaster"
-          />
-          {/* default title */}
-          <Head>
-            <title>Flawn - Flawnn 👩‍🎤👨‍🎤</title>
-            <link rel="icon" href="/logo.png" />
-          </Head>
-          <Component {...pageProps} />
+          <NotifContextProvider>
+            <Toaster
+              position="top-center"
+              reverseOrder={false}
+              containerClassName="toaster"
+            />
+            <Component {...pageProps} />
+          </NotifContextProvider>
         </AuthContextProvider>
       </ApolloProvider>
     </Layout>

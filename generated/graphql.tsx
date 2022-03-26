@@ -288,8 +288,8 @@ export type QueryGetSubCommentsArgs = {
 };
 
 export type QueryPostsArgs = {
-  limit: Scalars["Int"];
-  offset: Scalars["Int"];
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
 };
 
 export type ResponseMessage = {
@@ -307,6 +307,7 @@ export type SignUpInput = {
 
 export type SubComment = {
   __typename?: "SubComment";
+  comment: Comment;
   date: Scalars["DateTime"];
   id: Scalars["ID"];
   text: Scalars["String"];
@@ -338,7 +339,7 @@ export type Subscription = {
 };
 
 export type SubscriptionCommentCreatedArgs = {
-  postId: Scalars["ID"];
+  postId?: InputMaybe<Scalars["ID"]>;
 };
 
 export type SubscriptionSubCommentCreatedArgs = {
@@ -610,21 +611,6 @@ export type GetCommentsQuery = {
             name: string;
             username?: string | null | undefined;
           };
-          subComments?:
-            | Array<
-                | {
-                    __typename?: "SubComment";
-                    id: string;
-                    user: {
-                      __typename?: "User";
-                      username?: string | null | undefined;
-                    };
-                  }
-                | null
-                | undefined
-              >
-            | null
-            | undefined;
         }
       | null
       | undefined
@@ -807,8 +793,8 @@ export type MeQuery = {
 };
 
 export type PostQueryVariables = Exact<{
-  offset: Scalars["Int"];
-  limit: Scalars["Int"];
+  offset?: InputMaybe<Scalars["Int"]>;
+  limit?: InputMaybe<Scalars["Int"]>;
 }>;
 
 export type PostQuery = {
@@ -1521,12 +1507,6 @@ export const GetCommentsDocument = gql`
           name
           username
         }
-        subComments {
-          id
-          user {
-            username
-          }
-        }
       }
     }
   }
@@ -1975,7 +1955,7 @@ export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
 export const PostDocument = gql`
-  query Post($offset: Int!, $limit: Int!) {
+  query Post($offset: Int, $limit: Int) {
     posts: posts(offset: $offset, limit: $limit) {
       id
       content
@@ -2013,7 +1993,7 @@ export const PostDocument = gql`
  * });
  */
 export function usePostQuery(
-  baseOptions: Apollo.QueryHookOptions<PostQuery, PostQueryVariables>
+  baseOptions?: Apollo.QueryHookOptions<PostQuery, PostQueryVariables>
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<PostQuery, PostQueryVariables>(PostDocument, options);

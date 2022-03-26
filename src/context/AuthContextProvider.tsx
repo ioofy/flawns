@@ -19,7 +19,10 @@ interface UserContext {
   }[];
 }
 
-interface Props {}
+interface AuthContextProps {
+  children: React.ReactNode;
+}
+
 interface AuthContextValues {
   authAction: Actions;
   handleAuthAction: HandleAuthAction;
@@ -40,10 +43,11 @@ const InitialState: AuthContextValues = {
 
 export const AuthContext = createContext<AuthContextValues>(InitialState);
 
-const AuthContextProvider: React.FC<Props> = ({ children }) => {
+const AuthContextProvider: React.FC<AuthContextProps> = ({ children }) => {
   const [authAction, setAuthAction] = useState<Actions>("close");
   const [loggedInUser, setLoggedInUser] = useState<UserContext | null>(null);
 
+  // graphql hooks
   const { data } = useMeQuery();
 
   useEffect(() => {

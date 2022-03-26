@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { useSubscription } from "@apollo/client";
 import { useRouter } from "next/router";
 import { animateCommentItem } from "src/animations";
 import { useGetCommentsQuery } from "generated/graphql";
 import { AnimatePresence, motion } from "framer-motion";
 import { COMMENT_SUBSCRIPTION } from "@graphql/Subscription/comments-subs";
+import { NotifContext } from "@context/NotifContextProvider";
 import { ButtonDelete as ButtonCommentDelete } from "./components/ButtonDelete";
 import styled from "styled-components";
 import CommentTile from "../CommentTile";
@@ -19,6 +21,7 @@ const ContentWrapper = styled.div``;
 const CommentDisplay = () => {
   const router = useRouter();
   const { id } = router.query;
+  const { setDataCommentNotif } = useContext(NotifContext);
 
   const postId = String(id);
 
@@ -30,6 +33,20 @@ const CommentDisplay = () => {
         pageSize: 7,
       },
     });
+
+  const { data: commentsData } = useSubscription(COMMENT_SUBSCRIPTION, {
+    variables: {
+      postId,
+    },
+  });
+
+  useEffect(() => {
+    const notifComments = commentsData?.commentCreated;
+
+    if (notifComments) {
+      setDataCommentNotif((comment: any) => [...comment, notifComments]);
+    }
+  }, [commentsData, setDataCommentNotif]);
 
   useEffect(() => {
     const unsubscribe = subscribeToMore({

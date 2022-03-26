@@ -1,4 +1,4 @@
-query Post($offset: Int!, $limit: Int!) {
+query Post($offset: Int, $limit: Int) {
   posts: posts(offset: $offset, limit: $limit) {
     id
     content
