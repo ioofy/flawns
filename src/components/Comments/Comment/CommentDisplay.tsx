@@ -130,7 +130,7 @@ const CommentDisplay = () => {
                       </ContentWrapper>
                     </motion.div>
                   );
-                }
+                },
               )}
           </AnimatePresence>
           {hasMore && (

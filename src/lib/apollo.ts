@@ -31,7 +31,7 @@ const splitLink = process.browser
         );
       },
       wsLink,
-      httpLink
+      httpLink,
     )
   : httpLink;
 

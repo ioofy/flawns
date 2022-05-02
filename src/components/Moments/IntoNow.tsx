@@ -40,7 +40,7 @@ const IntoNow = ({ actualDate, interval }: IntoNowProps) => {
   useEffect(() => {
     const timer = setInterval(
       () => setTimestampString(formatter(actualDate)),
-      interval
+      interval,
     );
 
     setTimestampString(formatter(actualDate));

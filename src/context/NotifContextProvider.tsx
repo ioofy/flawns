@@ -38,7 +38,7 @@ export const NotifContext = createContext<NotifContextValues>(InitialState);
 
 const NotifContextProvider: React.FC<NotifContextProps> = ({ children }) => {
   const [dataCommentNotif, setDataCommentNotif] = useState<NotifContext[] | []>(
-    []
+    [],
   );
 
   // const { data } = usePostQuery;

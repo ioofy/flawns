@@ -64,7 +64,7 @@ const ButtonDelete = (props: DeleteProps) => {
       });
 
       const filteringPosts = prevData?.posts.filter(
-        ({ id }) => id !== props.postId
+        ({ id }) => id !== props.postId,
       );
 
       if (filteringPosts) {

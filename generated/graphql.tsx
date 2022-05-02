@@ -862,7 +862,7 @@ export function useActivateAccountMutation(
   baseOptions?: Apollo.MutationHookOptions<
     ActivateAccountMutation,
     ActivateAccountMutationVariables
-  >
+  >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useMutation<
@@ -914,7 +914,7 @@ export function useCheckUsernameMutation(
   baseOptions?: Apollo.MutationHookOptions<
     CheckUsernameMutation,
     CheckUsernameMutationVariables
-  >
+  >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useMutation<
@@ -966,7 +966,7 @@ export function useCommentCreateMutation(
   baseOptions?: Apollo.MutationHookOptions<
     CommentCreateMutation,
     CommentCreateMutationVariables
-  >
+  >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useMutation<
@@ -1018,12 +1018,12 @@ export function usePostCreateMutation(
   baseOptions?: Apollo.MutationHookOptions<
     PostCreateMutation,
     PostCreateMutationVariables
-  >
+  >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useMutation<PostCreateMutation, PostCreateMutationVariables>(
     PostCreateDocument,
-    options
+    options,
   );
 }
 export type PostCreateMutationHookResult = ReturnType<
@@ -1070,7 +1070,7 @@ export function useCreateSubCommentMutation(
   baseOptions?: Apollo.MutationHookOptions<
     CreateSubCommentMutation,
     CreateSubCommentMutationVariables
-  >
+  >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useMutation<
@@ -1127,7 +1127,7 @@ export function useDeleteCommentMutation(
   baseOptions?: Apollo.MutationHookOptions<
     DeleteCommentMutation,
     DeleteCommentMutationVariables
-  >
+  >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useMutation<
@@ -1183,12 +1183,12 @@ export function usePostDeleteMutation(
   baseOptions?: Apollo.MutationHookOptions<
     PostDeleteMutation,
     PostDeleteMutationVariables
-  >
+  >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useMutation<PostDeleteMutation, PostDeleteMutationVariables>(
     PostDeleteDocument,
-    options
+    options,
   );
 }
 export type PostDeleteMutationHookResult = ReturnType<
@@ -1240,7 +1240,7 @@ export function useSubCommentDeleteMutation(
   baseOptions?: Apollo.MutationHookOptions<
     SubCommentDeleteMutation,
     SubCommentDeleteMutationVariables
-  >
+  >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useMutation<
@@ -1307,12 +1307,12 @@ export function useSigninMutation(
   baseOptions?: Apollo.MutationHookOptions<
     SigninMutation,
     SigninMutationVariables
-  >
+  >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useMutation<SigninMutation, SigninMutationVariables>(
     SigninDocument,
-    options
+    options,
   );
 }
 export type SigninMutationHookResult = ReturnType<typeof useSigninMutation>;
@@ -1357,12 +1357,12 @@ export function useSignupMutation(
   baseOptions?: Apollo.MutationHookOptions<
     SignupMutation,
     SignupMutationVariables
-  >
+  >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useMutation<SignupMutation, SignupMutationVariables>(
     SignupDocument,
-    options
+    options,
   );
 }
 export type SignupMutationHookResult = ReturnType<typeof useSignupMutation>;
@@ -1411,7 +1411,7 @@ export function useUpdatePhotoProfileMutation(
   baseOptions?: Apollo.MutationHookOptions<
     UpdatePhotoProfileMutation,
     UpdatePhotoProfileMutationVariables
-  >
+  >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useMutation<
@@ -1476,12 +1476,12 @@ export function useUpdateUserMutation(
   baseOptions?: Apollo.MutationHookOptions<
     UpdateUserMutation,
     UpdateUserMutationVariables
-  >
+  >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useMutation<UpdateUserMutation, UpdateUserMutationVariables>(
     UpdateUserDocument,
-    options
+    options,
   );
 }
 export type UpdateUserMutationHookResult = ReturnType<
@@ -1534,24 +1534,24 @@ export function useGetCommentsQuery(
   baseOptions: Apollo.QueryHookOptions<
     GetCommentsQuery,
     GetCommentsQueryVariables
-  >
+  >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<GetCommentsQuery, GetCommentsQueryVariables>(
     GetCommentsDocument,
-    options
+    options,
   );
 }
 export function useGetCommentsLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
     GetCommentsQuery,
     GetCommentsQueryVariables
-  >
+  >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useLazyQuery<GetCommentsQuery, GetCommentsQueryVariables>(
     GetCommentsDocument,
-    options
+    options,
   );
 }
 export type GetCommentsQueryHookResult = ReturnType<typeof useGetCommentsQuery>;
@@ -1590,19 +1590,19 @@ export function useGetProfilePhotoQuery(
   baseOptions?: Apollo.QueryHookOptions<
     GetProfilePhotoQuery,
     GetProfilePhotoQueryVariables
-  >
+  >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<GetProfilePhotoQuery, GetProfilePhotoQueryVariables>(
     GetProfilePhotoDocument,
-    options
+    options,
   );
 }
 export function useGetProfilePhotoLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
     GetProfilePhotoQuery,
     GetProfilePhotoQueryVariables
-  >
+  >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useLazyQuery<
@@ -1657,24 +1657,24 @@ export const GetPostsDocument = gql`
  * });
  */
 export function useGetPostsQuery(
-  baseOptions: Apollo.QueryHookOptions<GetPostsQuery, GetPostsQueryVariables>
+  baseOptions: Apollo.QueryHookOptions<GetPostsQuery, GetPostsQueryVariables>,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<GetPostsQuery, GetPostsQueryVariables>(
     GetPostsDocument,
-    options
+    options,
   );
 }
 export function useGetPostsLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
     GetPostsQuery,
     GetPostsQueryVariables
-  >
+  >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useLazyQuery<GetPostsQuery, GetPostsQueryVariables>(
     GetPostsDocument,
-    options
+    options,
   );
 }
 export type GetPostsQueryHookResult = ReturnType<typeof useGetPostsQuery>;
@@ -1731,24 +1731,24 @@ export function useGetProfileQuery(
   baseOptions: Apollo.QueryHookOptions<
     GetProfileQuery,
     GetProfileQueryVariables
-  >
+  >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<GetProfileQuery, GetProfileQueryVariables>(
     GetProfileDocument,
-    options
+    options,
   );
 }
 export function useGetProfileLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
     GetProfileQuery,
     GetProfileQueryVariables
-  >
+  >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useLazyQuery<GetProfileQuery, GetProfileQueryVariables>(
     GetProfileDocument,
-    options
+    options,
   );
 }
 export type GetProfileQueryHookResult = ReturnType<typeof useGetProfileQuery>;
@@ -1797,24 +1797,24 @@ export function useGetProfilePostQuery(
   baseOptions: Apollo.QueryHookOptions<
     GetProfilePostQuery,
     GetProfilePostQueryVariables
-  >
+  >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<GetProfilePostQuery, GetProfilePostQueryVariables>(
     GetProfilePostDocument,
-    options
+    options,
   );
 }
 export function useGetProfilePostLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
     GetProfilePostQuery,
     GetProfilePostQueryVariables
-  >
+  >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useLazyQuery<GetProfilePostQuery, GetProfilePostQueryVariables>(
     GetProfilePostDocument,
-    options
+    options,
   );
 }
 export type GetProfilePostQueryHookResult = ReturnType<
@@ -1868,24 +1868,24 @@ export function useGetSubCommentsQuery(
   baseOptions: Apollo.QueryHookOptions<
     GetSubCommentsQuery,
     GetSubCommentsQueryVariables
-  >
+  >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<GetSubCommentsQuery, GetSubCommentsQueryVariables>(
     GetSubCommentsDocument,
-    options
+    options,
   );
 }
 export function useGetSubCommentsLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
     GetSubCommentsQuery,
     GetSubCommentsQueryVariables
-  >
+  >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useLazyQuery<GetSubCommentsQuery, GetSubCommentsQueryVariables>(
     GetSubCommentsDocument,
-    options
+    options,
   );
 }
 export type GetSubCommentsQueryHookResult = ReturnType<
@@ -1940,13 +1940,13 @@ export const MeDocument = gql`
  * });
  */
 export function useMeQuery(
-  baseOptions?: Apollo.QueryHookOptions<MeQuery, MeQueryVariables>
+  baseOptions?: Apollo.QueryHookOptions<MeQuery, MeQueryVariables>,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, options);
 }
 export function useMeLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<MeQuery, MeQueryVariables>
+  baseOptions?: Apollo.LazyQueryHookOptions<MeQuery, MeQueryVariables>,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, options);
@@ -1993,18 +1993,18 @@ export const PostDocument = gql`
  * });
  */
 export function usePostQuery(
-  baseOptions?: Apollo.QueryHookOptions<PostQuery, PostQueryVariables>
+  baseOptions?: Apollo.QueryHookOptions<PostQuery, PostQueryVariables>,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<PostQuery, PostQueryVariables>(PostDocument, options);
 }
 export function usePostLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<PostQuery, PostQueryVariables>
+  baseOptions?: Apollo.LazyQueryHookOptions<PostQuery, PostQueryVariables>,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useLazyQuery<PostQuery, PostQueryVariables>(
     PostDocument,
-    options
+    options,
   );
 }
 export type PostQueryHookResult = ReturnType<typeof usePostQuery>;

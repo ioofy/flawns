@@ -65,7 +65,7 @@ export const ButtonDelete = (props: DeleteProps) => {
       });
 
       const filteringComments = prevData?.getSubComments?.subComments.filter(
-        ({ id }) => id !== props.commentId
+        ({ id }) => id !== props.commentId,
       );
 
       if (filteringComments) {
